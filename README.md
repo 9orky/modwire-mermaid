@@ -134,7 +134,7 @@ that are absent; public contracts are non-nullable and have no implicit defaults
 ## Development and release
 
 Run `uv sync --all-groups` and `make verify`. Releases use strict SemVer tags and PyPI Trusted
-Publishing configured for repository `9orky/modwire-mermaid`, workflow `release.yml`, and environment
+Publishing configured for repository `modwire/modwire-mermaid`, workflow `release.yml`, and environment
 `pypi`. Create and push the tag before publishing its GitHub Release; that release drives the shared
 build, attaches the verified distributions, and then publishes the same files to PyPI.
 
