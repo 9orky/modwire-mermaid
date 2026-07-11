@@ -1,0 +1,5 @@
+journey
+  title {{ diagram.title }}
+{% for section in diagram.sections %}  section {{ section.name }}
+{% for task in section.tasks %}    {{ task.name }}: {{ task.score }}: {{ task.actors | join(', ') }}
+{% endfor %}{% endfor %}

@@ -1,0 +1,7 @@
+architecture-beta
+{% if diagram.title %}  title {{ diagram.title }}
+{% endif %}{% for item in diagram.groups %}  group {{ item.id }}{% if item.icon %}({{ item.icon }}){% endif %}{% if item.label %}[{{ item.label }}]{% endif %}{% if item.parent_id %} in {{ item.parent_id }}{% endif %}
+{% endfor %}{% for item in diagram.services %}  service {{ item.id }}{% if item.icon %}({{ item.icon }}){% endif %}{% if item.label %}[{{ item.label }}]{% endif %}{% if item.group_id %} in {{ item.group_id }}{% endif %}
+{% endfor %}{% for item in diagram.junctions %}  junction {{ item.id }}{% if item.group_id %} in {{ item.group_id }}{% endif %}
+{% endfor %}{% for item in diagram.edges %}  {{ item.source }}{% if item.source_group_edge %}{group}{% endif %}:{{ item.source_side.value }} {% if item.bidirectional %}<-->{% else %}-->{% endif %} {{ item.target }}{% if item.target_group_edge %}{group}{% endif %}:{{ item.target_side.value }}
+{% endfor %}

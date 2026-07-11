@@ -1,0 +1,14 @@
+swimlane-beta {{ diagram.direction.value }}
+{% if diagram.accessibility_title %}  accTitle: {{ diagram.accessibility_title }}
+{% endif %}{% if diagram.accessibility_description %}  accDescr: {{ diagram.accessibility_description }}
+{% endif %}{% for comment in diagram.comments %}  %% {{ comment }}
+{% endfor %}{% for lane in diagram.lanes %}  subgraph {{ lane.id }} [{{ lane.label | mermaid_quote }}]
+{% for node in lane.nodes %}    {{ node | flow_node }}
+{% endfor %}  end
+{% endfor %}{% for edge in diagram.edges %}  {{ edge | flow_edge }}
+{% endfor %}{% for interaction in diagram.interactions %}  click {{ interaction.node_id }} {% if interaction.kind.value == 'link' %}href {{ interaction.reference | mermaid_quote }} {{ interaction.tooltip | mermaid_quote }} {{ interaction.link_target.value }}{% else %}call {{ interaction.reference }}() {{ interaction.tooltip | mermaid_quote }}{% endif %}
+{% endfor %}{% for style in diagram.node_styles %}  style {{ style.node_id }} {% for property in style.properties %}{{ property.mermaid() }}{% if not loop.last %},{% endif %}{% endfor %}
+{% endfor %}{% for style in diagram.link_styles %}  linkStyle {% if style.use_default %}default{% else %}{{ style.edge_indexes | join(',') }}{% endif %} {% for property in style.properties %}{{ property.mermaid() }}{% if not loop.last %},{% endif %}{% endfor %};
+{% endfor %}{% for definition in diagram.style_definitions %}  classDef {{ definition.names | join(',') }} {% for property in definition.properties %}{{ property.mermaid() }}{% if not loop.last %},{% endif %}{% endfor %};
+{% endfor %}{% for lane in diagram.lanes %}{% for node in lane.nodes %}{% if node.css_classes %}  class {{ node.id }} {{ node.css_classes | join(',') }};
+{% endif %}{% endfor %}{% endfor %}

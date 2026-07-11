@@ -1,0 +1,17 @@
+stateDiagram-v2
+  direction {{ diagram.direction.value }}
+{% if diagram.accessibility_title %}  accTitle: {{ diagram.accessibility_title }}
+{% endif %}{% if diagram.accessibility_description %}  accDescr: {{ diagram.accessibility_description }}
+{% endif %}{% macro states(items, depth) %}{% for item in items %}{{ '  ' * depth }}state {{ item.label | mermaid_quote }} as {{ item.id }}{% if item.children %} {
+{% if item.direction %}{{ '  ' * (depth + 1) }}direction {{ item.direction }}
+{% endif %}{{ states(item.children, depth + 1) }}{% for transition in item.transitions %}{{ '  ' * (depth + 1) }}{{ transition.source }} --> {{ transition.target }}{% if transition.label %} : {{ transition.label }}{% endif %}
+{% endfor %}{% for region in item.concurrent_regions %}{% if not loop.first %}{{ '  ' * (depth + 1) }}--
+{% endif %}{% for state_id in region %}{{ '  ' * (depth + 1) }}{{ state_id }}
+{% endfor %}{% endfor %}{{ '  ' * depth }}}{% else %}
+{% if item.kind.value != 'state' %}{{ '  ' * depth }}state {{ item.id }} <<{{ item.kind.value }}>>
+{% endif %}{% endif %}{% endfor %}{% endmacro %}{% for comment in diagram.comments %}  %% {{ comment }}
+{% endfor %}{{ states(diagram.states, 1) }}{% for item in diagram.transitions %}  {{ item.source }} --> {{ item.target }}{% if item.label %} : {{ item.label }}{% endif %}
+{% endfor %}{% for note in diagram.notes %}  note {{ note.position.value }} of {{ note.state_id }} : {{ note.text }}
+{% endfor %}{% for style in diagram.style_definitions %}  classDef {{ style.name }} {% for property in style.properties %}{{ property.mermaid() }}{% if not loop.last %},{% endif %}{% endfor %};
+{% endfor %}{% for assignment in diagram.style_assignments %}  class {{ assignment.state_ids | join(',') }} {{ assignment.style_names | join(',') }}
+{% endfor %}

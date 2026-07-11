@@ -1,0 +1,7 @@
+eventmodeling
+{% for item in diagram.timeframes %}  {% if item.is_reset %}rf{% else %}tf{% endif %} {{ item.id }} {{ item.entity_type.value }} {{ item.entity }}{% if item.data_block_id %} [[{{ item.data_block_id }}]]{% elif item.data %} {% if item.data_type.value %}`{{ item.data_type.value }}`{% endif %}{ {{- item.data -}} }{% endif %}{% for relation in item.relations %} ->> {{ relation }}{% endfor %}
+{% endfor %}{% for block in diagram.data_blocks %}
+  data {{ block.id }} {% if block.data_type.value %}`{{ block.data_type.value }}`{% endif %}{
+{{ block.data }}
+  }
+{% endfor %}

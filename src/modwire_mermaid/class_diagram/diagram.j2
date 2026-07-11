@@ -1,0 +1,26 @@
+---
+config:
+  class:
+    hideEmptyMembersBox: {{ diagram.hide_empty_members_box | lower }}
+    hierarchicalNamespaces: {{ diagram.hierarchical_namespaces | lower }}
+---
+classDiagram
+    direction {{ diagram.direction.value }}
+{% for comment in diagram.comments %}    %% {{ comment }}
+{% endfor %}{% for namespace in diagram.namespaces %}    namespace {{ namespace.id }}{% if namespace.label %}["{{ namespace.label | mermaid_label }}"]{% endif %} {
+{% for class in diagram.classes if class.namespace == namespace.id %}        class {{ class.id }}{% if class.generic_type %}~{{ class.generic_type }}~{% endif %}["{{ class.label | mermaid_label }}"] {
+{% for annotation in class.annotations %}            <<{{ annotation }}>>
+{% endfor %}{% for member in class.members %}            {{ member.mermaid() }}
+{% endfor %}        }
+{% endfor %}    }
+{% endfor %}{% for class in diagram.classes if not class.namespace %}    class {{ class.id }}{% if class.generic_type %}~{{ class.generic_type }}~{% endif %}["{{ class.label | mermaid_label }}"] {
+{% for annotation in class.annotations %}        <<{{ annotation }}>>
+{% endfor %}{% for member in class.members %}        {{ member.mermaid() }}
+{% endfor %}    }
+{% endfor %}{% for relation in diagram.relationships %}    {{ relation.source }}{% if relation.source_cardinality %} "{{ relation.source_cardinality | mermaid_label }}"{% endif %} {{ relation.mermaid_arrow() }}{% if relation.target_cardinality %} "{{ relation.target_cardinality | mermaid_label }}"{% endif %} {{ relation.target }}{% if relation.label %} : {{ relation.label | mermaid_label }}{% endif %}
+{% endfor %}{% for note in diagram.notes %}    note{% if note.class_id %} for {{ note.class_id }}{% endif %} "{{ note.text | mermaid_label }}"
+{% endfor %}{% for interaction in diagram.interactions %}    {% if interaction.syntax.value == 'action' %}{{ interaction.kind.value }} {{ interaction.class_id }} "{{ interaction.reference | mermaid_label }}"{% else %}click {{ interaction.class_id }} {% if interaction.kind.value == 'link' %}href{% else %}call{% endif %} {% if interaction.kind.value == 'link' %}"{{ interaction.reference | mermaid_label }}"{% else %}{{ interaction.reference | mermaid_label }}(){% endif %}{% endif %}{% if interaction.tooltip %} "{{ interaction.tooltip | mermaid_label }}"{% endif %}
+{% endfor %}{% for style in diagram.styles %}    style {{ style.class_id }} {% for property in style.properties %}{{ property.mermaid() }}{% if not loop.last %},{% endif %}{% endfor %}
+{% endfor %}{% for definition in diagram.style_definitions %}    classDef {{ definition.names | join(',') }} {% for property in definition.properties %}{{ property.mermaid() }}{% if not loop.last %},{% endif %}{% endfor %};
+{% endfor %}{% for class in diagram.classes if class.css_classes %}    cssClass "{{ class.id }}" {{ class.css_classes | join(",") }};
+{% endfor %}

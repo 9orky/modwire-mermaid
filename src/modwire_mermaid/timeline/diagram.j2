@@ -1,0 +1,10 @@
+---
+config:
+  timeline:
+    disableMulticolor: {{ diagram.disable_multicolor | lower }}
+---
+timeline {{ diagram.direction.value }}
+{% if diagram.title %}  title {{ diagram.title }}
+{% endif %}{% for section in diagram.sections %}  section {{ section.name }}
+{% for period in section.periods %}    {{ period.name }} : {{ period.events | join(' : ') }}
+{% endfor %}{% endfor %}
