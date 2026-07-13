@@ -1,12 +1,12 @@
 import pytest
 
-from modwire_mermaid import DiagramAdapter
 from modwire_mermaid.architecture.diagram import ModwireArchitectureDiagram, ModwireArchitectureService
 from modwire_mermaid.class_diagram.diagram import (
     ModwireClass,
     ModwireClassDiagram,
     ModwireClassMethod,
 )
+from modwire_mermaid.diagrams import DiagramAdapter
 from modwire_mermaid.event_modeling.diagram import (
     ModwireEventEntityType,
     ModwireEventModel,

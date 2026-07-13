@@ -1,9 +1,9 @@
 import pytest
 from pydantic import ValidationError
 
-from modwire_mermaid import ModwireMermaidFactory
 from modwire_mermaid.architecture.diagram import ModwireArchitectureDiagram, ModwireArchitectureService
 from modwire_mermaid.class_diagram.diagram import ModwireClass, ModwireClassDiagram, ModwireClassNote
+from modwire_mermaid.composition import ModwireMermaidFactory
 from modwire_mermaid.graph import (
     ModwireFlowchart,
     ModwireFlowchartInteraction,

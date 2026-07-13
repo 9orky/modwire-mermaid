@@ -3,16 +3,16 @@ from typing import Literal
 
 import pytest
 
-from modwire_mermaid import (
+from modwire_mermaid.contracts import (
     CompilerRegistrationError,
-    CompilerRegistry,
-    DiagramAdapter,
     DiagramCompilationError,
     DuplicateCompilerError,
     ModwireBaseDiagram,
-    ModwireMermaid,
     UnsupportedDiagramError,
 )
+from modwire_mermaid.diagrams import DiagramAdapter
+from modwire_mermaid.facade import ModwireMermaid
+from modwire_mermaid.registry import CompilerRegistry
 from modwire_mermaid.timeline.diagram import ModwireTimeline, ModwireTimelinePeriod, ModwireTimelineSection
 
 

@@ -3,7 +3,7 @@ from dataclasses import FrozenInstanceError
 import pytest
 from pydantic import ValidationError
 
-from modwire_mermaid import DiagramBuildError
+from modwire_mermaid.contracts import DiagramBuildError
 from modwire_mermaid.timeline.diagram import (
     ModwireTimelineBuilder,
 )

@@ -16,6 +16,8 @@ There are no deprecated aliases or legacy constructor adapters.
 Registry changes are persistent:
 
 ```python
+from modwire_mermaid.composition import ModwireMermaidFactory
+
 registry = ModwireMermaidFactory.standard_registry()
 extended = registry.with_compiler(CustomCompiler())
 overridden = extended.replace(ReplacementCompiler())
@@ -31,6 +33,10 @@ byte identity with v1 where stronger validation or canonical rendering requires 
 
 ## JSON Schema
 
-`modwire_mermaid.DIAGRAM_SCHEMA_VERSION` identifies the supported schema generation contract.
-Call `modwire_mermaid.diagram_json_schema()` for the canonical schema object. The deterministic packaged
+`modwire_mermaid.schema.DIAGRAM_SCHEMA_VERSION` identifies the supported schema generation contract.
+Import and call `modwire_mermaid.schema.diagram_json_schema()` for the canonical schema object. The deterministic packaged
 artifact is `modwire_mermaid/schemas/v2/diagram.schema.json`; CI rejects drift between the artifact and models.
+
+The root and feature package initializers do not aggregate public symbols. Import contracts, compilers,
+registries, façades, composition helpers, diagram adapters, schema APIs, and version metadata from their
+defining modules.
