@@ -1,5 +1,5 @@
 from ..compiler import DiagramCompiler
-from ..source import MermaidSource
+from ..source import MermaidWriter
 from ..syntax import MermaidSyntax
 from .diagram import ModwireFileTree, ModwireFileTreeIconMapping, ModwireFileTreeNode
 
@@ -10,7 +10,7 @@ class ModwireFileTreeCompiler(DiagramCompiler[ModwireFileTree]):
         return ModwireFileTree
 
     def compile(self, diagram: ModwireFileTree) -> str:
-        source = MermaidSource(indentation="  ")
+        source = MermaidWriter(indentation="  ")
         source.lines(("---", "config:"), depth=0)
         source.line("treeView:", depth=1)
         source.lines(
@@ -41,11 +41,11 @@ class ModwireFileTreeCompiler(DiagramCompiler[ModwireFileTree]):
             depth=3,
         )
         source.lines(("---", "treeView-beta"), depth=0)
-        source.lines((f"%% {comment}" for comment in diagram.comments), depth=2)
+        source.lines((f"%% {MermaidSyntax.comment(comment)}" for comment in diagram.comments), depth=2)
         self._node(diagram.root, depth=1, source=source)
         return source.render()
 
-    def _node(self, node: ModwireFileTreeNode, depth: int, source: MermaidSource) -> None:
+    def _node(self, node: ModwireFileTreeNode, depth: int, source: MermaidWriter) -> None:
         label = MermaidSyntax.quote(node.label) + ("/" if node.is_directory else "")
         annotations: list[str] = []
         if node.icon:
@@ -53,7 +53,7 @@ class ModwireFileTreeCompiler(DiagramCompiler[ModwireFileTree]):
         if node.css_classes:
             annotations.append(f":::{' '.join(node.css_classes)}")
         if node.description:
-            annotations.append(f"## {node.description}")
+            annotations.append(f"## {MermaidSyntax.raw(node.description)}")
         suffix = " " + " ".join(annotations) if annotations else ""
         source.line(f"{label}{suffix}", depth=depth * 2)
         for child in node.children:
@@ -63,7 +63,7 @@ class ModwireFileTreeCompiler(DiagramCompiler[ModwireFileTree]):
         self,
         name: str,
         values: tuple[ModwireFileTreeIconMapping, ...],
-        source: MermaidSource,
+        source: MermaidWriter,
     ) -> None:
         source.line(f"{name}:", depth=2)
         source.lines(

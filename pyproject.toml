@@ -25,10 +25,10 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["build>=1.3", "packaging>=25", "pyright>=1.1.403", "pytest>=9", "ruff>=0.14", "twine>=6"]
+dev = ["build>=1.3", "import-linter>=2.11", "packaging>=25", "pyright>=1.1.403", "pytest>=9", "ruff>=0.14", "twine>=6"]
 
 [dependency-groups]
-dev = ["build>=1.3", "packaging>=25", "pyright>=1.1.403", "pytest>=9", "ruff>=0.14", "twine>=6"]
+dev = ["build>=1.3", "import-linter>=2.11", "packaging>=25", "pyright>=1.1.403", "pytest>=9", "ruff>=0.14", "twine>=6"]
 
 [project.urls]
 Repository = "https://github.com/modwire/modwire-mermaid"
@@ -67,3 +67,52 @@ pythonVersion = "3.12"
 typeCheckingMode = "strict"
 venvPath = "."
 venv = ".venv"
+
+[tool.importlinter]
+root_package = "modwire_mermaid"
+
+[[tool.importlinter.contracts]]
+name = "Diagram features are mutually independent"
+type = "independence"
+modules = [
+    "modwire_mermaid.architecture",
+    "modwire_mermaid.class_diagram",
+    "modwire_mermaid.event_modeling",
+    "modwire_mermaid.file_tree",
+    "modwire_mermaid.flowchart",
+    "modwire_mermaid.mindmap",
+    "modwire_mermaid.sequence",
+    "modwire_mermaid.state",
+    "modwire_mermaid.swimlane",
+    "modwire_mermaid.timeline",
+    "modwire_mermaid.user_journey",
+]
+
+[[tool.importlinter.contracts]]
+name = "Shared contracts and rendering do not import diagram features"
+type = "forbidden"
+source_modules = [
+    "modwire_mermaid.compiler",
+    "modwire_mermaid.contracts",
+    "modwire_mermaid.facade",
+    "modwire_mermaid.graph",
+    "modwire_mermaid.graph_rendering",
+    "modwire_mermaid.registry",
+    "modwire_mermaid.source",
+    "modwire_mermaid.style_rendering",
+    "modwire_mermaid.syntax",
+    "modwire_mermaid.template",
+]
+forbidden_modules = [
+    "modwire_mermaid.architecture",
+    "modwire_mermaid.class_diagram",
+    "modwire_mermaid.event_modeling",
+    "modwire_mermaid.file_tree",
+    "modwire_mermaid.flowchart",
+    "modwire_mermaid.mindmap",
+    "modwire_mermaid.sequence",
+    "modwire_mermaid.state",
+    "modwire_mermaid.swimlane",
+    "modwire_mermaid.timeline",
+    "modwire_mermaid.user_journey",
+]

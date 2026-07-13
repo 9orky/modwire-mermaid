@@ -2,12 +2,12 @@ from .architecture.compiler import ModwireArchitectureCompiler
 from .architecture.template import ModwireArchitectureTemplate
 from .class_diagram.compiler import ModwireClassDiagramCompiler
 from .class_diagram.template import JinjaClassDiagramTemplate
-from .event_modeling import ModwireEventModelCompiler
+from .event_modeling.compiler import ModwireEventModelCompiler
 from .event_modeling.template import ModwireEventModelTemplate
 from .facade import ModwireMermaid
-from .file_tree import ModwireFileTreeCompiler
+from .file_tree.compiler import ModwireFileTreeCompiler
 from .flowchart.compiler import ModwireFlowchartCompiler
-from .mindmap import ModwireMindmapCompiler
+from .mindmap.compiler import ModwireMindmapCompiler
 from .registry import CompilerRegistry
 from .sequence.compiler import ModwireSequenceCompiler
 from .sequence.template import ModwireSequenceTemplate
@@ -17,7 +17,7 @@ from .swimlane.compiler import ModwireSwimlaneCompiler
 from .swimlane.template import ModwireSwimlaneTemplate
 from .timeline.compiler import ModwireTimelineCompiler
 from .timeline.template import ModwireTimelineTemplate
-from .user_journey import ModwireUserJourneyCompiler
+from .user_journey.compiler import ModwireUserJourneyCompiler
 from .user_journey.template import ModwireUserJourneyTemplate
 
 

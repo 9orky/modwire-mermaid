@@ -24,7 +24,7 @@ from modwire_mermaid.class_diagram.diagram import (
 from modwire_mermaid.composition import (
     ModwireMermaidFactory,
 )
-from modwire_mermaid.file_tree import (
+from modwire_mermaid.file_tree.diagram import (
     ModwireFileTree,
     ModwireFileTreeIconMapping,
     ModwireFileTreeNode,
@@ -54,7 +54,7 @@ from modwire_mermaid.graph import (
     ModwireFlowchartSubgraph,
     ModwireFlowchartTextFormat,
 )
-from modwire_mermaid.mindmap import (
+from modwire_mermaid.mindmap.diagram import (
     ModwireMindmap,
     ModwireMindmapLayout,
     ModwireMindmapNode,
@@ -116,7 +116,7 @@ def test_flowchart_is_typed_validated_and_deterministic():
 
 
 def test_flowchart_rejects_dangling_edges():
-    with pytest.raises(ValidationError, match="unknown children"):
+    with pytest.raises(ValidationError, match="does not exist"):
         ModwireFlowchart(
             nodes=(
                 ModwireFlowchartNode(

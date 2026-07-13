@@ -33,6 +33,16 @@ class CompilerRegistry:
         registry._compilers = MappingProxyType(dict(compilers))
         return registry
 
+    @staticmethod
+    def _validated_compiler(compiler: object) -> _ErasedCompiler:
+        diagram_type = getattr(compiler, "diagram_type", None)
+        compile_method = getattr(compiler, "compile", None)
+        if not isinstance(diagram_type, type):
+            raise CompilerRegistrationError("Compiler diagram_type must be a diagram class")
+        if not callable(compile_method):
+            raise CompilerRegistrationError("Compiler compile must be callable")
+        return cast(_ErasedCompiler, compiler)
+
     @classmethod
     def empty(cls) -> CompilerRegistry:
         return cls()
@@ -48,7 +58,7 @@ class CompilerRegistry:
             raise UnsupportedDiagramError(f"No compiler registered for exact type {type(diagram).__name__}") from error
 
     def with_compiler[DiagramT: MermaidDiagram](self, compiler: DiagramCompiler[DiagramT]) -> CompilerRegistry:
-        erased = cast(_ErasedCompiler, compiler)
+        erased = self._validated_compiler(compiler)
         if erased.diagram_type in self._compilers:
             raise DuplicateCompilerError(f"Compiler already registered for {erased.diagram_type.__name__}")
         return self._from_erased({**self._compilers, erased.diagram_type: erased})
@@ -61,7 +71,7 @@ class CompilerRegistry:
         )
 
     def replace[DiagramT: MermaidDiagram](self, compiler: DiagramCompiler[DiagramT]) -> CompilerRegistry:
-        erased = cast(_ErasedCompiler, compiler)
+        erased = self._validated_compiler(compiler)
         if erased.diagram_type not in self._compilers:
             raise CompilerRegistrationError(f"No compiler registered for {erased.diagram_type.__name__}")
         return self._from_erased(

@@ -80,6 +80,7 @@ The supported root imports below are generated from `modwire_mermaid.__all__`.
 
 | Symbol | Purpose | Primary API |
 | --- | --- | --- |
+| `DIAGRAM_SCHEMA_VERSION` | str(object='') -> str | — |
 | `CompilerRegistrationError` | Report an invalid compiler registry operation. | — |
 | `CompilerRegistry` | Immutable exact-type compiler registry with explicit conflict semantics. | `empty() -> 'CompilerRegistry'`<br>`with_compiler(compiler: 'DiagramCompiler[DiagramT]') -> 'CompilerRegistry'`<br>`without(diagram_type: 'type[MermaidDiagram]') -> 'CompilerRegistry'`<br>`replace(compiler: 'DiagramCompiler[DiagramT]') -> 'CompilerRegistry'`<br>`merge(other: 'CompilerRegistry') -> 'CompilerRegistry'`<br>`compile(diagram: 'MermaidDiagram') -> 'str'` |
 | `Diagram` | Discriminated union of every bundled diagram contract. | — |
@@ -97,6 +98,7 @@ The supported root imports below are generated from `modwire_mermaid.__all__`.
 | `ModwireMermaidFactory` | Build the standard Mermaid façade with every bundled diagram compiler. | `standard_registry() -> modwire_mermaid.registry.CompilerRegistry`<br>`standard() -> modwire_mermaid.facade.ModwireMermaid` |
 | `UnsupportedDiagramError` | Report a diagram whose exact type has no registered compiler. | — |
 | `__version__` | Installed distribution version. | — |
+| `diagram_json_schema` | Return the canonical versioned schema for every bundled diagram. | — |
 
 ## Executable example
 
@@ -144,6 +146,11 @@ Mermaid configuration use typed defaults. Optional values use `None`, never magi
 - The standard factory supports every diagram type listed above through one `compile()` method.
 - The package generates text only; it does not render SVG/PNG, invoke Mermaid CLI, or write files.
 - Mermaid parser and renderer compatibility must be checked by the consuming application.
+
+## JSON Schema
+
+`DIAGRAM_SCHEMA_VERSION` is `"2"`. Use `diagram_json_schema()` for the canonical bundled-diagram schema,
+or consume the packaged `modwire_mermaid/schemas/v2/diagram.schema.json` artifact. Schema drift is checked in CI.
 - Compiler registries are immutable; duplicates fail and replacement is always explicit.
 
 ## Extending the compiler

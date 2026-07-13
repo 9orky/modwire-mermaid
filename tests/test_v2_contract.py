@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from typing import Literal
 
 import pytest
@@ -41,6 +42,19 @@ class BrokenCompiler:
         raise RuntimeError(diagram.label)
 
 
+@dataclass(frozen=True)
+class StructuralDiagram:
+    label: str
+    kind: str = "structural"
+
+
+class StructuralCompiler:
+    diagram_type = StructuralDiagram
+
+    def compile(self, diagram: StructuralDiagram) -> str:
+        return f"structural {diagram.label}\n"
+
+
 def test_external_diagram_uses_the_same_immutable_registry_contract():
     empty = CompilerRegistry.empty()
     registered = empty.with_compiler(ExtensionCompiler())
@@ -51,6 +65,18 @@ def test_external_diagram_uses_the_same_immutable_registry_contract():
         "replacement demo\n"
     )
     assert registered.without(ExtensionDiagram).registered_types == ()
+
+
+def test_non_pydantic_structural_diagram_registers_and_compiles():
+    registry = CompilerRegistry.empty().with_compiler(StructuralCompiler())
+
+    assert ModwireMermaid(registry).compile(StructuralDiagram(label="demo")) == "structural demo\n"
+
+
+@pytest.mark.parametrize("compiler", [object(), type("MissingType", (), {"compile": lambda self, diagram: ""})()])
+def test_invalid_runtime_compilers_use_registration_error_taxonomy(compiler):
+    with pytest.raises(CompilerRegistrationError):
+        CompilerRegistry.empty().with_compiler(compiler)
 
 
 def test_registry_conflicts_and_missing_operations_are_explicit():

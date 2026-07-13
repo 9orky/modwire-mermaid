@@ -5,7 +5,16 @@ from typing import Literal
 
 from pydantic import model_validator
 
-from ..contracts import ModwireBaseDiagram, ModwireDiagramContract, ModwireSyntaxFeature
+from ..contracts import (
+    ModwireBaseDiagram,
+    ModwireContractViolation,
+    ModwireCssName,
+    ModwireDiagramContract,
+    ModwireDiagramIdentifier,
+    ModwireMultilineText,
+    ModwireSyntaxFeature,
+    contract_validation_error,
+)
 
 
 class ModwireMindmapShape(StrEnum):
@@ -29,26 +38,52 @@ class ModwireMindmapLayout(StrEnum):
 
 
 class ModwireMindmapNode(ModwireDiagramContract):
-    id: str
-    label: str
-    shape: ModwireMindmapShape
-    text_format: ModwireMindmapTextFormat
-    icon_classes: tuple[str, ...]
-    css_classes: tuple[str, ...]
-    children: tuple[ModwireMindmapNode, ...]
+    id: ModwireDiagramIdentifier
+    label: ModwireMultilineText
+    shape: ModwireMindmapShape = ModwireMindmapShape.DEFAULT
+    text_format: ModwireMindmapTextFormat = ModwireMindmapTextFormat.PLAIN
+    icon_classes: tuple[ModwireCssName, ...] = ()
+    css_classes: tuple[ModwireCssName, ...] = ()
+    children: tuple[ModwireMindmapNode, ...] = ()
 
     @model_validator(mode="after")
     def validate_node(self):
-        if not self.id.strip() or any(character in self.id for character in "\r\n()[]{}"):
-            raise ValueError("Mindmap node IDs must be non-blank and cannot contain shape delimiters")
-        if not self.label.strip():
-            raise ValueError("Mindmap node labels cannot be blank")
         if self.shape is ModwireMindmapShape.DEFAULT and self.text_format is ModwireMindmapTextFormat.MARKDOWN:
-            raise ValueError("Markdown mindmap nodes require an explicit shape")
+            raise contract_validation_error(
+                type(self).__name__,
+                (
+                    ModwireContractViolation(
+                        ("text_format",),
+                        "invalid_configuration",
+                        "Markdown mindmap nodes require an explicit shape",
+                        self.text_format,
+                    ),
+                ),
+            )
         if self.shape is ModwireMindmapShape.DEFAULT and self.id != self.label:
-            raise ValueError("Default-shaped mindmap nodes use their ID as the label")
+            raise contract_validation_error(
+                type(self).__name__,
+                (
+                    ModwireContractViolation(
+                        ("label",),
+                        "invalid_configuration",
+                        "Default-shaped mindmap nodes use their ID as the label",
+                        self.label,
+                    ),
+                ),
+            )
         if len(self.css_classes) != len(set(self.css_classes)):
-            raise ValueError("Mindmap node CSS classes must be unique")
+            raise contract_validation_error(
+                type(self).__name__,
+                (
+                    ModwireContractViolation(
+                        ("css_classes",),
+                        "duplicate_identifier",
+                        "Mindmap node CSS classes must be unique",
+                        self.css_classes,
+                    ),
+                ),
+            )
         return self
 
 

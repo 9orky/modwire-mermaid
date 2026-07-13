@@ -1,7 +1,7 @@
 # Event-modeling diagrams
 
 ```python
-from modwire_mermaid.event_modeling import ModwireEventModel
+from modwire_mermaid.event_modeling.diagram import ModwireEventModel
 ```
 
 `ModwireEventModel` supports ordered timeframes for UI, processor, command, read-model, and event

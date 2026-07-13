@@ -1,15 +1,30 @@
 from __future__ import annotations
 
+import re
 from enum import StrEnum
-from typing import Literal
+from typing import Annotated, Literal
 
 from pydantic import Field, model_validator
 
 from .contracts import (
+    MODWIRE_CALLBACK_PATTERN,
+    MODWIRE_URL_PATTERN,
     ModwireBaseDiagram,
+    ModwireContractViolation,
+    ModwireCssName,
     ModwireDiagramContract,
     ModwireDiagramIdentifier,
+    ModwireDiagramReference,
+    ModwireIconName,
+    ModwireNonNegativeInt,
+    ModwireOptionalText,
+    ModwirePositiveInt,
+    ModwireStyleName,
+    ModwireStyleValue,
     ModwireSyntaxFeature,
+    ModwireText,
+    ModwireUrl,
+    contract_validation_error,
 )
 
 
@@ -78,16 +93,20 @@ class ModwireFlowchartTextFormat(StrEnum):
 
 
 class ModwireFlowchartNode(ModwireDiagramContract):
+    node_type: Literal["node"] = "node"
     id: ModwireDiagramIdentifier
-    label: str
-    shape: ModwireFlowchartShape
-    text_format: ModwireFlowchartTextFormat
-    css_classes: tuple[str, ...]
+    label: ModwireText
+    shape: ModwireFlowchartShape = ModwireFlowchartShape.PROCESS
+    text_format: ModwireFlowchartTextFormat = ModwireFlowchartTextFormat.PLAIN
+    css_classes: tuple[ModwireCssName, ...] = ()
 
     @model_validator(mode="after")
     def validate_node(self):
         if self.id == "end":
-            raise ValueError("Lowercase 'end' is reserved by the Mermaid flowchart parser")
+            raise contract_validation_error(
+                type(self).__name__,
+                (ModwireContractViolation(("id",), "reserved_identifier", "Lowercase 'end' is reserved", self.id),),
+            )
         return self
 
 
@@ -104,18 +123,22 @@ class ModwireFlowchartLabelPosition(StrEnum):
 
 
 class ModwireFlowchartIconNode(ModwireDiagramContract):
+    node_type: Literal["icon"] = "icon"
     id: ModwireDiagramIdentifier
-    icon: str
-    form: ModwireFlowchartIconForm
-    label: str
-    position: ModwireFlowchartLabelPosition
-    height: int = Field(ge=48)
-    css_classes: tuple[str, ...]
+    icon: ModwireIconName
+    form: ModwireFlowchartIconForm = ModwireFlowchartIconForm.NONE
+    label: ModwireOptionalText = ""
+    position: ModwireFlowchartLabelPosition = ModwireFlowchartLabelPosition.BOTTOM
+    height: int = Field(default=48, ge=48)
+    css_classes: tuple[ModwireCssName, ...] = ()
 
     @model_validator(mode="after")
     def validate_node(self):
         if self.id == "end":
-            raise ValueError("Lowercase 'end' is reserved by the Mermaid flowchart parser")
+            raise contract_validation_error(
+                type(self).__name__,
+                (ModwireContractViolation(("id",), "reserved_identifier", "Lowercase 'end' is reserved", self.id),),
+            )
         return self
 
 
@@ -125,23 +148,30 @@ class ModwireFlowchartImageConstraint(StrEnum):
 
 
 class ModwireFlowchartImageNode(ModwireDiagramContract):
+    node_type: Literal["image"] = "image"
     id: ModwireDiagramIdentifier
-    image_url: str
-    label: str
-    position: ModwireFlowchartLabelPosition
-    width: int = Field(gt=0)
-    height: int = Field(gt=0)
-    constraint: ModwireFlowchartImageConstraint
-    css_classes: tuple[str, ...]
+    image_url: ModwireUrl
+    label: ModwireOptionalText = ""
+    position: ModwireFlowchartLabelPosition = ModwireFlowchartLabelPosition.BOTTOM
+    width: ModwirePositiveInt
+    height: ModwirePositiveInt
+    constraint: ModwireFlowchartImageConstraint = ModwireFlowchartImageConstraint.ON
+    css_classes: tuple[ModwireCssName, ...] = ()
 
     @model_validator(mode="after")
     def validate_node(self):
         if self.id == "end":
-            raise ValueError("Lowercase 'end' is reserved by the Mermaid flowchart parser")
+            raise contract_validation_error(
+                type(self).__name__,
+                (ModwireContractViolation(("id",), "reserved_identifier", "Lowercase 'end' is reserved", self.id),),
+            )
         return self
 
 
-ModwireFlowchartNodeType = ModwireFlowchartNode | ModwireFlowchartIconNode | ModwireFlowchartImageNode
+ModwireFlowchartNodeType = Annotated[
+    ModwireFlowchartNode | ModwireFlowchartIconNode | ModwireFlowchartImageNode,
+    Field(discriminator="node_type"),
+]
 
 
 class ModwireFlowchartEdgeLine(StrEnum):
@@ -181,42 +211,66 @@ class ModwireFlowchartCurve(StrEnum):
 
 
 class ModwireFlowchartEdge(ModwireDiagramContract):
-    id: str
+    id: ModwireDiagramReference = ""
     source: ModwireDiagramIdentifier
     target: ModwireDiagramIdentifier
-    label: str
-    text_format: ModwireFlowchartTextFormat
-    line: ModwireFlowchartEdgeLine
-    source_end: ModwireFlowchartEdgeEnd
-    target_end: ModwireFlowchartEdgeEnd
-    minimum_length: int = Field(ge=1)
-    animation: ModwireFlowchartAnimation
-    curve: ModwireFlowchartCurve
-    css_classes: tuple[str, ...]
+    label: ModwireOptionalText = ""
+    text_format: ModwireFlowchartTextFormat = ModwireFlowchartTextFormat.PLAIN
+    line: ModwireFlowchartEdgeLine = ModwireFlowchartEdgeLine.NORMAL
+    source_end: ModwireFlowchartEdgeEnd = ModwireFlowchartEdgeEnd.NONE
+    target_end: ModwireFlowchartEdgeEnd = ModwireFlowchartEdgeEnd.ARROW
+    minimum_length: int = Field(default=1, ge=1)
+    animation: ModwireFlowchartAnimation = ModwireFlowchartAnimation.NONE
+    curve: ModwireFlowchartCurve = ModwireFlowchartCurve.DEFAULT
+    css_classes: tuple[ModwireCssName, ...] = ()
 
     @model_validator(mode="after")
     def validate_edge(self):
         if self.id and not self.id.replace("_", "a").isalnum():
-            raise ValueError("Flowchart edge IDs must be alphanumeric or underscores")
+            raise contract_validation_error(
+                type(self).__name__,
+                (
+                    ModwireContractViolation(
+                        ("id",), "invalid_identifier", "Edge IDs must be alphanumeric or underscores", self.id
+                    ),
+                ),
+            )
         if self.line is ModwireFlowchartEdgeLine.INVISIBLE and (
             self.source_end is not ModwireFlowchartEdgeEnd.NONE
             or self.target_end is not ModwireFlowchartEdgeEnd.NONE
             or self.label
         ):
-            raise ValueError("Invisible edges cannot have ends or labels")
+            raise contract_validation_error(
+                type(self).__name__,
+                (
+                    ModwireContractViolation(
+                        ("line",),
+                        "invalid_configuration",
+                        "Invisible edges cannot have ends or labels",
+                        self.line,
+                    ),
+                ),
+            )
         if (
             self.animation is not ModwireFlowchartAnimation.NONE or self.curve is not ModwireFlowchartCurve.DEFAULT
         ) and not self.id:
-            raise ValueError("Animated or curved edges require an ID")
+            raise contract_validation_error(
+                type(self).__name__,
+                (
+                    ModwireContractViolation(
+                        ("id",), "invalid_configuration", "Animated or curved edges require an ID", self.id
+                    ),
+                ),
+            )
         return self
 
 
 class ModwireFlowchartSubgraph(ModwireDiagramContract):
     id: ModwireDiagramIdentifier
-    label: str
-    direction: ModwireFlowchartDirection
-    node_ids: tuple[ModwireDiagramIdentifier, ...]
-    children: tuple[ModwireFlowchartSubgraph, ...]
+    label: ModwireOptionalText = ""
+    direction: ModwireFlowchartDirection = ModwireFlowchartDirection.TOP_BOTTOM
+    node_ids: tuple[ModwireDiagramIdentifier, ...] = ()
+    children: tuple[ModwireFlowchartSubgraph, ...] = ()
 
 
 class ModwireFlowchartInteractionKind(StrEnum):
@@ -234,33 +288,49 @@ class ModwireFlowchartLinkTarget(StrEnum):
 class ModwireFlowchartInteraction(ModwireDiagramContract):
     node_id: ModwireDiagramIdentifier
     kind: ModwireFlowchartInteractionKind
-    reference: str
-    tooltip: str
-    link_target: ModwireFlowchartLinkTarget
+    reference: ModwireText
+    tooltip: ModwireOptionalText = ""
+    link_target: ModwireFlowchartLinkTarget = ModwireFlowchartLinkTarget.SELF
+
+    @model_validator(mode="after")
+    def validate_reference(self):
+        pattern = (
+            MODWIRE_CALLBACK_PATTERN if self.kind is ModwireFlowchartInteractionKind.CALLBACK else MODWIRE_URL_PATTERN
+        )
+        if re.fullmatch(pattern, self.reference) is None:
+            raise contract_validation_error(
+                type(self).__name__,
+                (
+                    ModwireContractViolation(
+                        ("reference",),
+                        "invalid_interaction_reference",
+                        "Interaction reference is invalid for its kind",
+                        self.reference,
+                    ),
+                ),
+            )
+        return self
 
 
 class ModwireFlowchartStyleProperty(ModwireDiagramContract):
-    name: str
-    value: str
-
-    def mermaid(self) -> str:
-        return f"{self.name}:{self.value}"
+    name: ModwireStyleName
+    value: ModwireStyleValue
 
 
 class ModwireFlowchartNodeStyle(ModwireDiagramContract):
     node_id: ModwireDiagramIdentifier
-    properties: tuple[ModwireFlowchartStyleProperty, ...]
+    properties: tuple[ModwireFlowchartStyleProperty, ...] = ()
 
 
 class ModwireFlowchartLinkStyle(ModwireDiagramContract):
-    edge_indexes: tuple[int, ...]
-    use_default: bool
-    properties: tuple[ModwireFlowchartStyleProperty, ...]
+    edge_indexes: tuple[ModwireNonNegativeInt, ...] = ()
+    use_default: bool = False
+    properties: tuple[ModwireFlowchartStyleProperty, ...] = ()
 
 
 class ModwireFlowchartStyleDefinition(ModwireDiagramContract):
-    names: tuple[str, ...]
-    properties: tuple[ModwireFlowchartStyleProperty, ...]
+    names: tuple[ModwireCssName, ...]
+    properties: tuple[ModwireFlowchartStyleProperty, ...] = ()
 
 
 class ModwireFlowchart(ModwireBaseDiagram):
@@ -285,7 +355,7 @@ class ModwireFlowchart(ModwireBaseDiagram):
     node_styles: tuple[ModwireFlowchartNodeStyle, ...] = ()
     link_styles: tuple[ModwireFlowchartLinkStyle, ...] = ()
     style_definitions: tuple[ModwireFlowchartStyleDefinition, ...] = ()
-    comments: tuple[str, ...] = ()
+    comments: tuple[ModwireText, ...] = ()
     markdown_auto_wrap: bool = True
     default_curve: ModwireFlowchartCurve = ModwireFlowchartCurve.LINEAR
 
@@ -298,33 +368,84 @@ class ModwireFlowchart(ModwireBaseDiagram):
         self._validate_unique_children(subgraph_ids, "Flowchart subgraph")
         collisions = set(identifiers) & set(subgraph_ids)
         if collisions:
-            raise ValueError(f"Flowchart node and subgraph IDs collide: {sorted(collisions)}")
+            raise contract_validation_error(
+                type(self).__name__,
+                (
+                    ModwireContractViolation(
+                        ("subgraphs",),
+                        "duplicate_identifier",
+                        "Node and subgraph identifiers must not collide",
+                        sorted(collisions),
+                    ),
+                ),
+            )
         endpoints = set(identifiers) | set(subgraph_ids)
-        self._validate_child_references(
+        self._validate_located_references(
             endpoints,
-            (value for edge in self.edges for value in (edge.source, edge.target)),
+            (
+                (location, reference)
+                for index, edge in enumerate(self.edges)
+                for location, reference in (
+                    (("edges", index, "source"), edge.source),
+                    (("edges", index, "target"), edge.target),
+                )
+            ),
             "Flowchart edge",
         )
-        self._validate_child_references(
-            identifiers, (item.node_id for item in self.interactions), "Flowchart interaction"
+        self._validate_located_references(
+            identifiers,
+            ((("interactions", index, "node_id"), item.node_id) for index, item in enumerate(self.interactions)),
+            "Flowchart interaction",
         )
-        self._validate_child_references(
-            identifiers, (item.node_id for item in self.node_styles), "Flowchart node style"
+        self._validate_located_references(
+            identifiers,
+            ((("node_styles", index, "node_id"), item.node_id) for index, item in enumerate(self.node_styles)),
+            "Flowchart node style",
         )
         edge_ids = tuple(edge.id for edge in self.edges if edge.id)
         self._validate_unique_children(edge_ids, "Flowchart edge ID")
-        for subgraph in self.subgraphs:
-            self._validate_subgraph(subgraph, set(identifiers))
+        for index, subgraph in enumerate(self.subgraphs):
+            self._validate_subgraph(subgraph, set(identifiers), ("subgraphs", index))
         grouped = tuple(node_id for subgraph in self.subgraphs for node_id in self._nested_node_ids(subgraph))
         self._validate_unique_children(grouped, "Flowchart subgraph ownership")
-        for style in self.link_styles:
+        for style_index, style in enumerate(self.link_styles):
             if style.use_default and style.edge_indexes:
-                raise ValueError("Default link styles cannot also select edge indexes")
+                raise contract_validation_error(
+                    type(self).__name__,
+                    (
+                        ModwireContractViolation(
+                            ("link_styles", style_index, "edge_indexes"),
+                            "invalid_configuration",
+                            "Default link styles cannot also select edge indexes",
+                            style.edge_indexes,
+                        ),
+                    ),
+                )
             if not style.use_default and not style.edge_indexes:
-                raise ValueError("Link styles require edge indexes or use_default=True")
-            invalid = tuple(index for index in style.edge_indexes if index < 0 or index >= len(self.edges))
-            if invalid:
-                raise ValueError(f"Flowchart link style indexes are out of range: {invalid}")
+                raise contract_validation_error(
+                    type(self).__name__,
+                    (
+                        ModwireContractViolation(
+                            ("link_styles", style_index, "edge_indexes"),
+                            "invalid_configuration",
+                            "Link styles require edge indexes or use_default=True",
+                            style.edge_indexes,
+                        ),
+                    ),
+                )
+            violations = tuple(
+                ModwireContractViolation(
+                    ("link_styles", style_index, "edge_indexes", index_position),
+                    "index_out_of_range",
+                    "Edge index {index} is outside the diagram edge range",
+                    edge_index,
+                    {"index": edge_index},
+                )
+                for index_position, edge_index in enumerate(style.edge_indexes)
+                if edge_index < 0 or edge_index >= len(self.edges)
+            )
+            if violations:
+                raise contract_validation_error(type(self).__name__, violations)
         return self
 
     def _subgraph_ids(self, values: tuple[ModwireFlowchartSubgraph, ...]) -> tuple[ModwireDiagramIdentifier, ...]:
@@ -332,10 +453,16 @@ class ModwireFlowchart(ModwireBaseDiagram):
             value for item in values for value in self._subgraph_ids(item.children)
         )
 
-    def _validate_subgraph(self, subgraph: ModwireFlowchartSubgraph, identifiers: set[str]) -> None:
-        self._validate_child_references(identifiers, subgraph.node_ids, f"Flowchart subgraph {subgraph.id}")
-        for child in subgraph.children:
-            self._validate_subgraph(child, identifiers)
+    def _validate_subgraph(
+        self, subgraph: ModwireFlowchartSubgraph, identifiers: set[str], path: tuple[str | int, ...]
+    ) -> None:
+        self._validate_located_references(
+            identifiers,
+            (((*path, "node_ids", index), node_id) for index, node_id in enumerate(subgraph.node_ids)),
+            f"Flowchart subgraph {subgraph.id}",
+        )
+        for index, child in enumerate(subgraph.children):
+            self._validate_subgraph(child, identifiers, (*path, "children", index))
 
     def _nested_node_ids(self, value: ModwireFlowchartSubgraph) -> tuple[str, ...]:
         return value.node_ids + tuple(node_id for child in value.children for node_id in self._nested_node_ids(child))

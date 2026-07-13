@@ -6,7 +6,8 @@ from ..graph import (
     ModwireFlowchartSubgraph,
 )
 from ..graph_rendering import ModwireFlowchartRendering
-from ..source import MermaidSource
+from ..source import MermaidWriter
+from ..style_rendering import MermaidStyleRendering
 from ..syntax import MermaidSyntax
 
 
@@ -16,13 +17,13 @@ class ModwireFlowchartCompiler(DiagramCompiler[ModwireFlowchart]):
         return ModwireFlowchart
 
     def compile(self, diagram: ModwireFlowchart) -> str:
-        source = MermaidSource(indentation="  ")
+        source = MermaidWriter(indentation="  ")
         source.lines(("---", "config:"), depth=0)
         source.line(f"markdownAutoWrap: {str(diagram.markdown_auto_wrap).lower()}", depth=1)
         source.line("flowchart:", depth=1)
         source.line(f"curve: {diagram.default_curve.value or 'linear'}", depth=2)
         source.lines(("---", f"flowchart {diagram.direction.value}"), depth=0)
-        source.lines((f"%% {comment}" for comment in diagram.comments), depth=2)
+        source.lines((f"%% {MermaidSyntax.comment(comment)}" for comment in diagram.comments), depth=2)
         grouped = {node_id for subgraph in diagram.subgraphs for node_id in self._nested_node_ids(subgraph)}
         source.lines(
             (ModwireFlowchartRendering.node(node) for node in diagram.nodes if node.id not in grouped), depth=2
@@ -50,7 +51,7 @@ class ModwireFlowchartCompiler(DiagramCompiler[ModwireFlowchart]):
             else:
                 tooltip = MermaidSyntax.quote(interaction.tooltip)
                 source.line(
-                    f"click {interaction.node_id} call {interaction.reference}() {tooltip}",
+                    f"click {interaction.node_id} call {MermaidSyntax.raw(interaction.reference)}() {tooltip}",
                     depth=2,
                 )
         for style in diagram.node_styles:
@@ -70,7 +71,7 @@ class ModwireFlowchartCompiler(DiagramCompiler[ModwireFlowchart]):
         value: ModwireFlowchartSubgraph,
         diagram: ModwireFlowchart,
         depth: int,
-        source: MermaidSource,
+        source: MermaidWriter,
     ) -> None:
         source.line(f"subgraph {value.id}[{MermaidSyntax.quote(value.label)}]", depth=depth)
         source.line(f"direction {value.direction.value}", depth=depth + 2)
@@ -85,4 +86,4 @@ class ModwireFlowchartCompiler(DiagramCompiler[ModwireFlowchart]):
 
     @staticmethod
     def _properties(values: tuple[ModwireFlowchartStyleProperty, ...]) -> str:
-        return ",".join(value.mermaid() for value in values)
+        return ",".join(MermaidStyleRendering.property(value.name, value.value) for value in values)

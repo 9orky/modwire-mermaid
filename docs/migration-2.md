@@ -28,3 +28,9 @@ Model payloads must include `kind` when validated through `DiagramAdapter`. Expl
 `compiler` modules are the supported feature import paths; shared flowchart graph contracts live in
 `modwire_mermaid.graph`. Generated Mermaid remains deterministic, but v2 does not promise
 byte identity with v1 where stronger validation or canonical rendering requires a change.
+
+## JSON Schema
+
+`modwire_mermaid.DIAGRAM_SCHEMA_VERSION` identifies the supported schema generation contract.
+Call `modwire_mermaid.diagram_json_schema()` for the canonical schema object. The deterministic packaged
+artifact is `modwire_mermaid/schemas/v2/diagram.schema.json`; CI rejects drift between the artifact and models.

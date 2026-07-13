@@ -1,13 +1,29 @@
+import re
 from enum import StrEnum
-from typing import Literal
+from typing import Annotated, Literal
 
-from pydantic import model_validator
+from pydantic import Field, model_validator
 
 from ..contracts import (
+    MODWIRE_CALLBACK_PATTERN,
+    MODWIRE_URL_PATTERN,
     ModwireBaseDiagram,
+    ModwireContractViolation,
+    ModwireCssName,
     ModwireDiagramContract,
     ModwireDiagramIdentifier,
+    ModwireDiagramReference,
+    ModwireMultilineText,
+    ModwireNamespaceIdentifier,
+    ModwireNamespaceReference,
+    ModwireOptionalSyntaxToken,
+    ModwireOptionalText,
+    ModwireStyleName,
+    ModwireStyleValue,
     ModwireSyntaxFeature,
+    ModwireSyntaxToken,
+    ModwireText,
+    contract_validation_error,
 )
 
 
@@ -32,10 +48,11 @@ class ModwireMemberClassifier(StrEnum):
 
 
 class ModwireClassAttribute(ModwireDiagramContract):
-    name: str
-    type: str
-    visibility: ModwireVisibility
-    is_static: bool
+    member_type: Literal["attribute"] = "attribute"
+    name: ModwireSyntaxToken
+    type: ModwireSyntaxToken
+    visibility: ModwireVisibility = ModwireVisibility.PUBLIC
+    is_static: bool = False
 
     @model_validator(mode="after")
     def validate_attribute(self):
@@ -43,13 +60,10 @@ class ModwireClassAttribute(ModwireDiagramContract):
         _ClassSyntax.require_single_line(self.type, "Attribute type")
         return self
 
-    def mermaid(self) -> str:
-        return f"{self.visibility.value}{self.type} {self.name}{'$' if self.is_static else ''}"
-
 
 class ModwireClassParameter(ModwireDiagramContract):
-    name: str
-    type: str
+    name: ModwireSyntaxToken
+    type: ModwireSyntaxToken
 
     @model_validator(mode="after")
     def validate_parameter(self):
@@ -57,56 +71,79 @@ class ModwireClassParameter(ModwireDiagramContract):
         _ClassSyntax.require_single_line(self.type, "Parameter type")
         return self
 
-    def mermaid(self) -> str:
-        return f"{self.name}: {self.type}"
-
 
 class ModwireClassMethod(ModwireDiagramContract):
-    name: str
-    parameters: tuple[ModwireClassParameter, ...]
-    return_type: str
-    visibility: ModwireVisibility
-    classifiers: tuple[ModwireMemberClassifier, ...]
+    member_type: Literal["method"] = "method"
+    name: ModwireSyntaxToken
+    parameters: tuple[ModwireClassParameter, ...] = ()
+    return_type: ModwireSyntaxToken
+    visibility: ModwireVisibility = ModwireVisibility.PUBLIC
+    classifiers: tuple[ModwireMemberClassifier, ...] = ()
 
     @model_validator(mode="after")
     def validate_method(self):
         _ClassSyntax.require_single_line(self.name, "Method name")
         _ClassSyntax.require_single_line(self.return_type, "Method return type")
         if len(self.classifiers) != len(set(self.classifiers)):
-            raise ValueError("Method classifiers must be unique")
+            raise contract_validation_error(
+                type(self).__name__,
+                (
+                    ModwireContractViolation(
+                        ("classifiers",),
+                        "duplicate_identifier",
+                        "Method classifiers must be unique",
+                        self.classifiers,
+                    ),
+                ),
+            )
         return self
 
-    def mermaid(self) -> str:
-        parameters = ", ".join(parameter.mermaid() for parameter in self.parameters)
-        classifiers = "".join(value.value for value in self.classifiers)
-        return f"{self.visibility.value}{self.name}({parameters}) {self.return_type}{classifiers}"
 
-
-ModwireClassMember = ModwireClassAttribute | ModwireClassMethod
+ModwireClassMember = Annotated[ModwireClassAttribute | ModwireClassMethod, Field(discriminator="member_type")]
 
 
 class ModwireClass(ModwireDiagramContract):
     id: ModwireDiagramIdentifier
-    label: str
-    members: tuple[ModwireClassMember, ...]
-    annotations: tuple[str, ...]
-    namespace: str
-    generic_type: str
-    css_classes: tuple[str, ...]
+    label: ModwireText
+    members: tuple[ModwireClassMember, ...] = ()
+    annotations: tuple[ModwireSyntaxToken, ...] = ()
+    namespace: ModwireNamespaceReference = ""
+    generic_type: ModwireOptionalSyntaxToken = ""
+    css_classes: tuple[ModwireCssName, ...] = ()
 
     @model_validator(mode="after")
     def validate_class(self):
         _ClassSyntax.require_single_line(self.label, "Class label")
-        for annotation in self.annotations:
+        for index, annotation in enumerate(self.annotations):
             _ClassSyntax.require_single_line(annotation, "Class annotation")
             if "<<" in annotation or ">>" in annotation:
-                raise ValueError("Class annotations must not include angle delimiters")
+                raise contract_validation_error(
+                    type(self).__name__,
+                    (
+                        ModwireContractViolation(
+                            ("annotations", index),
+                            "invalid_configuration",
+                            "Class annotations must not include angle delimiters",
+                            annotation,
+                        ),
+                    ),
+                )
         if self.namespace:
             _ClassSyntax.require_single_line(self.namespace, "Class namespace")
         if self.generic_type:
             _ClassSyntax.require_single_line(self.generic_type, "Class generic type")
             if "," in self.generic_type:
-                raise ValueError("Mermaid generic types cannot contain commas")
+                raise contract_validation_error(
+                    type(self).__name__,
+                    (
+                        ModwireContractViolation(
+                            ("generic_type",),
+                            "invalid_configuration",
+                            "Mermaid generic types cannot contain commas",
+                            self.generic_type,
+                        ),
+                    ),
+                )
         for css_class in self.css_classes:
             _ClassSyntax.require_single_line(css_class, "CSS class")
         return self
@@ -131,12 +168,12 @@ class ModwireRelationshipLine(StrEnum):
 class ModwireClassRelationship(ModwireDiagramContract):
     source: ModwireDiagramIdentifier
     target: ModwireDiagramIdentifier
-    source_end: ModwireRelationshipEnd
-    line: ModwireRelationshipLine
-    target_end: ModwireRelationshipEnd
-    label: str
-    source_cardinality: str
-    target_cardinality: str
+    source_end: ModwireRelationshipEnd = ModwireRelationshipEnd.NONE
+    line: ModwireRelationshipLine = ModwireRelationshipLine.SOLID
+    target_end: ModwireRelationshipEnd = ModwireRelationshipEnd.NONE
+    label: ModwireOptionalText = ""
+    source_cardinality: ModwireOptionalText = ""
+    target_cardinality: ModwireOptionalText = ""
 
     @model_validator(mode="after")
     def validate_relationship(self):
@@ -146,21 +183,31 @@ class ModwireClassRelationship(ModwireDiagramContract):
             if cardinality:
                 _ClassSyntax.require_single_line(cardinality, "Relationship cardinality")
         if self.source_end is ModwireRelationshipEnd.LOLLIPOP and self.target_end is ModwireRelationshipEnd.LOLLIPOP:
-            raise ValueError("A lollipop relationship must contain exactly one interface end")
+            raise contract_validation_error(
+                type(self).__name__,
+                (
+                    ModwireContractViolation(
+                        ("target_end",),
+                        "invalid_configuration",
+                        "A lollipop relationship must contain exactly one interface end",
+                        self.target_end,
+                    ),
+                ),
+            )
         return self
-
-    def mermaid_arrow(self) -> str:
-        return f"{self.source_end.value}{self.line.value}{self.target_end.value}"
 
 
 class ModwireClassNote(ModwireDiagramContract):
-    class_id: str
-    text: str
+    class_id: ModwireDiagramReference = ""
+    text: ModwireMultilineText
 
     @model_validator(mode="after")
     def validate_note(self):
         if not self.text.strip():
-            raise ValueError("Class note cannot be blank")
+            raise contract_validation_error(
+                type(self).__name__,
+                (ModwireContractViolation(("text",), "text_blank", "Class note cannot be blank", self.text),),
+            )
         return self
 
 
@@ -177,21 +224,34 @@ class ModwireClassInteractionSyntax(StrEnum):
 class ModwireClassInteraction(ModwireDiagramContract):
     class_id: ModwireDiagramIdentifier
     kind: ModwireClassInteractionKind
-    reference: str
-    tooltip: str
-    syntax: ModwireClassInteractionSyntax
+    reference: ModwireText
+    tooltip: ModwireOptionalText = ""
+    syntax: ModwireClassInteractionSyntax = ModwireClassInteractionSyntax.ACTION
 
     @model_validator(mode="after")
     def validate_interaction(self):
         _ClassSyntax.require_single_line(self.reference, "Class interaction reference")
         if self.tooltip:
             _ClassSyntax.require_single_line(self.tooltip, "Class interaction tooltip")
+        pattern = MODWIRE_CALLBACK_PATTERN if self.kind is ModwireClassInteractionKind.CALLBACK else MODWIRE_URL_PATTERN
+        if re.fullmatch(pattern, self.reference) is None:
+            raise contract_validation_error(
+                type(self).__name__,
+                (
+                    ModwireContractViolation(
+                        ("reference",),
+                        "invalid_interaction_reference",
+                        "Interaction reference is invalid for its kind",
+                        self.reference,
+                    ),
+                ),
+            )
         return self
 
 
 class ModwireClassNamespace(ModwireDiagramContract):
-    id: str
-    label: str
+    id: ModwireNamespaceIdentifier
+    label: ModwireOptionalText = ""
 
     @model_validator(mode="after")
     def validate_namespace(self):
@@ -202,34 +262,36 @@ class ModwireClassNamespace(ModwireDiagramContract):
 
 
 class ModwireClassStyleProperty(ModwireDiagramContract):
-    name: str
-    value: str
+    name: ModwireStyleName
+    value: ModwireStyleValue
 
     @model_validator(mode="after")
     def validate_property(self):
         _ClassSyntax.require_single_line(self.name, "Style property name")
         _ClassSyntax.require_single_line(self.value, "Style property value")
-        if any(character in self.name for character in ":,;"):
-            raise ValueError("Style property names cannot contain separators")
         return self
-
-    def mermaid(self) -> str:
-        return f"{self.name}:{self.value}"
 
 
 class ModwireClassStyle(ModwireDiagramContract):
     class_id: ModwireDiagramIdentifier
-    properties: tuple[ModwireClassStyleProperty, ...]
+    properties: tuple[ModwireClassStyleProperty, ...] = ()
 
 
 class ModwireClassStyleDefinition(ModwireDiagramContract):
-    names: tuple[str, ...]
-    properties: tuple[ModwireClassStyleProperty, ...]
+    names: tuple[ModwireCssName, ...]
+    properties: tuple[ModwireClassStyleProperty, ...] = ()
 
     @model_validator(mode="after")
     def validate_definition(self):
         if not self.names:
-            raise ValueError("Style definition must have at least one name")
+            raise contract_validation_error(
+                type(self).__name__,
+                (
+                    ModwireContractViolation(
+                        ("names",), "missing_child", "Style definition must have at least one name", self.names
+                    ),
+                ),
+            )
         for name in self.names:
             _ClassSyntax.require_single_line(name, "Style definition name")
         return self
@@ -261,7 +323,7 @@ class ModwireClassDiagram(ModwireBaseDiagram):
     classes: tuple[ModwireClass, ...]
     relationships: tuple[ModwireClassRelationship, ...] = ()
     direction: ModwireClassDiagramDirection = ModwireClassDiagramDirection.TOP_BOTTOM
-    comments: tuple[str, ...] = ()
+    comments: tuple[ModwireText, ...] = ()
     notes: tuple[ModwireClassNote, ...] = ()
     interactions: tuple[ModwireClassInteraction, ...] = ()
     namespaces: tuple[ModwireClassNamespace, ...] = ()
@@ -275,27 +337,38 @@ class ModwireClassDiagram(ModwireBaseDiagram):
         identifiers = tuple(item.id for item in self.classes)
         self._require_children(self.classes, "Class diagram")
         self._validate_unique_children(identifiers, "Class diagram")
-        references: list[str] = []
+        references: list[tuple[tuple[str | int, ...], str]] = []
         lollipop_interfaces: list[str] = []
-        for relation in self.relationships:
+        for index, relation in enumerate(self.relationships):
             if relation.source_end is ModwireRelationshipEnd.LOLLIPOP:
                 lollipop_interfaces.append(relation.source)
             else:
-                references.append(relation.source)
+                references.append((("relationships", index, "source"), relation.source))
             if relation.target_end is ModwireRelationshipEnd.LOLLIPOP:
                 lollipop_interfaces.append(relation.target)
             else:
-                references.append(relation.target)
+                references.append((("relationships", index, "target"), relation.target))
         self._validate_unique_children(lollipop_interfaces, "Lollipop interface")
-        references.extend(note.class_id for note in self.notes if note.class_id)
-        references.extend(interaction.class_id for interaction in self.interactions)
-        references.extend(style.class_id for style in self.styles)
-        self._validate_child_references(identifiers, references, "Class relationship, note, or interaction")
+        references.extend(
+            (("notes", index, "class_id"), note.class_id) for index, note in enumerate(self.notes) if note.class_id
+        )
+        references.extend(
+            (("interactions", index, "class_id"), interaction.class_id)
+            for index, interaction in enumerate(self.interactions)
+        )
+        references.extend((("styles", index, "class_id"), style.class_id) for index, style in enumerate(self.styles))
+        self._validate_located_references(identifiers, references, "Class")
         namespace_ids = tuple(namespace.id for namespace in self.namespaces)
         self._validate_unique_children(namespace_ids, "Class namespace")
-        unknown_namespaces = {item.namespace for item in self.classes if item.namespace} - set(namespace_ids)
-        if unknown_namespaces:
-            raise ValueError(f"Classes reference unknown namespaces: {sorted(unknown_namespaces)}")
+        self._validate_located_references(
+            namespace_ids,
+            (
+                (("classes", index, "namespace"), item.namespace)
+                for index, item in enumerate(self.classes)
+                if item.namespace
+            ),
+            "Class namespace",
+        )
         style_names = tuple(name for item in self.style_definitions for name in item.names)
         self._validate_unique_children(style_names, "Class style definition")
         for comment in self.comments:

@@ -4,7 +4,7 @@ config:
     disableMulticolor: {{ diagram.disable_multicolor | lower }}
 ---
 timeline {{ diagram.direction.value }}
-{% if diagram.title %}  title {{ diagram.title }}
-{% endif %}{% for section in diagram.sections %}  section {{ section.name }}
-{% for period in section.periods %}    {{ period.name }} : {{ period.events | join(' : ') }}
+{% if diagram.title %}  title {{ diagram.title | mermaid_text }}
+{% endif %}{% for section in diagram.sections %}  section {{ section.name | mermaid_text }}
+{% for period in section.periods %}    {{ period.name | mermaid_text }} : {% for event in period.events %}{{ event | mermaid_text }}{% if not loop.last %} : {% endif %}{% endfor %}
 {% endfor %}{% endfor %}

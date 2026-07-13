@@ -16,8 +16,10 @@ from .contracts import (
 from .diagrams import Diagram, DiagramAdapter
 from .facade import ModwireMermaid
 from .registry import CompilerRegistry
+from .schema import DIAGRAM_SCHEMA_VERSION, diagram_json_schema
 
 __all__ = [
+    "DIAGRAM_SCHEMA_VERSION",
     "CompilerRegistrationError",
     "CompilerRegistry",
     "Diagram",
@@ -35,4 +37,5 @@ __all__ = [
     "ModwireMermaidFactory",
     "UnsupportedDiagramError",
     "__version__",
+    "diagram_json_schema",
 ]

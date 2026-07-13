@@ -5,16 +5,25 @@ from typing import Literal
 
 from pydantic import model_validator
 
-from ..contracts import DiagramBuildError, ModwireBaseDiagram, ModwireDiagramContract, ModwireSyntaxFeature
+from ..contracts import (
+    DiagramBuildError,
+    ModwireBaseDiagram,
+    ModwireContractViolation,
+    ModwireDiagramContract,
+    ModwireOptionalText,
+    ModwireSyntaxFeature,
+    ModwireText,
+    contract_validation_error,
+)
 
 
 class ModwireTimelinePeriod(ModwireDiagramContract):
-    name: str
-    events: tuple[str, ...]
+    name: ModwireText
+    events: tuple[ModwireText, ...]
 
 
 class ModwireTimelineSection(ModwireDiagramContract):
-    name: str
+    name: ModwireText
     periods: tuple[ModwireTimelinePeriod, ...]
 
 
@@ -38,17 +47,35 @@ class ModwireTimeline(ModwireBaseDiagram):
     )
 
     sections: tuple[ModwireTimelineSection, ...]
-    title: str = ""
+    title: ModwireOptionalText = ""
     direction: ModwireTimelineDirection = ModwireTimelineDirection.LEFT_RIGHT
     disable_multicolor: bool = False
 
     @model_validator(mode="after")
     def validate_timeline(self):
         self._require_children(self.sections, "Timeline")
-        if any(not section.periods for section in self.sections):
-            raise ValueError("Every timeline section must contain a period")
-        if any(not period.events for section in self.sections for period in section.periods):
-            raise ValueError("Every timeline period must contain an event")
+        violations = tuple(
+            ModwireContractViolation(
+                ("sections", index, "periods"),
+                "missing_child",
+                "Every timeline section must contain a period",
+                section.periods,
+            )
+            for index, section in enumerate(self.sections)
+            if not section.periods
+        ) + tuple(
+            ModwireContractViolation(
+                ("sections", section_index, "periods", period_index, "events"),
+                "missing_child",
+                "Every timeline period must contain an event",
+                period.events,
+            )
+            for section_index, section in enumerate(self.sections)
+            for period_index, period in enumerate(section.periods)
+            if not period.events
+        )
+        if violations:
+            raise contract_validation_error(type(self).__name__, violations)
         return self
 
 

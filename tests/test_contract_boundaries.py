@@ -25,6 +25,10 @@ from modwire_mermaid.timeline.diagram import ModwireTimeline
         ("state", ("ModwireStateDiagram", "ModwireStateCompiler")),
         ("swimlane", ("ModwireSwimlaneDiagram", "ModwireSwimlaneCompiler")),
         ("timeline", ("ModwireTimeline", "ModwireTimelineCompiler")),
+        ("event_modeling", ("ModwireEventModel", "ModwireEventModelCompiler")),
+        ("file_tree", ("ModwireFileTree", "ModwireFileTreeCompiler")),
+        ("mindmap", ("ModwireMindmap", "ModwireMindmapCompiler")),
+        ("user_journey", ("ModwireUserJourney", "ModwireUserJourneyCompiler")),
     ],
 )
 def test_feature_packages_do_not_publish_convenience_barrels(package, forbidden_names):

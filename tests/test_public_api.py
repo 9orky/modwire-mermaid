@@ -6,6 +6,7 @@ from modwire_mermaid.timeline.diagram import ModwireTimeline, ModwireTimelineBui
 
 def test_root_api_exposes_cross_cutting_v2_contracts():
     assert modwire_mermaid.__all__ == [
+        "DIAGRAM_SCHEMA_VERSION",
         "CompilerRegistrationError",
         "CompilerRegistry",
         "Diagram",
@@ -23,6 +24,7 @@ def test_root_api_exposes_cross_cutting_v2_contracts():
         "ModwireMermaidFactory",
         "UnsupportedDiagramError",
         "__version__",
+        "diagram_json_schema",
     ]
 
 

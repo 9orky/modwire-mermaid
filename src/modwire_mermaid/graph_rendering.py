@@ -18,7 +18,7 @@ class ModwireFlowchartRendering:
             return f"{node.id}@{{ shape: {node.shape.value}, label: {label} }}"
         if isinstance(node, ModwireFlowchartIconNode):
             values = [
-                f'icon: "{node.icon}"',
+                f"icon: {MermaidSyntax.quote(node.icon)}",
                 f"label: {MermaidSyntax.quote(node.label)}",
                 f'pos: "{node.position.value}"',
                 f"h: {node.height}",

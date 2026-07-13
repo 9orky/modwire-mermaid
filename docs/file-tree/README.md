@@ -1,7 +1,7 @@
 # File-tree diagrams
 
 ```python
-from modwire_mermaid.file_tree import ModwireFileTree
+from modwire_mermaid.file_tree.diagram import ModwireFileTree
 ```
 
 `ModwireFileTree` supports Mermaid `treeView-beta` files and directories, descriptions, comments,

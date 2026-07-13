@@ -5,9 +5,13 @@ from pydantic import model_validator
 
 from ..contracts import (
     ModwireBaseDiagram,
+    ModwireContractViolation,
     ModwireDiagramContract,
     ModwireDiagramIdentifier,
+    ModwireDiagramReference,
+    ModwireOptionalText,
     ModwireSyntaxFeature,
+    contract_validation_error,
 )
 
 
@@ -33,19 +37,19 @@ class ModwireEventDataType(StrEnum):
 
 class ModwireEventDataBlock(ModwireDiagramContract):
     id: ModwireDiagramIdentifier
-    data_type: ModwireEventDataType
-    data: str
+    data_type: ModwireEventDataType = ModwireEventDataType.NONE
+    data: ModwireOptionalText = ""
 
 
 class ModwireEventTimeframe(ModwireDiagramContract):
     id: ModwireDiagramIdentifier
     entity_type: ModwireEventEntityType
-    entity: str
-    is_reset: bool
-    data_type: ModwireEventDataType
-    data: str
-    data_block_id: str
-    relations: tuple[ModwireDiagramIdentifier, ...]
+    entity: ModwireOptionalText = ""
+    is_reset: bool = False
+    data_type: ModwireEventDataType = ModwireEventDataType.NONE
+    data: ModwireOptionalText = ""
+    data_block_id: ModwireDiagramReference = ""
+    relations: tuple[ModwireDiagramIdentifier, ...] = ()
 
 
 class ModwireEventModel(ModwireBaseDiagram):
@@ -78,16 +82,36 @@ class ModwireEventModel(ModwireBaseDiagram):
         self._require_children(self.timeframes, "Event model")
         ids = tuple(item.id for item in self.timeframes)
         self._validate_unique_children(ids, "Event model")
-        self._validate_child_references(
-            ids, (value for item in self.timeframes for value in item.relations), "Event-model relation"
+        self._validate_located_references(
+            ids,
+            (
+                (("timeframes", timeframe_index, "relations", relation_index), relation)
+                for timeframe_index, item in enumerate(self.timeframes)
+                for relation_index, relation in enumerate(item.relations)
+            ),
+            "Event-model relation",
         )
         block_ids = tuple(item.id for item in self.data_blocks)
         self._validate_unique_children(block_ids, "Event-model data blocks")
-        self._validate_child_references(
+        self._validate_located_references(
             block_ids,
-            (item.data_block_id for item in self.timeframes if item.data_block_id),
+            (
+                (("timeframes", index, "data_block_id"), item.data_block_id)
+                for index, item in enumerate(self.timeframes)
+                if item.data_block_id
+            ),
             "Event-model data block",
         )
-        if any(item.data and item.data_block_id for item in self.timeframes):
-            raise ValueError("Event-model timeframes cannot use inline data and a data block together")
+        violations = tuple(
+            ModwireContractViolation(
+                ("timeframes", index, "data_block_id"),
+                "invalid_configuration",
+                "A timeframe cannot use inline data and a data block together",
+                item.data_block_id,
+            )
+            for index, item in enumerate(self.timeframes)
+            if item.data and item.data_block_id
+        )
+        if violations:
+            raise contract_validation_error(type(self).__name__, violations)
         return self

@@ -9,12 +9,12 @@ from modwire_mermaid.architecture.diagram import (
 )
 from modwire_mermaid.architecture.template import ModwireArchitectureTemplate
 from modwire_mermaid.contracts import ModwireDiagramDirection
-from modwire_mermaid.event_modeling import (
+from modwire_mermaid.event_modeling.compiler import ModwireEventModelCompiler
+from modwire_mermaid.event_modeling.diagram import (
     ModwireEventDataBlock,
     ModwireEventDataType,
     ModwireEventEntityType,
     ModwireEventModel,
-    ModwireEventModelCompiler,
     ModwireEventTimeframe,
 )
 from modwire_mermaid.event_modeling.template import ModwireEventModelTemplate
@@ -39,9 +39,9 @@ from modwire_mermaid.timeline.diagram import (
     ModwireTimelineSection,
 )
 from modwire_mermaid.timeline.template import ModwireTimelineTemplate
-from modwire_mermaid.user_journey import (
+from modwire_mermaid.user_journey.compiler import ModwireUserJourneyCompiler
+from modwire_mermaid.user_journey.diagram import (
     ModwireUserJourney,
-    ModwireUserJourneyCompiler,
     ModwireUserJourneySection,
     ModwireUserJourneyTask,
 )
@@ -126,7 +126,7 @@ def test_state_supports_composites_notes_accessibility_and_styles():
                 children=(child,),
                 transitions=(ModwireStateTransition(source="[*]", target="Idle", label="start"),),
                 concurrent_regions=(),
-                direction="LR",
+                direction=ModwireDiagramDirection.LEFT_RIGHT,
             ),
         ),
         transitions=(ModwireStateTransition(source="[*]", target="Active", label=""),),
