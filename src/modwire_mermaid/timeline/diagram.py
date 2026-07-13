@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from dataclasses import dataclass
 from enum import StrEnum
 from typing import Literal
 
@@ -79,18 +80,12 @@ class ModwireTimeline(ModwireBaseDiagram):
         return self
 
 
+@dataclass(frozen=True, slots=True)
 class ModwireTimelineBuilder:
-    def __init__(
-        self,
-        title: str,
-        sections: tuple[ModwireTimelineSection, ...],
-        direction: ModwireTimelineDirection,
-        disable_multicolor: bool,
-    ):
-        self._title = title
-        self._sections = sections
-        self._direction = direction
-        self._disable_multicolor = disable_multicolor
+    _title: str
+    _sections: tuple[ModwireTimelineSection, ...]
+    _direction: ModwireTimelineDirection
+    _disable_multicolor: bool
 
     @classmethod
     def create(
