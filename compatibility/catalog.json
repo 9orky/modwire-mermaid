@@ -1,0 +1,1022 @@
+[
+  {
+    "claims": [
+      "services"
+    ],
+    "compiler": "modwire_mermaid.composition.ModwireMermaidFactory.standard",
+    "docs_url": "https://mermaid.js.org/syntax/architecture.html",
+    "id": "architecture.minimal",
+    "kind": "architecture",
+    "profile": "minimal",
+    "render_required": false,
+    "source": "compatibility/snapshots/source/architecture.minimal.mmd",
+    "syntax_features": [
+      {
+        "docs_slug": "edges",
+        "evidence_test": "test_architecture_supports_junctions_and_group_edges"
+      },
+      {
+        "docs_slug": "groups",
+        "evidence_test": "test_architecture_supports_junctions_and_group_edges"
+      },
+      {
+        "docs_slug": "junctions",
+        "evidence_test": "test_architecture_supports_junctions_and_group_edges"
+      },
+      {
+        "docs_slug": "services",
+        "evidence_test": "test_architecture_supports_junctions_and_group_edges"
+      }
+    ]
+  },
+  {
+    "claims": [
+      "groups",
+      "junctions",
+      "edges",
+      "icons",
+      "title"
+    ],
+    "compiler": "modwire_mermaid.composition.ModwireMermaidFactory.standard",
+    "docs_url": "https://mermaid.js.org/syntax/architecture.html",
+    "id": "architecture.comprehensive",
+    "kind": "architecture",
+    "profile": "comprehensive",
+    "render_required": true,
+    "source": "compatibility/snapshots/source/architecture.comprehensive.mmd",
+    "syntax_features": [
+      {
+        "docs_slug": "edges",
+        "evidence_test": "test_architecture_supports_junctions_and_group_edges"
+      },
+      {
+        "docs_slug": "groups",
+        "evidence_test": "test_architecture_supports_junctions_and_group_edges"
+      },
+      {
+        "docs_slug": "junctions",
+        "evidence_test": "test_architecture_supports_junctions_and_group_edges"
+      },
+      {
+        "docs_slug": "services",
+        "evidence_test": "test_architecture_supports_junctions_and_group_edges"
+      }
+    ]
+  },
+  {
+    "claims": [
+      "class"
+    ],
+    "compiler": "modwire_mermaid.composition.ModwireMermaidFactory.standard",
+    "docs_url": "https://mermaid.js.org/syntax/classDiagram.html",
+    "id": "class.minimal",
+    "kind": "class",
+    "profile": "minimal",
+    "render_required": false,
+    "source": "compatibility/snapshots/source/class.minimal.mmd",
+    "syntax_features": [
+      {
+        "docs_slug": "annotations-on-classes",
+        "evidence_test": "test_class_diagram_covers_rich_mermaid_syntax"
+      },
+      {
+        "docs_slug": "class",
+        "evidence_test": "test_class_diagram_covers_rich_mermaid_syntax"
+      },
+      {
+        "docs_slug": "comments",
+        "evidence_test": "test_class_diagram_covers_rich_mermaid_syntax"
+      },
+      {
+        "docs_slug": "define-a-class",
+        "evidence_test": "test_class_diagram_covers_rich_mermaid_syntax"
+      },
+      {
+        "docs_slug": "define-namespace",
+        "evidence_test": "test_class_diagram_covers_rich_mermaid_syntax"
+      },
+      {
+        "docs_slug": "defining-members-of-a-class",
+        "evidence_test": "test_class_diagram_covers_rich_mermaid_syntax"
+      },
+      {
+        "docs_slug": "defining-relationship",
+        "evidence_test": "test_class_diagram_covers_rich_mermaid_syntax"
+      },
+      {
+        "docs_slug": "interaction",
+        "evidence_test": "test_class_diagram_covers_rich_mermaid_syntax"
+      },
+      {
+        "docs_slug": "setting-the-direction-of-the-diagram",
+        "evidence_test": "test_class_diagram_covers_rich_mermaid_syntax"
+      },
+      {
+        "docs_slug": "styling",
+        "evidence_test": "test_class_diagram_covers_rich_mermaid_syntax"
+      }
+    ]
+  },
+  {
+    "claims": [
+      "members",
+      "namespaces",
+      "relationships",
+      "notes",
+      "interactions",
+      "styles",
+      "config"
+    ],
+    "compiler": "modwire_mermaid.composition.ModwireMermaidFactory.standard",
+    "docs_url": "https://mermaid.js.org/syntax/classDiagram.html",
+    "id": "class.comprehensive",
+    "kind": "class",
+    "profile": "comprehensive",
+    "render_required": true,
+    "source": "compatibility/snapshots/source/class.comprehensive.mmd",
+    "syntax_features": [
+      {
+        "docs_slug": "annotations-on-classes",
+        "evidence_test": "test_class_diagram_covers_rich_mermaid_syntax"
+      },
+      {
+        "docs_slug": "class",
+        "evidence_test": "test_class_diagram_covers_rich_mermaid_syntax"
+      },
+      {
+        "docs_slug": "comments",
+        "evidence_test": "test_class_diagram_covers_rich_mermaid_syntax"
+      },
+      {
+        "docs_slug": "define-a-class",
+        "evidence_test": "test_class_diagram_covers_rich_mermaid_syntax"
+      },
+      {
+        "docs_slug": "define-namespace",
+        "evidence_test": "test_class_diagram_covers_rich_mermaid_syntax"
+      },
+      {
+        "docs_slug": "defining-members-of-a-class",
+        "evidence_test": "test_class_diagram_covers_rich_mermaid_syntax"
+      },
+      {
+        "docs_slug": "defining-relationship",
+        "evidence_test": "test_class_diagram_covers_rich_mermaid_syntax"
+      },
+      {
+        "docs_slug": "interaction",
+        "evidence_test": "test_class_diagram_covers_rich_mermaid_syntax"
+      },
+      {
+        "docs_slug": "setting-the-direction-of-the-diagram",
+        "evidence_test": "test_class_diagram_covers_rich_mermaid_syntax"
+      },
+      {
+        "docs_slug": "styling",
+        "evidence_test": "test_class_diagram_covers_rich_mermaid_syntax"
+      }
+    ]
+  },
+  {
+    "claims": [
+      "entity-types"
+    ],
+    "compiler": "modwire_mermaid.composition.ModwireMermaidFactory.standard",
+    "docs_url": "https://mermaid.js.org/syntax/eventmodeling.html",
+    "id": "event-modeling.minimal",
+    "kind": "event-modeling",
+    "profile": "minimal",
+    "render_required": false,
+    "source": "compatibility/snapshots/source/event-modeling.minimal.mmd",
+    "syntax_features": [
+      {
+        "docs_slug": "data-block",
+        "evidence_test": "test_event_modeling_supports_reset_relations_and_typed_data_blocks"
+      },
+      {
+        "docs_slug": "data-block-data-types",
+        "evidence_test": "test_event_modeling_supports_reset_relations_and_typed_data_blocks"
+      },
+      {
+        "docs_slug": "entity-types",
+        "evidence_test": "test_event_modeling_supports_reset_relations_and_typed_data_blocks"
+      },
+      {
+        "docs_slug": "inline-data",
+        "evidence_test": "test_event_modeling_supports_reset_relations_and_typed_data_blocks"
+      },
+      {
+        "docs_slug": "multiple-relations",
+        "evidence_test": "test_event_modeling_supports_reset_relations_and_typed_data_blocks"
+      },
+      {
+        "docs_slug": "resetting-the-flow",
+        "evidence_test": "test_event_modeling_supports_reset_relations_and_typed_data_blocks"
+      },
+      {
+        "docs_slug": "swimlanes-and-namespaces",
+        "evidence_test": "test_event_modeling_supports_reset_relations_and_typed_data_blocks"
+      },
+      {
+        "docs_slug": "timeline",
+        "evidence_test": "test_event_modeling_supports_reset_relations_and_typed_data_blocks"
+      }
+    ]
+  },
+  {
+    "claims": [
+      "reset",
+      "relations",
+      "inline-data",
+      "data-block",
+      "namespaces"
+    ],
+    "compiler": "modwire_mermaid.composition.ModwireMermaidFactory.standard",
+    "docs_url": "https://mermaid.js.org/syntax/eventmodeling.html",
+    "id": "event-modeling.comprehensive",
+    "kind": "event-modeling",
+    "profile": "comprehensive",
+    "render_required": true,
+    "source": "compatibility/snapshots/source/event-modeling.comprehensive.mmd",
+    "syntax_features": [
+      {
+        "docs_slug": "data-block",
+        "evidence_test": "test_event_modeling_supports_reset_relations_and_typed_data_blocks"
+      },
+      {
+        "docs_slug": "data-block-data-types",
+        "evidence_test": "test_event_modeling_supports_reset_relations_and_typed_data_blocks"
+      },
+      {
+        "docs_slug": "entity-types",
+        "evidence_test": "test_event_modeling_supports_reset_relations_and_typed_data_blocks"
+      },
+      {
+        "docs_slug": "inline-data",
+        "evidence_test": "test_event_modeling_supports_reset_relations_and_typed_data_blocks"
+      },
+      {
+        "docs_slug": "multiple-relations",
+        "evidence_test": "test_event_modeling_supports_reset_relations_and_typed_data_blocks"
+      },
+      {
+        "docs_slug": "resetting-the-flow",
+        "evidence_test": "test_event_modeling_supports_reset_relations_and_typed_data_blocks"
+      },
+      {
+        "docs_slug": "swimlanes-and-namespaces",
+        "evidence_test": "test_event_modeling_supports_reset_relations_and_typed_data_blocks"
+      },
+      {
+        "docs_slug": "timeline",
+        "evidence_test": "test_event_modeling_supports_reset_relations_and_typed_data_blocks"
+      }
+    ]
+  },
+  {
+    "claims": [
+      "syntax"
+    ],
+    "compiler": "modwire_mermaid.composition.ModwireMermaidFactory.standard",
+    "docs_url": "https://mermaid.js.org/syntax/treeView.html",
+    "id": "file-tree.minimal",
+    "kind": "file-tree",
+    "profile": "minimal",
+    "render_required": false,
+    "source": "compatibility/snapshots/source/file-tree.minimal.mmd",
+    "syntax_features": [
+      {
+        "docs_slug": "config-variables",
+        "evidence_test": "test_file_tree_builds_safe_sorted_tree"
+      },
+      {
+        "docs_slug": "icons",
+        "evidence_test": "test_file_tree_builds_safe_sorted_tree"
+      },
+      {
+        "docs_slug": "syntax",
+        "evidence_test": "test_file_tree_builds_safe_sorted_tree"
+      },
+      {
+        "docs_slug": "theme-variables",
+        "evidence_test": "test_file_tree_builds_safe_sorted_tree"
+      }
+    ]
+  },
+  {
+    "claims": [
+      "recursive",
+      "icons",
+      "classes",
+      "config",
+      "unicode"
+    ],
+    "compiler": "modwire_mermaid.composition.ModwireMermaidFactory.standard",
+    "docs_url": "https://mermaid.js.org/syntax/treeView.html",
+    "id": "file-tree.comprehensive",
+    "kind": "file-tree",
+    "profile": "comprehensive",
+    "render_required": true,
+    "source": "compatibility/snapshots/source/file-tree.comprehensive.mmd",
+    "syntax_features": [
+      {
+        "docs_slug": "config-variables",
+        "evidence_test": "test_file_tree_builds_safe_sorted_tree"
+      },
+      {
+        "docs_slug": "icons",
+        "evidence_test": "test_file_tree_builds_safe_sorted_tree"
+      },
+      {
+        "docs_slug": "syntax",
+        "evidence_test": "test_file_tree_builds_safe_sorted_tree"
+      },
+      {
+        "docs_slug": "theme-variables",
+        "evidence_test": "test_file_tree_builds_safe_sorted_tree"
+      }
+    ]
+  },
+  {
+    "claims": [
+      "nodes"
+    ],
+    "compiler": "modwire_mermaid.composition.ModwireMermaidFactory.standard",
+    "docs_url": "https://mermaid.js.org/syntax/flowchart.html",
+    "id": "flowchart.minimal",
+    "kind": "flowchart",
+    "profile": "minimal",
+    "render_required": false,
+    "source": "compatibility/snapshots/source/flowchart.minimal.mmd",
+    "syntax_features": [
+      {
+        "docs_slug": "comments",
+        "evidence_test": "test_flowchart_covers_rich_mermaid_syntax"
+      },
+      {
+        "docs_slug": "direction",
+        "evidence_test": "test_flowchart_covers_rich_mermaid_syntax"
+      },
+      {
+        "docs_slug": "interaction",
+        "evidence_test": "test_flowchart_covers_rich_mermaid_syntax"
+      },
+      {
+        "docs_slug": "links-between-nodes",
+        "evidence_test": "test_flowchart_covers_rich_mermaid_syntax"
+      },
+      {
+        "docs_slug": "node-shapes",
+        "evidence_test": "test_flowchart_covers_rich_mermaid_syntax"
+      },
+      {
+        "docs_slug": "special-shapes-in-mermaid-flowcharts-v1130",
+        "evidence_test": "test_flowchart_covers_rich_mermaid_syntax"
+      },
+      {
+        "docs_slug": "styling-and-classes",
+        "evidence_test": "test_flowchart_covers_rich_mermaid_syntax"
+      },
+      {
+        "docs_slug": "subgraphs",
+        "evidence_test": "test_flowchart_covers_rich_mermaid_syntax"
+      }
+    ]
+  },
+  {
+    "claims": [
+      "shapes",
+      "icons",
+      "images",
+      "markdown",
+      "edges",
+      "subgraphs",
+      "interactions",
+      "styles"
+    ],
+    "compiler": "modwire_mermaid.composition.ModwireMermaidFactory.standard",
+    "docs_url": "https://mermaid.js.org/syntax/flowchart.html",
+    "id": "flowchart.comprehensive",
+    "kind": "flowchart",
+    "profile": "comprehensive",
+    "render_required": true,
+    "source": "compatibility/snapshots/source/flowchart.comprehensive.mmd",
+    "syntax_features": [
+      {
+        "docs_slug": "comments",
+        "evidence_test": "test_flowchart_covers_rich_mermaid_syntax"
+      },
+      {
+        "docs_slug": "direction",
+        "evidence_test": "test_flowchart_covers_rich_mermaid_syntax"
+      },
+      {
+        "docs_slug": "interaction",
+        "evidence_test": "test_flowchart_covers_rich_mermaid_syntax"
+      },
+      {
+        "docs_slug": "links-between-nodes",
+        "evidence_test": "test_flowchart_covers_rich_mermaid_syntax"
+      },
+      {
+        "docs_slug": "node-shapes",
+        "evidence_test": "test_flowchart_covers_rich_mermaid_syntax"
+      },
+      {
+        "docs_slug": "special-shapes-in-mermaid-flowcharts-v1130",
+        "evidence_test": "test_flowchart_covers_rich_mermaid_syntax"
+      },
+      {
+        "docs_slug": "styling-and-classes",
+        "evidence_test": "test_flowchart_covers_rich_mermaid_syntax"
+      },
+      {
+        "docs_slug": "subgraphs",
+        "evidence_test": "test_flowchart_covers_rich_mermaid_syntax"
+      }
+    ]
+  },
+  {
+    "claims": [
+      "syntax"
+    ],
+    "compiler": "modwire_mermaid.composition.ModwireMermaidFactory.standard",
+    "docs_url": "https://mermaid.js.org/syntax/mindmap.html",
+    "id": "mindmap.minimal",
+    "kind": "mindmap",
+    "profile": "minimal",
+    "render_required": false,
+    "source": "compatibility/snapshots/source/mindmap.minimal.mmd",
+    "syntax_features": [
+      {
+        "docs_slug": "classes",
+        "evidence_test": "test_mindmap_covers_all_documented_shapes_icons_classes_markdown_and_layout"
+      },
+      {
+        "docs_slug": "different-shapes",
+        "evidence_test": "test_mindmap_covers_all_documented_shapes_icons_classes_markdown_and_layout"
+      },
+      {
+        "docs_slug": "icons",
+        "evidence_test": "test_mindmap_covers_all_documented_shapes_icons_classes_markdown_and_layout"
+      },
+      {
+        "docs_slug": "markdown-strings",
+        "evidence_test": "test_mindmap_covers_all_documented_shapes_icons_classes_markdown_and_layout"
+      },
+      {
+        "docs_slug": "syntax",
+        "evidence_test": "test_mindmap_covers_all_documented_shapes_icons_classes_markdown_and_layout"
+      }
+    ]
+  },
+  {
+    "claims": [
+      "shapes",
+      "markdown",
+      "icons",
+      "classes",
+      "layout",
+      "unicode"
+    ],
+    "compiler": "modwire_mermaid.composition.ModwireMermaidFactory.standard",
+    "docs_url": "https://mermaid.js.org/syntax/mindmap.html",
+    "id": "mindmap.comprehensive",
+    "kind": "mindmap",
+    "profile": "comprehensive",
+    "render_required": true,
+    "source": "compatibility/snapshots/source/mindmap.comprehensive.mmd",
+    "syntax_features": [
+      {
+        "docs_slug": "classes",
+        "evidence_test": "test_mindmap_covers_all_documented_shapes_icons_classes_markdown_and_layout"
+      },
+      {
+        "docs_slug": "different-shapes",
+        "evidence_test": "test_mindmap_covers_all_documented_shapes_icons_classes_markdown_and_layout"
+      },
+      {
+        "docs_slug": "icons",
+        "evidence_test": "test_mindmap_covers_all_documented_shapes_icons_classes_markdown_and_layout"
+      },
+      {
+        "docs_slug": "markdown-strings",
+        "evidence_test": "test_mindmap_covers_all_documented_shapes_icons_classes_markdown_and_layout"
+      },
+      {
+        "docs_slug": "syntax",
+        "evidence_test": "test_mindmap_covers_all_documented_shapes_icons_classes_markdown_and_layout"
+      }
+    ]
+  },
+  {
+    "claims": [
+      "participants",
+      "messages"
+    ],
+    "compiler": "modwire_mermaid.composition.ModwireMermaidFactory.standard",
+    "docs_url": "https://mermaid.js.org/syntax/sequenceDiagram.html",
+    "id": "sequence.minimal",
+    "kind": "sequence",
+    "profile": "minimal",
+    "render_required": false,
+    "source": "compatibility/snapshots/source/sequence.minimal.mmd",
+    "syntax_features": [
+      {
+        "docs_slug": "activations",
+        "evidence_test": "test_sequence_supports_links_notes_and_control_blocks"
+      },
+      {
+        "docs_slug": "actors",
+        "evidence_test": "test_sequence_supports_links_notes_and_control_blocks"
+      },
+      {
+        "docs_slug": "alt",
+        "evidence_test": "test_sequence_supports_links_notes_and_control_blocks"
+      },
+      {
+        "docs_slug": "background-highlighting",
+        "evidence_test": "test_sequence_supports_links_notes_and_control_blocks"
+      },
+      {
+        "docs_slug": "break",
+        "evidence_test": "test_sequence_supports_links_notes_and_control_blocks"
+      },
+      {
+        "docs_slug": "comments",
+        "evidence_test": "test_sequence_supports_links_notes_and_control_blocks"
+      },
+      {
+        "docs_slug": "critical-region",
+        "evidence_test": "test_sequence_supports_links_notes_and_control_blocks"
+      },
+      {
+        "docs_slug": "entity-codes-to-escape-characters",
+        "evidence_test": "test_sequence_supports_links_notes_and_control_blocks"
+      },
+      {
+        "docs_slug": "grouping--box",
+        "evidence_test": "test_sequence_supports_links_notes_and_control_blocks"
+      },
+      {
+        "docs_slug": "loops",
+        "evidence_test": "test_sequence_supports_links_notes_and_control_blocks"
+      },
+      {
+        "docs_slug": "messages",
+        "evidence_test": "test_sequence_supports_links_notes_and_control_blocks"
+      },
+      {
+        "docs_slug": "notes",
+        "evidence_test": "test_sequence_supports_links_notes_and_control_blocks"
+      },
+      {
+        "docs_slug": "parallel",
+        "evidence_test": "test_sequence_supports_links_notes_and_control_blocks"
+      },
+      {
+        "docs_slug": "participants",
+        "evidence_test": "test_sequence_supports_links_notes_and_control_blocks"
+      }
+    ]
+  },
+  {
+    "claims": [
+      "participant-kinds",
+      "arrows",
+      "activation",
+      "notes",
+      "links",
+      "blocks",
+      "autonumber"
+    ],
+    "compiler": "modwire_mermaid.composition.ModwireMermaidFactory.standard",
+    "docs_url": "https://mermaid.js.org/syntax/sequenceDiagram.html",
+    "id": "sequence.comprehensive",
+    "kind": "sequence",
+    "profile": "comprehensive",
+    "render_required": true,
+    "source": "compatibility/snapshots/source/sequence.comprehensive.mmd",
+    "syntax_features": [
+      {
+        "docs_slug": "activations",
+        "evidence_test": "test_sequence_supports_links_notes_and_control_blocks"
+      },
+      {
+        "docs_slug": "actors",
+        "evidence_test": "test_sequence_supports_links_notes_and_control_blocks"
+      },
+      {
+        "docs_slug": "alt",
+        "evidence_test": "test_sequence_supports_links_notes_and_control_blocks"
+      },
+      {
+        "docs_slug": "background-highlighting",
+        "evidence_test": "test_sequence_supports_links_notes_and_control_blocks"
+      },
+      {
+        "docs_slug": "break",
+        "evidence_test": "test_sequence_supports_links_notes_and_control_blocks"
+      },
+      {
+        "docs_slug": "comments",
+        "evidence_test": "test_sequence_supports_links_notes_and_control_blocks"
+      },
+      {
+        "docs_slug": "critical-region",
+        "evidence_test": "test_sequence_supports_links_notes_and_control_blocks"
+      },
+      {
+        "docs_slug": "entity-codes-to-escape-characters",
+        "evidence_test": "test_sequence_supports_links_notes_and_control_blocks"
+      },
+      {
+        "docs_slug": "grouping--box",
+        "evidence_test": "test_sequence_supports_links_notes_and_control_blocks"
+      },
+      {
+        "docs_slug": "loops",
+        "evidence_test": "test_sequence_supports_links_notes_and_control_blocks"
+      },
+      {
+        "docs_slug": "messages",
+        "evidence_test": "test_sequence_supports_links_notes_and_control_blocks"
+      },
+      {
+        "docs_slug": "notes",
+        "evidence_test": "test_sequence_supports_links_notes_and_control_blocks"
+      },
+      {
+        "docs_slug": "parallel",
+        "evidence_test": "test_sequence_supports_links_notes_and_control_blocks"
+      },
+      {
+        "docs_slug": "participants",
+        "evidence_test": "test_sequence_supports_links_notes_and_control_blocks"
+      }
+    ]
+  },
+  {
+    "claims": [
+      "states",
+      "transitions"
+    ],
+    "compiler": "modwire_mermaid.composition.ModwireMermaidFactory.standard",
+    "docs_url": "https://mermaid.js.org/syntax/stateDiagram.html",
+    "id": "state.minimal",
+    "kind": "state",
+    "profile": "minimal",
+    "render_required": false,
+    "source": "compatibility/snapshots/source/state.minimal.mmd",
+    "syntax_features": [
+      {
+        "docs_slug": "choice",
+        "evidence_test": "test_state_supports_composites_notes_accessibility_and_styles"
+      },
+      {
+        "docs_slug": "comments",
+        "evidence_test": "test_state_supports_composites_notes_accessibility_and_styles"
+      },
+      {
+        "docs_slug": "composite-states",
+        "evidence_test": "test_state_supports_composites_notes_accessibility_and_styles"
+      },
+      {
+        "docs_slug": "concurrency",
+        "evidence_test": "test_state_supports_composites_notes_accessibility_and_styles"
+      },
+      {
+        "docs_slug": "forks",
+        "evidence_test": "test_state_supports_composites_notes_accessibility_and_styles"
+      },
+      {
+        "docs_slug": "notes",
+        "evidence_test": "test_state_supports_composites_notes_accessibility_and_styles"
+      },
+      {
+        "docs_slug": "setting-the-direction-of-the-diagram",
+        "evidence_test": "test_state_supports_composites_notes_accessibility_and_styles"
+      },
+      {
+        "docs_slug": "start-and-end",
+        "evidence_test": "test_state_supports_composites_notes_accessibility_and_styles"
+      },
+      {
+        "docs_slug": "states",
+        "evidence_test": "test_state_supports_composites_notes_accessibility_and_styles"
+      },
+      {
+        "docs_slug": "styling-with-classdefs",
+        "evidence_test": "test_state_supports_composites_notes_accessibility_and_styles"
+      },
+      {
+        "docs_slug": "transitions",
+        "evidence_test": "test_state_supports_composites_notes_accessibility_and_styles"
+      }
+    ]
+  },
+  {
+    "claims": [
+      "composite",
+      "choice",
+      "fork",
+      "join",
+      "concurrency",
+      "notes",
+      "styles",
+      "accessibility"
+    ],
+    "compiler": "modwire_mermaid.composition.ModwireMermaidFactory.standard",
+    "docs_url": "https://mermaid.js.org/syntax/stateDiagram.html",
+    "id": "state.comprehensive",
+    "kind": "state",
+    "profile": "comprehensive",
+    "render_required": true,
+    "source": "compatibility/snapshots/source/state.comprehensive.mmd",
+    "syntax_features": [
+      {
+        "docs_slug": "choice",
+        "evidence_test": "test_state_supports_composites_notes_accessibility_and_styles"
+      },
+      {
+        "docs_slug": "comments",
+        "evidence_test": "test_state_supports_composites_notes_accessibility_and_styles"
+      },
+      {
+        "docs_slug": "composite-states",
+        "evidence_test": "test_state_supports_composites_notes_accessibility_and_styles"
+      },
+      {
+        "docs_slug": "concurrency",
+        "evidence_test": "test_state_supports_composites_notes_accessibility_and_styles"
+      },
+      {
+        "docs_slug": "forks",
+        "evidence_test": "test_state_supports_composites_notes_accessibility_and_styles"
+      },
+      {
+        "docs_slug": "notes",
+        "evidence_test": "test_state_supports_composites_notes_accessibility_and_styles"
+      },
+      {
+        "docs_slug": "setting-the-direction-of-the-diagram",
+        "evidence_test": "test_state_supports_composites_notes_accessibility_and_styles"
+      },
+      {
+        "docs_slug": "start-and-end",
+        "evidence_test": "test_state_supports_composites_notes_accessibility_and_styles"
+      },
+      {
+        "docs_slug": "states",
+        "evidence_test": "test_state_supports_composites_notes_accessibility_and_styles"
+      },
+      {
+        "docs_slug": "styling-with-classdefs",
+        "evidence_test": "test_state_supports_composites_notes_accessibility_and_styles"
+      },
+      {
+        "docs_slug": "transitions",
+        "evidence_test": "test_state_supports_composites_notes_accessibility_and_styles"
+      }
+    ]
+  },
+  {
+    "claims": [
+      "lanes",
+      "nodes"
+    ],
+    "compiler": "modwire_mermaid.composition.ModwireMermaidFactory.standard",
+    "docs_url": "https://mermaid.js.org/syntax/swimlanes.html",
+    "id": "swimlane.minimal",
+    "kind": "swimlane",
+    "profile": "minimal",
+    "render_required": true,
+    "source": "compatibility/snapshots/source/swimlane.minimal.mmd",
+    "syntax_features": [
+      {
+        "docs_slug": "accessibility",
+        "evidence_test": "test_swimlane_reuses_full_flowchart_node_and_edge_rendering"
+      },
+      {
+        "docs_slug": "edges",
+        "evidence_test": "test_swimlane_reuses_full_flowchart_node_and_edge_rendering"
+      },
+      {
+        "docs_slug": "lanes",
+        "evidence_test": "test_swimlane_reuses_full_flowchart_node_and_edge_rendering"
+      },
+      {
+        "docs_slug": "nodes",
+        "evidence_test": "test_swimlane_reuses_full_flowchart_node_and_edge_rendering"
+      }
+    ]
+  },
+  {
+    "claims": [
+      "flowchart-reuse",
+      "icons",
+      "images",
+      "markdown",
+      "edges",
+      "interactions",
+      "styles",
+      "accessibility"
+    ],
+    "compiler": "modwire_mermaid.composition.ModwireMermaidFactory.standard",
+    "docs_url": "https://mermaid.js.org/syntax/swimlanes.html",
+    "id": "swimlane.comprehensive",
+    "kind": "swimlane",
+    "profile": "comprehensive",
+    "render_required": true,
+    "source": "compatibility/snapshots/source/swimlane.comprehensive.mmd",
+    "syntax_features": [
+      {
+        "docs_slug": "accessibility",
+        "evidence_test": "test_swimlane_reuses_full_flowchart_node_and_edge_rendering"
+      },
+      {
+        "docs_slug": "edges",
+        "evidence_test": "test_swimlane_reuses_full_flowchart_node_and_edge_rendering"
+      },
+      {
+        "docs_slug": "lanes",
+        "evidence_test": "test_swimlane_reuses_full_flowchart_node_and_edge_rendering"
+      },
+      {
+        "docs_slug": "nodes",
+        "evidence_test": "test_swimlane_reuses_full_flowchart_node_and_edge_rendering"
+      }
+    ]
+  },
+  {
+    "claims": [
+      "sections",
+      "periods"
+    ],
+    "compiler": "modwire_mermaid.composition.ModwireMermaidFactory.standard",
+    "docs_url": "https://mermaid.js.org/syntax/timeline.html",
+    "id": "timeline.minimal",
+    "kind": "timeline",
+    "profile": "minimal",
+    "render_required": false,
+    "source": "compatibility/snapshots/source/timeline.minimal.mmd",
+    "syntax_features": [
+      {
+        "docs_slug": "direction-v11140",
+        "evidence_test": "test_timeline_compiles_sections_direction_and_configuration"
+      },
+      {
+        "docs_slug": "grouping-of-time-periods-in-sectionsages",
+        "evidence_test": "test_timeline_compiles_sections_direction_and_configuration"
+      },
+      {
+        "docs_slug": "styling-of-time-periods-and-events",
+        "evidence_test": "test_timeline_compiles_sections_direction_and_configuration"
+      },
+      {
+        "docs_slug": "syntax",
+        "evidence_test": "test_timeline_compiles_sections_direction_and_configuration"
+      }
+    ]
+  },
+  {
+    "claims": [
+      "title",
+      "directions",
+      "events",
+      "config",
+      "unicode"
+    ],
+    "compiler": "modwire_mermaid.composition.ModwireMermaidFactory.standard",
+    "docs_url": "https://mermaid.js.org/syntax/timeline.html",
+    "id": "timeline.comprehensive",
+    "kind": "timeline",
+    "profile": "comprehensive",
+    "render_required": true,
+    "source": "compatibility/snapshots/source/timeline.comprehensive.mmd",
+    "syntax_features": [
+      {
+        "docs_slug": "direction-v11140",
+        "evidence_test": "test_timeline_compiles_sections_direction_and_configuration"
+      },
+      {
+        "docs_slug": "grouping-of-time-periods-in-sectionsages",
+        "evidence_test": "test_timeline_compiles_sections_direction_and_configuration"
+      },
+      {
+        "docs_slug": "styling-of-time-periods-and-events",
+        "evidence_test": "test_timeline_compiles_sections_direction_and_configuration"
+      },
+      {
+        "docs_slug": "syntax",
+        "evidence_test": "test_timeline_compiles_sections_direction_and_configuration"
+      }
+    ]
+  },
+  {
+    "claims": [
+      "syntax"
+    ],
+    "compiler": "modwire_mermaid.composition.ModwireMermaidFactory.standard",
+    "docs_url": "https://mermaid.js.org/syntax/userJourney.html",
+    "id": "user-journey.minimal",
+    "kind": "user-journey",
+    "profile": "minimal",
+    "render_required": false,
+    "source": "compatibility/snapshots/source/user-journey.minimal.mmd",
+    "syntax_features": [
+      {
+        "docs_slug": "syntax",
+        "evidence_test": "test_user_journey_compiles_sections_scores_and_actors"
+      }
+    ]
+  },
+  {
+    "claims": [
+      "sections",
+      "scores",
+      "actors",
+      "unicode"
+    ],
+    "compiler": "modwire_mermaid.composition.ModwireMermaidFactory.standard",
+    "docs_url": "https://mermaid.js.org/syntax/userJourney.html",
+    "id": "user-journey.comprehensive",
+    "kind": "user-journey",
+    "profile": "comprehensive",
+    "render_required": true,
+    "source": "compatibility/snapshots/source/user-journey.comprehensive.mmd",
+    "syntax_features": [
+      {
+        "docs_slug": "syntax",
+        "evidence_test": "test_user_journey_compiles_sections_scores_and_actors"
+      }
+    ]
+  },
+  {
+    "claims": [
+      "recursive-depth",
+      "multiline",
+      "unicode"
+    ],
+    "compiler": "modwire_mermaid.composition.ModwireMermaidFactory.standard",
+    "docs_url": "https://mermaid.js.org/syntax/mindmap.html",
+    "id": "mindmap.focused-recursive-unicode",
+    "kind": "mindmap",
+    "profile": "focused",
+    "render_required": true,
+    "source": "compatibility/snapshots/source/mindmap.focused-recursive-unicode.mmd",
+    "syntax_features": [
+      {
+        "docs_slug": "classes",
+        "evidence_test": "test_mindmap_covers_all_documented_shapes_icons_classes_markdown_and_layout"
+      },
+      {
+        "docs_slug": "different-shapes",
+        "evidence_test": "test_mindmap_covers_all_documented_shapes_icons_classes_markdown_and_layout"
+      },
+      {
+        "docs_slug": "icons",
+        "evidence_test": "test_mindmap_covers_all_documented_shapes_icons_classes_markdown_and_layout"
+      },
+      {
+        "docs_slug": "markdown-strings",
+        "evidence_test": "test_mindmap_covers_all_documented_shapes_icons_classes_markdown_and_layout"
+      },
+      {
+        "docs_slug": "syntax",
+        "evidence_test": "test_mindmap_covers_all_documented_shapes_icons_classes_markdown_and_layout"
+      }
+    ]
+  },
+  {
+    "claims": [
+      "beta",
+      "flowchart-reuse"
+    ],
+    "compiler": "modwire_mermaid.composition.ModwireMermaidFactory.standard",
+    "docs_url": "https://mermaid.js.org/syntax/swimlanes.html",
+    "id": "swimlane.focused-flowchart-reuse",
+    "kind": "swimlane",
+    "profile": "focused",
+    "render_required": true,
+    "source": "compatibility/snapshots/source/swimlane.focused-flowchart-reuse.mmd",
+    "syntax_features": [
+      {
+        "docs_slug": "accessibility",
+        "evidence_test": "test_swimlane_reuses_full_flowchart_node_and_edge_rendering"
+      },
+      {
+        "docs_slug": "edges",
+        "evidence_test": "test_swimlane_reuses_full_flowchart_node_and_edge_rendering"
+      },
+      {
+        "docs_slug": "lanes",
+        "evidence_test": "test_swimlane_reuses_full_flowchart_node_and_edge_rendering"
+      },
+      {
+        "docs_slug": "nodes",
+        "evidence_test": "test_swimlane_reuses_full_flowchart_node_and_edge_rendering"
+      }
+    ]
+  }
+]

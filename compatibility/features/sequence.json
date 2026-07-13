@@ -1,0 +1,33 @@
+[
+  {
+    "evidence": [
+      "sequence.minimal",
+      "sequence.comprehensive"
+    ],
+    "reason": "Emitted by the typed model and exercised by the corpus.",
+    "slug": "participants-messages-arrow-types",
+    "status": "supported"
+  },
+  {
+    "evidence": [
+      "sequence.comprehensive"
+    ],
+    "reason": "Emitted by the typed model and exercised by the corpus.",
+    "slug": "activation-lifecycle-notes-links-boxes-rects-blocks",
+    "status": "supported"
+  },
+  {
+    "evidence": [
+      "sequence.comprehensive"
+    ],
+    "reason": "Emitted by the typed model and exercised by the corpus.",
+    "slug": "boolean-autonumber",
+    "status": "supported"
+  },
+  {
+    "evidence": [],
+    "reason": "Only the boolean autonumber directive is modeled.",
+    "slug": "autonumber-start-and-increment",
+    "status": "unsupported"
+  }
+]

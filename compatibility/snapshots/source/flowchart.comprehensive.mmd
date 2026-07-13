@@ -1,0 +1,25 @@
+---
+config:
+  markdownAutoWrap: true
+  flowchart:
+    curve: linear
+---
+flowchart TB
+    %% icons images markdown interactions styles
+    start@{ shape: circle, label: "`**Start**`" }
+    decision@{ shape: diam, label: "Ready?" }
+    subgraph process["Process"]
+        direction TB
+        icon@{ icon: "fa:fa-user", label: "User", pos: "b", h: 48, form: "circle" }
+        image@{ img: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciLz4=", label: "Image", pos: "b", w: 80, h: 60, constraint: "on" }
+    end
+    start e0@--->|"go"| icon
+    icon e1@o-.-> image
+    image e2@==> decision
+    e1@{ animate: true, animation: fast }
+    e2@{ curve: basis }
+    click start href "https://example.test" "Open" _blank
+    style decision fill:#ffd
+    linkStyle 0 stroke:blue;
+    classDef primary color:#111;
+    class start primary;

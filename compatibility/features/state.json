@@ -1,0 +1,27 @@
+[
+  {
+    "evidence": [
+      "state.minimal",
+      "state.comprehensive"
+    ],
+    "reason": "Emitted by the typed model and exercised by the corpus.",
+    "slug": "states-transitions-start-end",
+    "status": "supported"
+  },
+  {
+    "evidence": [
+      "state.comprehensive"
+    ],
+    "reason": "Emitted by the typed model and exercised by the corpus.",
+    "slug": "choice-fork-join-composites-concurrency-direction",
+    "status": "supported"
+  },
+  {
+    "evidence": [
+      "state.comprehensive"
+    ],
+    "reason": "Emitted by the typed model and exercised by the corpus.",
+    "slug": "notes-styles-accessibility",
+    "status": "supported"
+  }
+]

@@ -4,3 +4,5 @@
 __pycache__/
 *.py[cod]
 dist/
+.compatibility-artifacts/
+compatibility/toolchains/*/node_modules/

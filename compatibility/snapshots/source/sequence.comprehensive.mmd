@@ -1,0 +1,35 @@
+sequenceDiagram
+  title Protocol
+  autonumber
+  %% all arrows and blocks
+  box rgb(240,240,240) Users
+  actor client as Client 猫
+  end
+  box System
+  participant api as API
+  end
+  participant docs as Documentation
+  participant boundary@{ "type": "boundary" } as Boundary
+  participant control@{ "type": "control" } as Control
+  participant entity@{ "type": "entity" } as Entity
+  participant database@{ "type": "database" } as Database
+  participant collections@{ "type": "collections" } as Collections
+  participant queue@{ "type": "queue" } as Queue
+  links docs: { "docs": "https://example.test/docs" }
+  client->>api: SOLID
+  client-->>api: DOTTED
+  client->api: SOLID_OPEN
+  client-->api: DOTTED_OPEN
+  client-xapi: SOLID_CROSS
+  client--xapi: DOTTED_CROSS
+  client-)api: SOLID_ASYNC
+  client--)api: DOTTED_ASYNC
+  activate api
+  Note over client,api: Shared note
+  rect rgba(200,200,255,0.3)
+    alt Valid
+      api->>client: OK
+    else Invalid
+      api->>client: Error
+    end
+  end

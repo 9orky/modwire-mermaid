@@ -1,0 +1,36 @@
+[
+  {
+    "evidence": [
+      "flowchart.comprehensive"
+    ],
+    "reason": "Emitted by the typed model and exercised by the corpus.",
+    "slug": "nodes-shapes-icons-images-markdown",
+    "status": "supported"
+  },
+  {
+    "evidence": [
+      "flowchart.comprehensive"
+    ],
+    "reason": "Emitted by the typed model and exercised by the corpus.",
+    "slug": "edges-animation-curves-subgraphs-interactions-styles",
+    "status": "supported"
+  },
+  {
+    "evidence": [],
+    "reason": "Typed direction and curves exist; arbitrary init config does not.",
+    "slug": "diagram-configuration",
+    "status": "partial"
+  },
+  {
+    "evidence": [],
+    "reason": "Flowchart accessibility directives are not exposed.",
+    "slug": "accessibility",
+    "status": "unsupported"
+  },
+  {
+    "evidence": [],
+    "reason": "One canonical typed edge form is emitted.",
+    "slug": "alternate-link-authoring",
+    "status": "unsupported"
+  }
+]

@@ -1,0 +1,29 @@
+---
+config:
+  treeView:
+    rowIndent: 10
+    paddingX: 5
+    paddingY: 5
+    lineThickness: 1
+    showIcons: true
+    defaultIconPack: "fa"
+    filenameIcons:
+      "README.md": "fa:book"
+    extensionIcons:
+      "py": "fa:python"
+  themeVariables:
+    treeView:
+      labelFontSize: "16px"
+      labelColor: "#223344"
+      lineColor: "#778899"
+      iconColor: "currentColor"
+      descriptionColor: "currentColor"
+      highlightBg: "transparent"
+      highlightStroke: "currentColor"
+---
+treeView-beta
+    %% deterministic tree
+    "project"/ icon(folder) :::root
+        "src"/
+            "猫.py" icon(python) ## Unicode module
+        "README.md" ## Guide

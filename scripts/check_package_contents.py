@@ -31,6 +31,18 @@ REQUIRED_PACKAGE_PATHS = {
         )
     ),
 }
+REQUIRED_SDIST_PATHS = {
+    Path(".node-version"),
+    Path("compatibility/catalog.json"),
+    Path("compatibility/runner.mjs"),
+    Path("compatibility/toolchains/minimum/package-lock.json"),
+    Path("compatibility/toolchains/latest-11/package-lock.json"),
+    Path("compatibility/snapshots/source/architecture.minimal.mmd"),
+    Path("compatibility/snapshots/source/swimlane.comprehensive.mmd"),
+    Path("docs/architecture/compatibility.md"),
+    Path("docs/swimlanes/compatibility.md"),
+    Path("scripts/generate_compatibility.py"),
+}
 
 
 def _wheel_paths(path: Path) -> set[Path]:
@@ -51,6 +63,24 @@ def _assert_contents(kind: str, paths: set[Path]) -> None:
     if missing:
         formatted = "\n".join(f"- {path}" for path in missing)
         raise SystemExit(f"{kind} is missing required package content:\n{formatted}")
+    if kind == "sdist":
+        missing_sdist = sorted(REQUIRED_SDIST_PATHS - paths)
+        if missing_sdist:
+            formatted = "\n".join(f"- {path}" for path in missing_sdist)
+            raise SystemExit(f"sdist is missing compatibility evidence:\n{formatted}")
+    if kind == "wheel":
+        unexpected = sorted(path for path in paths if path.parts[:1] in {("compatibility",), ("docs",), ("scripts",)})
+        if unexpected:
+            formatted = "\n".join(f"- {path}" for path in unexpected)
+            raise SystemExit(f"wheel contains repository-only compatibility evidence:\n{formatted}")
+    forbidden = sorted(
+        path
+        for path in paths
+        if "node_modules" in path.parts or path.suffix == ".svg" or ".compatibility-artifacts" in path.parts
+    )
+    if forbidden:
+        formatted = "\n".join(f"- {path}" for path in forbidden)
+        raise SystemExit(f"{kind} contains forbidden generated runtime artifacts:\n{formatted}")
 
 
 def main() -> None:

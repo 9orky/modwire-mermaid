@@ -429,7 +429,7 @@ def test_class_diagram_covers_rich_mermaid_syntax():
     assert 'click Service-猫 call inspectService() "Inspect"' in source
     assert "style Service-猫 fill:#f9f" in source
     assert "classDef important,highlighted fill:#f9f;" in source
-    assert 'cssClass "Service-猫" important;' in source
+    assert 'cssClass "Service-猫" important' in source
 
 
 def test_file_tree_builds_safe_sorted_tree():

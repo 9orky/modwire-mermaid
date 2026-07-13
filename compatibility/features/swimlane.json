@@ -1,0 +1,25 @@
+[
+  {
+    "evidence": [
+      "swimlane.minimal",
+      "swimlane.comprehensive"
+    ],
+    "reason": "Emitted by the typed model and exercised by the corpus.",
+    "slug": "lanes-cross-lane-edges",
+    "status": "supported"
+  },
+  {
+    "evidence": [
+      "swimlane.focused-flowchart-reuse"
+    ],
+    "reason": "Emitted by the typed model and exercised by the corpus.",
+    "slug": "flowchart-nodes-icons-images-markdown-styles-interactions",
+    "status": "supported"
+  },
+  {
+    "evidence": [],
+    "reason": "Mermaid documents swimlane syntax as experimental/beta in 11.16.0.",
+    "slug": "stability",
+    "status": "partial"
+  }
+]
