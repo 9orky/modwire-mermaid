@@ -1,7 +1,7 @@
 # Timeline diagrams
 
 ```python
-from modwire_mermaid.timeline import ModwireTimeline
+from modwire_mermaid.timeline.diagram import ModwireTimeline
 ```
 
 `ModwireTimeline` supports titles, ordered sections, periods with multiple events, LR and TD direction,
@@ -11,7 +11,7 @@ For progressive construction, `ModwireTimelineBuilder` keeps intermediate state 
 the same validated contract:
 
 ```python
-from modwire_mermaid.timeline import ModwireTimelineBuilder
+from modwire_mermaid.timeline.diagram import ModwireTimelineBuilder
 
 diagram = (
     ModwireTimelineBuilder.create("Release history")

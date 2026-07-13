@@ -12,7 +12,7 @@ from modwire_mermaid import (
     ModwireMermaid,
     UnsupportedDiagramError,
 )
-from modwire_mermaid.timeline import ModwireTimeline, ModwireTimelinePeriod, ModwireTimelineSection
+from modwire_mermaid.timeline.diagram import ModwireTimeline, ModwireTimelinePeriod, ModwireTimelineSection
 
 
 class ExtensionDiagram(ModwireBaseDiagram):
@@ -84,4 +84,4 @@ def test_diagrams_have_stable_discriminants_round_trip_and_concise_defaults():
     assert DiagramAdapter.validate_json(DiagramAdapter.dump_json(diagram)) == diagram
     schema = DiagramAdapter.json_schema()
     assert schema["discriminator"]["propertyName"] == "kind"
-    assert diagram.title is None and diagram.disable_multicolor is False
+    assert diagram.title == "" and diagram.disable_multicolor is False

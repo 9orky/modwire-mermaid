@@ -92,8 +92,8 @@ class ModwireStateDiagram(ModwireBaseDiagram):
     notes: tuple[ModwireStateNote, ...] = ()
     style_definitions: tuple[ModwireStateStyleDefinition, ...] = ()
     style_assignments: tuple[ModwireStateStyleAssignment, ...] = ()
-    accessibility_title: str | None = None
-    accessibility_description: str | None = None
+    accessibility_title: str = ""
+    accessibility_description: str = ""
 
     @model_validator(mode="after")
     def validate_states(self):

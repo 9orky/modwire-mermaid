@@ -2,16 +2,16 @@ from typing import Annotated
 
 from pydantic import Field, TypeAdapter
 
-from .architecture import ModwireArchitectureDiagram
-from .class_diagram import ModwireClassDiagram
+from .architecture.diagram import ModwireArchitectureDiagram
+from .class_diagram.diagram import ModwireClassDiagram
 from .event_modeling import ModwireEventModel
 from .file_tree import ModwireFileTree
-from .flowchart import ModwireFlowchart
+from .graph import ModwireFlowchart
 from .mindmap import ModwireMindmap
-from .sequence import ModwireSequenceDiagram
-from .state import ModwireStateDiagram
-from .swimlane import ModwireSwimlaneDiagram
-from .timeline import ModwireTimeline
+from .sequence.diagram import ModwireSequenceDiagram
+from .state.diagram import ModwireStateDiagram
+from .swimlane.diagram import ModwireSwimlaneDiagram
+from .timeline.diagram import ModwireTimeline
 from .user_journey import ModwireUserJourney
 
 Diagram = Annotated[

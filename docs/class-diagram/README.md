@@ -1,7 +1,7 @@
 # Class diagrams
 
 ```python
-from modwire_mermaid.class_diagram import ModwireClassDiagram
+from modwire_mermaid.class_diagram.diagram import ModwireClassDiagram
 ```
 
 `ModwireClassDiagram` supports typed attributes and methods, namespaces, annotations, relationships,

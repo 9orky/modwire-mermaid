@@ -39,7 +39,7 @@ Create a diagram with one of the feature builders, then compile it with the stan
 
 ```python
 from modwire_mermaid import ModwireMermaidFactory
-from modwire_mermaid.timeline import ModwireTimelineBuilder
+from modwire_mermaid.timeline.diagram import ModwireTimelineBuilder
 
 diagram = (
     ModwireTimelineBuilder.create("Release history")
@@ -104,7 +104,7 @@ Source: [`compile_timeline.py`](examples/compile_timeline.py). This file is exec
 
 ```python
 from modwire_mermaid import ModwireMermaidFactory
-from modwire_mermaid.timeline import ModwireTimelineBuilder
+from modwire_mermaid.timeline.diagram import ModwireTimelineBuilder
 
 diagram = (
     ModwireTimelineBuilder.create("Release history")

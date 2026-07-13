@@ -38,7 +38,7 @@ class ModwireTimeline(ModwireBaseDiagram):
     )
 
     sections: tuple[ModwireTimelineSection, ...]
-    title: str | None = None
+    title: str = ""
     direction: ModwireTimelineDirection = ModwireTimelineDirection.LEFT_RIGHT
     disable_multicolor: bool = False
 

@@ -6,6 +6,7 @@ from typing import Annotated, ClassVar, Protocol, TypeVar, runtime_checkable
 from pydantic import BaseModel, ConfigDict, StringConstraints
 
 ModwireDiagramIdentifier = Annotated[str, StringConstraints(pattern=r"^[\w-]+$")]
+ModwireDiagramReference = Annotated[str, StringConstraints(pattern=r"^$|^[\w-]+$")]
 NonBlankSingleLine = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, pattern=r"^[^\r\n]+$")]
 
 

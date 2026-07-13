@@ -159,7 +159,7 @@ class ModwireSequenceDiagram(ModwireBaseDiagram):
     participants: tuple[ModwireSequenceParticipant, ...]
     statements: tuple[ModwireSequenceStatement, ...] = ()
     autonumber: bool = False
-    title: str | None = None
+    title: str = ""
     comments: tuple[str, ...] = ()
 
     @model_validator(mode="after")

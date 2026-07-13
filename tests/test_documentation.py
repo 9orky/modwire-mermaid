@@ -1,14 +1,14 @@
-from modwire_mermaid.architecture import ModwireArchitectureDiagram
-from modwire_mermaid.class_diagram import ModwireClassDiagram
+from modwire_mermaid.architecture.diagram import ModwireArchitectureDiagram
+from modwire_mermaid.class_diagram.diagram import ModwireClassDiagram
 from modwire_mermaid.documentation import MermaidDocumentationOutlineParser
 from modwire_mermaid.event_modeling import ModwireEventModel
 from modwire_mermaid.file_tree import ModwireFileTree
-from modwire_mermaid.flowchart import ModwireFlowchart
+from modwire_mermaid.graph import ModwireFlowchart
 from modwire_mermaid.mindmap import ModwireMindmap
-from modwire_mermaid.sequence import ModwireSequenceDiagram
-from modwire_mermaid.state import ModwireStateDiagram
-from modwire_mermaid.swimlane import ModwireSwimlaneDiagram
-from modwire_mermaid.timeline import ModwireTimeline
+from modwire_mermaid.sequence.diagram import ModwireSequenceDiagram
+from modwire_mermaid.state.diagram import ModwireStateDiagram
+from modwire_mermaid.swimlane.diagram import ModwireSwimlaneDiagram
+from modwire_mermaid.timeline.diagram import ModwireTimeline
 from modwire_mermaid.user_journey import ModwireUserJourney
 
 DIAGRAM_TYPES = (

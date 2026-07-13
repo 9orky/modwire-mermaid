@@ -3,7 +3,13 @@ from typing import Literal
 
 from pydantic import model_validator
 
-from ..contracts import ModwireBaseDiagram, ModwireDiagramContract, ModwireDiagramIdentifier, ModwireSyntaxFeature
+from ..contracts import (
+    ModwireBaseDiagram,
+    ModwireDiagramContract,
+    ModwireDiagramIdentifier,
+    ModwireDiagramReference,
+    ModwireSyntaxFeature,
+)
 
 
 class ModwireArchitectureSide(StrEnum):
@@ -15,21 +21,21 @@ class ModwireArchitectureSide(StrEnum):
 
 class ModwireArchitectureGroup(ModwireDiagramContract):
     id: ModwireDiagramIdentifier
-    icon: str | None = None
-    label: str | None = None
-    parent_id: ModwireDiagramIdentifier | None = None
+    icon: str = ""
+    label: str = ""
+    parent_id: ModwireDiagramReference = ""
 
 
 class ModwireArchitectureService(ModwireDiagramContract):
     id: ModwireDiagramIdentifier
-    icon: str | None = None
-    label: str | None = None
-    group_id: ModwireDiagramIdentifier | None = None
+    icon: str = ""
+    label: str = ""
+    group_id: ModwireDiagramReference = ""
 
 
 class ModwireArchitectureJunction(ModwireDiagramContract):
     id: ModwireDiagramIdentifier
-    group_id: ModwireDiagramIdentifier | None = None
+    group_id: ModwireDiagramReference = ""
 
 
 class ModwireArchitectureEdge(ModwireDiagramContract):
@@ -56,7 +62,7 @@ class ModwireArchitectureDiagram(ModwireBaseDiagram):
     groups: tuple[ModwireArchitectureGroup, ...] = ()
     junctions: tuple[ModwireArchitectureJunction, ...] = ()
     edges: tuple[ModwireArchitectureEdge, ...] = ()
-    title: str | None = None
+    title: str = ""
 
     @model_validator(mode="after")
     def validate_architecture(self):
@@ -85,8 +91,8 @@ class ModwireArchitectureDiagram(ModwireBaseDiagram):
         parents = {item.id: item.parent_id for item in self.groups}
         for group_id in group_ids:
             visited: set[str] = set()
-            current: str | None = group_id
-            while current is not None:
+            current = group_id
+            while current:
                 if current in visited:
                     raise ValueError(f"Architecture group hierarchy contains a cycle at {current!r}")
                 visited.add(current)

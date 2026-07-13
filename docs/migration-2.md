@@ -5,11 +5,11 @@ There are no deprecated aliases or legacy constructor adapters.
 
 | Version 1 | Version 2 |
 | --- | --- |
-| `modwire_mermaid.<feature>.diagram` imports | Import contracts from `modwire_mermaid.<feature>` |
+| Feature-package barrel imports | Import contracts from `modwire_mermaid.<feature>.diagram` and compilers from `.compiler` |
 | `ModwireDiagramError` for mixed concerns | Pydantic `ValidationError` for models; typed operational errors |
 | ABC compiler/registry hierarchy | Structural `DiagramCompiler[T]` plus immutable `CompilerRegistry` |
 | Reconstruct internal standard composition | `standard_registry()` and persistent registry operations |
-| Empty strings for absent references/config | `None` for absence and typed defaults for ordinary configuration |
+| Nullable strings and references | Non-null strings with concise empty defaults for omitted text and references |
 | Undiscriminated top-level models | Literal `kind` fields and the public `DiagramAdapter` |
 | Flowchart-owned swimlane primitives | Shared graph contracts and rendering foundation |
 
@@ -24,6 +24,7 @@ overridden = extended.replace(ReplacementCompiler())
 `with_compiler()` rejects duplicates, `replace()` requires an existing exact diagram type, and
 `without()` requires a registered type. Existing registry objects never mutate.
 
-Model payloads must include `kind` when validated through `DiagramAdapter`. Feature package exports are
-the supported diagram import paths. Generated Mermaid remains deterministic, but v2 does not promise
+Model payloads must include `kind` when validated through `DiagramAdapter`. Explicit `diagram` and
+`compiler` modules are the supported feature import paths; shared flowchart graph contracts live in
+`modwire_mermaid.graph`. Generated Mermaid remains deterministic, but v2 does not promise
 byte identity with v1 where stronger validation or canonical rendering requires a change.

@@ -1,7 +1,7 @@
 # Swimlane diagrams
 
 ```python
-from modwire_mermaid.swimlane import ModwireSwimlaneDiagram
+from modwire_mermaid.swimlane.diagram import ModwireSwimlaneDiagram
 ```
 
 `ModwireSwimlaneDiagram` supports Mermaid `swimlane-beta`, all directions, stable lane and node IDs,

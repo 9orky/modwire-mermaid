@@ -1,7 +1,7 @@
 # Sequence diagrams
 
 ```python
-from modwire_mermaid.sequence import ModwireSequenceDiagram
+from modwire_mermaid.sequence.diagram import ModwireSequenceDiagram
 ```
 
 `ModwireSequenceDiagram` supports ordered actors and participants, every Mermaid message arrow,

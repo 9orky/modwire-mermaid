@@ -1,7 +1,7 @@
 # Flowcharts
 
 ```python
-from modwire_mermaid.flowchart import ModwireFlowchart
+from modwire_mermaid.graph import ModwireFlowchart
 ```
 
 `ModwireFlowchart` supports the expanded shape catalog, icon and image nodes, nested subgraphs,

@@ -1,17 +1,1 @@
-from .compiler import ModwireTimelineCompiler
-from .diagram import (
-    ModwireTimeline,
-    ModwireTimelineBuilder,
-    ModwireTimelineDirection,
-    ModwireTimelinePeriod,
-    ModwireTimelineSection,
-)
-
-__all__ = [
-    "ModwireTimeline",
-    "ModwireTimelineBuilder",
-    "ModwireTimelineCompiler",
-    "ModwireTimelineDirection",
-    "ModwireTimelinePeriod",
-    "ModwireTimelineSection",
-]
+"""Diagram feature package; import contracts from diagram and rendering types from compiler or template."""

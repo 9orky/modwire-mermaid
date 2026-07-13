@@ -2,7 +2,7 @@ import pytest
 from pydantic import ValidationError
 
 from modwire_mermaid import DiagramBuildError
-from modwire_mermaid.timeline import (
+from modwire_mermaid.timeline.diagram import (
     ModwireTimelineBuilder,
 )
 

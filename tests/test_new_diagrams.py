@@ -1,5 +1,5 @@
-from modwire_mermaid.architecture import (
-    ModwireArchitectureCompiler,
+from modwire_mermaid.architecture.compiler import ModwireArchitectureCompiler
+from modwire_mermaid.architecture.diagram import (
     ModwireArchitectureDiagram,
     ModwireArchitectureEdge,
     ModwireArchitectureGroup,
@@ -18,9 +18,9 @@ from modwire_mermaid.event_modeling import (
     ModwireEventTimeframe,
 )
 from modwire_mermaid.event_modeling.template import ModwireEventModelTemplate
-from modwire_mermaid.state import (
+from modwire_mermaid.state.compiler import ModwireStateCompiler
+from modwire_mermaid.state.diagram import (
     ModwireState,
-    ModwireStateCompiler,
     ModwireStateDiagram,
     ModwireStateKind,
     ModwireStateNote,
@@ -31,9 +31,9 @@ from modwire_mermaid.state import (
     ModwireStateTransition,
 )
 from modwire_mermaid.state.template import ModwireStateTemplate
-from modwire_mermaid.timeline import (
+from modwire_mermaid.timeline.compiler import ModwireTimelineCompiler
+from modwire_mermaid.timeline.diagram import (
     ModwireTimeline,
-    ModwireTimelineCompiler,
     ModwireTimelineDirection,
     ModwireTimelinePeriod,
     ModwireTimelineSection,

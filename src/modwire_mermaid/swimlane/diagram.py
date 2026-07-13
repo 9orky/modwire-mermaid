@@ -43,8 +43,8 @@ class ModwireSwimlaneDiagram(ModwireBaseDiagram):
     lanes: tuple[ModwireSwimlane, ...]
     edges: tuple[ModwireFlowchartEdge, ...] = ()
     direction: ModwireDiagramDirection = ModwireDiagramDirection.TOP_BOTTOM
-    accessibility_title: str | None = None
-    accessibility_description: str | None = None
+    accessibility_title: str = ""
+    accessibility_description: str = ""
     interactions: tuple[ModwireFlowchartInteraction, ...] = ()
     node_styles: tuple[ModwireFlowchartNodeStyle, ...] = ()
     link_styles: tuple[ModwireFlowchartLinkStyle, ...] = ()
