@@ -25,16 +25,20 @@ const puppeteerPackage = JSON.parse(readFileSync(join(toolchain, "node_modules",
 const catalog = JSON.parse(readFileSync(join(root, "compatibility", "catalog.json"), "utf8"));
 const artifacts = join(root, ".compatibility-artifacts", lane);
 mkdirSync(artifacts, { recursive: true });
+const browserArgs = process.env.CI === "true" ? ["--no-sandbox", "--disable-setuid-sandbox"] : [];
+const puppeteerConfig = join(artifacts, "puppeteer-config.json");
+writeFileSync(puppeteerConfig, `${JSON.stringify({ args: browserArgs }, null, 2)}\n`);
 const diagnostics = {
   lane,
   node: process.version,
   mermaid: mermaidPackage.version,
   cli: cliPackage.version,
   puppeteer: puppeteerPackage.version,
+  browserSandbox: browserArgs.length === 0 ? "default" : "disabled-ci-runner",
   cases: [],
 };
 
-const browser = await puppeteer.launch({ headless: true });
+const browser = await puppeteer.launch({ headless: true, args: browserArgs });
 diagnostics.browser = await browser.version();
 const page = await browser.newPage();
 await page.setContent("<!doctype html><html><body></body></html>");
@@ -50,10 +54,14 @@ for (const fixture of catalog) {
     result.parsed = true;
     if (fixture.render_required) {
       const output = join(artifacts, `${fixture.id}.svg`);
-      execFileSync(process.execPath, [cliEntry, "-i", join(root, fixture.source), "-o", output], {
-        encoding: "utf8",
-        stdio: "pipe",
-      });
+      execFileSync(
+        process.execPath,
+        [cliEntry, "-p", puppeteerConfig, "-i", join(root, fixture.source), "-o", output],
+        {
+          encoding: "utf8",
+          stdio: "pipe",
+        },
+      );
       result.rendered = true;
       result.artifact = output.slice(root.length + 1);
     }

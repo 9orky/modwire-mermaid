@@ -60,5 +60,14 @@ def test_invalid_cases_have_stable_diagnostics() -> None:
 
 def test_mermaid_cli_uses_the_exact_runner_node_runtime() -> None:
     runner = (ROOT / "compatibility" / "runner.mjs").read_text()
-    assert "execFileSync(process.execPath, [cliEntry" in runner
+    assert "execFileSync(" in runner
+    assert "process.execPath," in runner
     assert 'node_modules", ".bin", "mmdc"' not in runner
+
+
+def test_browser_sandbox_is_disabled_only_on_ci_and_shared_with_mermaid_cli() -> None:
+    runner = (ROOT / "compatibility" / "runner.mjs").read_text()
+    assert 'process.env.CI === "true"' in runner
+    assert '["--no-sandbox", "--disable-setuid-sandbox"]' in runner
+    assert '[cliEntry, "-p", puppeteerConfig' in runner
+    assert 'browserSandbox: browserArgs.length === 0 ? "default" : "disabled-ci-runner"' in runner
