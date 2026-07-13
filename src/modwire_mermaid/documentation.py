@@ -16,7 +16,7 @@ class MermaidDocumentationOutlineParser(HTMLParser):
         attributes = dict(attrs)
         if tag == "nav" and attributes.get("aria-labelledby") == "doc-outline-aria-label":
             self._in_outline = True
-        elif self._in_outline and tag == "a" and attributes.get("href", "").startswith("#"):
+        elif self._in_outline and tag == "a" and (attributes.get("href") or "").startswith("#"):
             self._in_outline_link = True
             self._outline_text = []
         if tag in {"h2", "h3"} and attributes.get("id"):

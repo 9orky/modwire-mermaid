@@ -1,0 +1,3052 @@
+{
+  "$defs": {
+    "ModwireArchitectureDiagram": {
+      "additionalProperties": false,
+      "properties": {
+        "edges": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireArchitectureEdge"
+          },
+          "title": "Edges",
+          "type": "array"
+        },
+        "groups": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireArchitectureGroup"
+          },
+          "title": "Groups",
+          "type": "array"
+        },
+        "junctions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireArchitectureJunction"
+          },
+          "title": "Junctions",
+          "type": "array"
+        },
+        "kind": {
+          "const": "architecture",
+          "default": "architecture",
+          "title": "Kind",
+          "type": "string"
+        },
+        "services": {
+          "items": {
+            "$ref": "#/$defs/ModwireArchitectureService"
+          },
+          "title": "Services",
+          "type": "array"
+        },
+        "title": {
+          "default": "",
+          "pattern": "^(?:|[^\\r\\n]*\\S[^\\r\\n]*)$",
+          "title": "Title",
+          "type": "string"
+        }
+      },
+      "required": [
+        "services"
+      ],
+      "title": "ModwireArchitectureDiagram",
+      "type": "object"
+    },
+    "ModwireArchitectureEdge": {
+      "additionalProperties": false,
+      "properties": {
+        "bidirectional": {
+          "default": false,
+          "title": "Bidirectional",
+          "type": "boolean"
+        },
+        "source": {
+          "pattern": "^[\\w-]+$",
+          "title": "Source",
+          "type": "string"
+        },
+        "source_group_edge": {
+          "default": false,
+          "title": "Source Group Edge",
+          "type": "boolean"
+        },
+        "source_side": {
+          "$ref": "#/$defs/ModwireArchitectureSide"
+        },
+        "target": {
+          "pattern": "^[\\w-]+$",
+          "title": "Target",
+          "type": "string"
+        },
+        "target_group_edge": {
+          "default": false,
+          "title": "Target Group Edge",
+          "type": "boolean"
+        },
+        "target_side": {
+          "$ref": "#/$defs/ModwireArchitectureSide"
+        }
+      },
+      "required": [
+        "source",
+        "source_side",
+        "target",
+        "target_side"
+      ],
+      "title": "ModwireArchitectureEdge",
+      "type": "object"
+    },
+    "ModwireArchitectureGroup": {
+      "additionalProperties": false,
+      "properties": {
+        "icon": {
+          "default": "",
+          "pattern": "^$|^[A-Za-z0-9_:-]+$",
+          "title": "Icon",
+          "type": "string"
+        },
+        "id": {
+          "pattern": "^[\\w-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "default": "",
+          "pattern": "^(?:|[^\\r\\n]*\\S[^\\r\\n]*)$",
+          "title": "Label",
+          "type": "string"
+        },
+        "parent_id": {
+          "default": "",
+          "pattern": "^$|^[\\w-]+$",
+          "title": "Parent Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "ModwireArchitectureGroup",
+      "type": "object"
+    },
+    "ModwireArchitectureJunction": {
+      "additionalProperties": false,
+      "properties": {
+        "group_id": {
+          "default": "",
+          "pattern": "^$|^[\\w-]+$",
+          "title": "Group Id",
+          "type": "string"
+        },
+        "id": {
+          "pattern": "^[\\w-]+$",
+          "title": "Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "ModwireArchitectureJunction",
+      "type": "object"
+    },
+    "ModwireArchitectureService": {
+      "additionalProperties": false,
+      "properties": {
+        "group_id": {
+          "default": "",
+          "pattern": "^$|^[\\w-]+$",
+          "title": "Group Id",
+          "type": "string"
+        },
+        "icon": {
+          "default": "",
+          "pattern": "^$|^[A-Za-z0-9_:-]+$",
+          "title": "Icon",
+          "type": "string"
+        },
+        "id": {
+          "pattern": "^[\\w-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "default": "",
+          "pattern": "^(?:|[^\\r\\n]*\\S[^\\r\\n]*)$",
+          "title": "Label",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "ModwireArchitectureService",
+      "type": "object"
+    },
+    "ModwireArchitectureSide": {
+      "enum": [
+        "L",
+        "R",
+        "T",
+        "B"
+      ],
+      "title": "ModwireArchitectureSide",
+      "type": "string"
+    },
+    "ModwireClass": {
+      "additionalProperties": false,
+      "properties": {
+        "annotations": {
+          "default": [],
+          "items": {
+            "pattern": "^[^\\r\\n{};]*\\S[^\\r\\n{};]*$",
+            "type": "string"
+          },
+          "title": "Annotations",
+          "type": "array"
+        },
+        "css_classes": {
+          "default": [],
+          "items": {
+            "pattern": "^[A-Za-z_][A-Za-z0-9_-]*$",
+            "type": "string"
+          },
+          "title": "Css Classes",
+          "type": "array"
+        },
+        "generic_type": {
+          "default": "",
+          "pattern": "^(?:|[^\\r\\n{};]*\\S[^\\r\\n{};]*)$",
+          "title": "Generic Type",
+          "type": "string"
+        },
+        "id": {
+          "pattern": "^[\\w-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "pattern": "^[^\\r\\n]*\\S[^\\r\\n]*$",
+          "title": "Label",
+          "type": "string"
+        },
+        "members": {
+          "default": [],
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "attribute": "#/$defs/ModwireClassAttribute",
+                "method": "#/$defs/ModwireClassMethod"
+              },
+              "propertyName": "member_type"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/ModwireClassAttribute"
+              },
+              {
+                "$ref": "#/$defs/ModwireClassMethod"
+              }
+            ]
+          },
+          "title": "Members",
+          "type": "array"
+        },
+        "namespace": {
+          "default": "",
+          "pattern": "^$|^[\\w-]+(?:\\.[\\w-]+)*$",
+          "title": "Namespace",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "label"
+      ],
+      "title": "ModwireClass",
+      "type": "object"
+    },
+    "ModwireClassAttribute": {
+      "additionalProperties": false,
+      "properties": {
+        "is_static": {
+          "default": false,
+          "title": "Is Static",
+          "type": "boolean"
+        },
+        "member_type": {
+          "const": "attribute",
+          "default": "attribute",
+          "title": "Member Type",
+          "type": "string"
+        },
+        "name": {
+          "pattern": "^[^\\r\\n{};]*\\S[^\\r\\n{};]*$",
+          "title": "Name",
+          "type": "string"
+        },
+        "type": {
+          "pattern": "^[^\\r\\n{};]*\\S[^\\r\\n{};]*$",
+          "title": "Type",
+          "type": "string"
+        },
+        "visibility": {
+          "$ref": "#/$defs/ModwireVisibility",
+          "default": "+"
+        }
+      },
+      "required": [
+        "name",
+        "type"
+      ],
+      "title": "ModwireClassAttribute",
+      "type": "object"
+    },
+    "ModwireClassDiagram": {
+      "additionalProperties": false,
+      "properties": {
+        "classes": {
+          "items": {
+            "$ref": "#/$defs/ModwireClass"
+          },
+          "title": "Classes",
+          "type": "array"
+        },
+        "comments": {
+          "default": [],
+          "items": {
+            "pattern": "^[^\\r\\n]*\\S[^\\r\\n]*$",
+            "type": "string"
+          },
+          "title": "Comments",
+          "type": "array"
+        },
+        "direction": {
+          "$ref": "#/$defs/ModwireClassDiagramDirection",
+          "default": "TB"
+        },
+        "hide_empty_members_box": {
+          "default": false,
+          "title": "Hide Empty Members Box",
+          "type": "boolean"
+        },
+        "hierarchical_namespaces": {
+          "default": false,
+          "title": "Hierarchical Namespaces",
+          "type": "boolean"
+        },
+        "interactions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireClassInteraction"
+          },
+          "title": "Interactions",
+          "type": "array"
+        },
+        "kind": {
+          "const": "class",
+          "default": "class",
+          "title": "Kind",
+          "type": "string"
+        },
+        "namespaces": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireClassNamespace"
+          },
+          "title": "Namespaces",
+          "type": "array"
+        },
+        "notes": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireClassNote"
+          },
+          "title": "Notes",
+          "type": "array"
+        },
+        "relationships": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireClassRelationship"
+          },
+          "title": "Relationships",
+          "type": "array"
+        },
+        "style_definitions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireClassStyleDefinition"
+          },
+          "title": "Style Definitions",
+          "type": "array"
+        },
+        "styles": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireClassStyle"
+          },
+          "title": "Styles",
+          "type": "array"
+        }
+      },
+      "required": [
+        "classes"
+      ],
+      "title": "ModwireClassDiagram",
+      "type": "object"
+    },
+    "ModwireClassDiagramDirection": {
+      "enum": [
+        "TB",
+        "BT",
+        "LR",
+        "RL"
+      ],
+      "title": "ModwireClassDiagramDirection",
+      "type": "string"
+    },
+    "ModwireClassInteraction": {
+      "additionalProperties": false,
+      "properties": {
+        "class_id": {
+          "pattern": "^[\\w-]+$",
+          "title": "Class Id",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/ModwireClassInteractionKind"
+        },
+        "reference": {
+          "pattern": "^[^\\r\\n]*\\S[^\\r\\n]*$",
+          "title": "Reference",
+          "type": "string"
+        },
+        "syntax": {
+          "$ref": "#/$defs/ModwireClassInteractionSyntax",
+          "default": "action"
+        },
+        "tooltip": {
+          "default": "",
+          "pattern": "^(?:|[^\\r\\n]*\\S[^\\r\\n]*)$",
+          "title": "Tooltip",
+          "type": "string"
+        }
+      },
+      "required": [
+        "class_id",
+        "kind",
+        "reference"
+      ],
+      "title": "ModwireClassInteraction",
+      "type": "object"
+    },
+    "ModwireClassInteractionKind": {
+      "enum": [
+        "link",
+        "callback"
+      ],
+      "title": "ModwireClassInteractionKind",
+      "type": "string"
+    },
+    "ModwireClassInteractionSyntax": {
+      "enum": [
+        "action",
+        "click"
+      ],
+      "title": "ModwireClassInteractionSyntax",
+      "type": "string"
+    },
+    "ModwireClassMethod": {
+      "additionalProperties": false,
+      "properties": {
+        "classifiers": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireMemberClassifier"
+          },
+          "title": "Classifiers",
+          "type": "array"
+        },
+        "member_type": {
+          "const": "method",
+          "default": "method",
+          "title": "Member Type",
+          "type": "string"
+        },
+        "name": {
+          "pattern": "^[^\\r\\n{};]*\\S[^\\r\\n{};]*$",
+          "title": "Name",
+          "type": "string"
+        },
+        "parameters": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireClassParameter"
+          },
+          "title": "Parameters",
+          "type": "array"
+        },
+        "return_type": {
+          "pattern": "^[^\\r\\n{};]*\\S[^\\r\\n{};]*$",
+          "title": "Return Type",
+          "type": "string"
+        },
+        "visibility": {
+          "$ref": "#/$defs/ModwireVisibility",
+          "default": "+"
+        }
+      },
+      "required": [
+        "name",
+        "return_type"
+      ],
+      "title": "ModwireClassMethod",
+      "type": "object"
+    },
+    "ModwireClassNamespace": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[\\w-]+(?:\\.[\\w-]+)*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "default": "",
+          "pattern": "^(?:|[^\\r\\n]*\\S[^\\r\\n]*)$",
+          "title": "Label",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "ModwireClassNamespace",
+      "type": "object"
+    },
+    "ModwireClassNote": {
+      "additionalProperties": false,
+      "properties": {
+        "class_id": {
+          "default": "",
+          "pattern": "^$|^[\\w-]+$",
+          "title": "Class Id",
+          "type": "string"
+        },
+        "text": {
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "title": "ModwireClassNote",
+      "type": "object"
+    },
+    "ModwireClassParameter": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "pattern": "^[^\\r\\n{};]*\\S[^\\r\\n{};]*$",
+          "title": "Name",
+          "type": "string"
+        },
+        "type": {
+          "pattern": "^[^\\r\\n{};]*\\S[^\\r\\n{};]*$",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "type"
+      ],
+      "title": "ModwireClassParameter",
+      "type": "object"
+    },
+    "ModwireClassRelationship": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "default": "",
+          "pattern": "^(?:|[^\\r\\n]*\\S[^\\r\\n]*)$",
+          "title": "Label",
+          "type": "string"
+        },
+        "line": {
+          "$ref": "#/$defs/ModwireRelationshipLine",
+          "default": "--"
+        },
+        "source": {
+          "pattern": "^[\\w-]+$",
+          "title": "Source",
+          "type": "string"
+        },
+        "source_cardinality": {
+          "default": "",
+          "pattern": "^(?:|[^\\r\\n]*\\S[^\\r\\n]*)$",
+          "title": "Source Cardinality",
+          "type": "string"
+        },
+        "source_end": {
+          "$ref": "#/$defs/ModwireRelationshipEnd",
+          "default": ""
+        },
+        "target": {
+          "pattern": "^[\\w-]+$",
+          "title": "Target",
+          "type": "string"
+        },
+        "target_cardinality": {
+          "default": "",
+          "pattern": "^(?:|[^\\r\\n]*\\S[^\\r\\n]*)$",
+          "title": "Target Cardinality",
+          "type": "string"
+        },
+        "target_end": {
+          "$ref": "#/$defs/ModwireRelationshipEnd",
+          "default": ""
+        }
+      },
+      "required": [
+        "source",
+        "target"
+      ],
+      "title": "ModwireClassRelationship",
+      "type": "object"
+    },
+    "ModwireClassStyle": {
+      "additionalProperties": false,
+      "properties": {
+        "class_id": {
+          "pattern": "^[\\w-]+$",
+          "title": "Class Id",
+          "type": "string"
+        },
+        "properties": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireClassStyleProperty"
+          },
+          "title": "Properties",
+          "type": "array"
+        }
+      },
+      "required": [
+        "class_id"
+      ],
+      "title": "ModwireClassStyle",
+      "type": "object"
+    },
+    "ModwireClassStyleDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "names": {
+          "items": {
+            "pattern": "^[A-Za-z_][A-Za-z0-9_-]*$",
+            "type": "string"
+          },
+          "title": "Names",
+          "type": "array"
+        },
+        "properties": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireClassStyleProperty"
+          },
+          "title": "Properties",
+          "type": "array"
+        }
+      },
+      "required": [
+        "names"
+      ],
+      "title": "ModwireClassStyleDefinition",
+      "type": "object"
+    },
+    "ModwireClassStyleProperty": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "pattern": "^[A-Za-z-][A-Za-z0-9_-]*$",
+          "title": "Name",
+          "type": "string"
+        },
+        "value": {
+          "pattern": "^[^\\r\\n;]+$",
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "value"
+      ],
+      "title": "ModwireClassStyleProperty",
+      "type": "object"
+    },
+    "ModwireDiagramDirection": {
+      "enum": [
+        "TD",
+        "TB",
+        "BT",
+        "LR",
+        "RL"
+      ],
+      "title": "ModwireDiagramDirection",
+      "type": "string"
+    },
+    "ModwireEventDataBlock": {
+      "additionalProperties": false,
+      "properties": {
+        "data": {
+          "default": "",
+          "pattern": "^(?:|[^\\r\\n]*\\S[^\\r\\n]*)$",
+          "title": "Data",
+          "type": "string"
+        },
+        "data_type": {
+          "$ref": "#/$defs/ModwireEventDataType",
+          "default": ""
+        },
+        "id": {
+          "pattern": "^[\\w-]+$",
+          "title": "Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "ModwireEventDataBlock",
+      "type": "object"
+    },
+    "ModwireEventDataType": {
+      "enum": [
+        "",
+        "json",
+        "jsobj",
+        "figma",
+        "salt",
+        "uri",
+        "md",
+        "html",
+        "text"
+      ],
+      "title": "ModwireEventDataType",
+      "type": "string"
+    },
+    "ModwireEventEntityType": {
+      "enum": [
+        "ui",
+        "pcr",
+        "cmd",
+        "rmo",
+        "evt"
+      ],
+      "title": "ModwireEventEntityType",
+      "type": "string"
+    },
+    "ModwireEventModel": {
+      "additionalProperties": false,
+      "properties": {
+        "data_blocks": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireEventDataBlock"
+          },
+          "title": "Data Blocks",
+          "type": "array"
+        },
+        "kind": {
+          "const": "event-modeling",
+          "default": "event-modeling",
+          "title": "Kind",
+          "type": "string"
+        },
+        "timeframes": {
+          "items": {
+            "$ref": "#/$defs/ModwireEventTimeframe"
+          },
+          "title": "Timeframes",
+          "type": "array"
+        }
+      },
+      "required": [
+        "timeframes"
+      ],
+      "title": "ModwireEventModel",
+      "type": "object"
+    },
+    "ModwireEventTimeframe": {
+      "additionalProperties": false,
+      "properties": {
+        "data": {
+          "default": "",
+          "pattern": "^(?:|[^\\r\\n]*\\S[^\\r\\n]*)$",
+          "title": "Data",
+          "type": "string"
+        },
+        "data_block_id": {
+          "default": "",
+          "pattern": "^$|^[\\w-]+$",
+          "title": "Data Block Id",
+          "type": "string"
+        },
+        "data_type": {
+          "$ref": "#/$defs/ModwireEventDataType",
+          "default": ""
+        },
+        "entity": {
+          "default": "",
+          "pattern": "^(?:|[^\\r\\n]*\\S[^\\r\\n]*)$",
+          "title": "Entity",
+          "type": "string"
+        },
+        "entity_type": {
+          "$ref": "#/$defs/ModwireEventEntityType"
+        },
+        "id": {
+          "pattern": "^[\\w-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "is_reset": {
+          "default": false,
+          "title": "Is Reset",
+          "type": "boolean"
+        },
+        "relations": {
+          "default": [],
+          "items": {
+            "pattern": "^[\\w-]+$",
+            "type": "string"
+          },
+          "title": "Relations",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "entity_type"
+      ],
+      "title": "ModwireEventTimeframe",
+      "type": "object"
+    },
+    "ModwireFileTree": {
+      "additionalProperties": false,
+      "properties": {
+        "comments": {
+          "default": [],
+          "items": {
+            "pattern": "^[^\\r\\n]*\\S[^\\r\\n]*$",
+            "type": "string"
+          },
+          "title": "Comments",
+          "type": "array"
+        },
+        "default_icon_pack": {
+          "default": "",
+          "pattern": "^(?:|[^\\r\\n]*\\S[^\\r\\n]*)$",
+          "title": "Default Icon Pack",
+          "type": "string"
+        },
+        "description_color": {
+          "default": "currentColor",
+          "pattern": "^(?:|[^\\r\\n;]*\\S[^\\r\\n;]*)$",
+          "title": "Description Color",
+          "type": "string"
+        },
+        "extension_icons": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireFileTreeIconMapping"
+          },
+          "title": "Extension Icons",
+          "type": "array"
+        },
+        "filename_icons": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireFileTreeIconMapping"
+          },
+          "title": "Filename Icons",
+          "type": "array"
+        },
+        "highlight_background": {
+          "default": "transparent",
+          "pattern": "^(?:|[^\\r\\n;]*\\S[^\\r\\n;]*)$",
+          "title": "Highlight Background",
+          "type": "string"
+        },
+        "highlight_stroke": {
+          "default": "currentColor",
+          "pattern": "^(?:|[^\\r\\n;]*\\S[^\\r\\n;]*)$",
+          "title": "Highlight Stroke",
+          "type": "string"
+        },
+        "icon_color": {
+          "default": "currentColor",
+          "pattern": "^(?:|[^\\r\\n;]*\\S[^\\r\\n;]*)$",
+          "title": "Icon Color",
+          "type": "string"
+        },
+        "kind": {
+          "const": "file-tree",
+          "default": "file-tree",
+          "title": "Kind",
+          "type": "string"
+        },
+        "label_color": {
+          "default": "currentColor",
+          "pattern": "^(?:|[^\\r\\n;]*\\S[^\\r\\n;]*)$",
+          "title": "Label Color",
+          "type": "string"
+        },
+        "label_font_size": {
+          "default": "16px",
+          "pattern": "^(?:|[^\\r\\n;]*\\S[^\\r\\n;]*)$",
+          "title": "Label Font Size",
+          "type": "string"
+        },
+        "line_color": {
+          "default": "currentColor",
+          "pattern": "^(?:|[^\\r\\n;]*\\S[^\\r\\n;]*)$",
+          "title": "Line Color",
+          "type": "string"
+        },
+        "line_thickness": {
+          "default": 1,
+          "minimum": 0,
+          "title": "Line Thickness",
+          "type": "integer"
+        },
+        "padding_x": {
+          "default": 5,
+          "minimum": 0,
+          "title": "Padding X",
+          "type": "integer"
+        },
+        "padding_y": {
+          "default": 5,
+          "minimum": 0,
+          "title": "Padding Y",
+          "type": "integer"
+        },
+        "root": {
+          "$ref": "#/$defs/ModwireFileTreeNode"
+        },
+        "row_indent": {
+          "default": 10,
+          "minimum": 0,
+          "title": "Row Indent",
+          "type": "integer"
+        },
+        "show_icons": {
+          "default": true,
+          "title": "Show Icons",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "root"
+      ],
+      "title": "ModwireFileTree",
+      "type": "object"
+    },
+    "ModwireFileTreeIconMapping": {
+      "additionalProperties": false,
+      "properties": {
+        "icon": {
+          "pattern": "^[A-Za-z0-9_:-]+$",
+          "title": "Icon",
+          "type": "string"
+        },
+        "pattern": {
+          "pattern": "^[^\\r\\n]*\\S[^\\r\\n]*$",
+          "title": "Pattern",
+          "type": "string"
+        }
+      },
+      "required": [
+        "pattern",
+        "icon"
+      ],
+      "title": "ModwireFileTreeIconMapping",
+      "type": "object"
+    },
+    "ModwireFileTreeNode": {
+      "additionalProperties": false,
+      "properties": {
+        "children": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireFileTreeNode"
+          },
+          "title": "Children",
+          "type": "array"
+        },
+        "css_classes": {
+          "default": [],
+          "items": {
+            "pattern": "^[A-Za-z_][A-Za-z0-9_-]*$",
+            "type": "string"
+          },
+          "title": "Css Classes",
+          "type": "array"
+        },
+        "description": {
+          "default": "",
+          "pattern": "^(?:|[^\\r\\n]*\\S[^\\r\\n]*)$",
+          "title": "Description",
+          "type": "string"
+        },
+        "icon": {
+          "default": "",
+          "pattern": "^$|^[A-Za-z0-9_:-]+$",
+          "title": "Icon",
+          "type": "string"
+        },
+        "is_directory": {
+          "title": "Is Directory",
+          "type": "boolean"
+        },
+        "label": {
+          "pattern": "^[^\\r\\n]*\\S[^\\r\\n]*$",
+          "title": "Label",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "is_directory"
+      ],
+      "title": "ModwireFileTreeNode",
+      "type": "object"
+    },
+    "ModwireFlowchart": {
+      "additionalProperties": false,
+      "properties": {
+        "comments": {
+          "default": [],
+          "items": {
+            "pattern": "^[^\\r\\n]*\\S[^\\r\\n]*$",
+            "type": "string"
+          },
+          "title": "Comments",
+          "type": "array"
+        },
+        "default_curve": {
+          "$ref": "#/$defs/ModwireFlowchartCurve",
+          "default": "linear"
+        },
+        "direction": {
+          "$ref": "#/$defs/ModwireFlowchartDirection",
+          "default": "TB"
+        },
+        "edges": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireFlowchartEdge"
+          },
+          "title": "Edges",
+          "type": "array"
+        },
+        "interactions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireFlowchartInteraction"
+          },
+          "title": "Interactions",
+          "type": "array"
+        },
+        "kind": {
+          "const": "flowchart",
+          "default": "flowchart",
+          "title": "Kind",
+          "type": "string"
+        },
+        "link_styles": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireFlowchartLinkStyle"
+          },
+          "title": "Link Styles",
+          "type": "array"
+        },
+        "markdown_auto_wrap": {
+          "default": true,
+          "title": "Markdown Auto Wrap",
+          "type": "boolean"
+        },
+        "node_styles": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireFlowchartNodeStyle"
+          },
+          "title": "Node Styles",
+          "type": "array"
+        },
+        "nodes": {
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "icon": "#/$defs/ModwireFlowchartIconNode",
+                "image": "#/$defs/ModwireFlowchartImageNode",
+                "node": "#/$defs/ModwireFlowchartNode"
+              },
+              "propertyName": "node_type"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/ModwireFlowchartNode"
+              },
+              {
+                "$ref": "#/$defs/ModwireFlowchartIconNode"
+              },
+              {
+                "$ref": "#/$defs/ModwireFlowchartImageNode"
+              }
+            ]
+          },
+          "title": "Nodes",
+          "type": "array"
+        },
+        "style_definitions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireFlowchartStyleDefinition"
+          },
+          "title": "Style Definitions",
+          "type": "array"
+        },
+        "subgraphs": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireFlowchartSubgraph"
+          },
+          "title": "Subgraphs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "nodes"
+      ],
+      "title": "ModwireFlowchart",
+      "type": "object"
+    },
+    "ModwireFlowchartAnimation": {
+      "enum": [
+        "",
+        "fast",
+        "slow"
+      ],
+      "title": "ModwireFlowchartAnimation",
+      "type": "string"
+    },
+    "ModwireFlowchartCurve": {
+      "enum": [
+        "",
+        "basis",
+        "bumpX",
+        "bumpY",
+        "cardinal",
+        "catmullRom",
+        "linear",
+        "monotoneX",
+        "monotoneY",
+        "natural",
+        "step",
+        "stepAfter",
+        "stepBefore"
+      ],
+      "title": "ModwireFlowchartCurve",
+      "type": "string"
+    },
+    "ModwireFlowchartDirection": {
+      "enum": [
+        "TD",
+        "TB",
+        "BT",
+        "RL",
+        "LR"
+      ],
+      "title": "ModwireFlowchartDirection",
+      "type": "string"
+    },
+    "ModwireFlowchartEdge": {
+      "additionalProperties": false,
+      "properties": {
+        "animation": {
+          "$ref": "#/$defs/ModwireFlowchartAnimation",
+          "default": ""
+        },
+        "css_classes": {
+          "default": [],
+          "items": {
+            "pattern": "^[A-Za-z_][A-Za-z0-9_-]*$",
+            "type": "string"
+          },
+          "title": "Css Classes",
+          "type": "array"
+        },
+        "curve": {
+          "$ref": "#/$defs/ModwireFlowchartCurve",
+          "default": ""
+        },
+        "id": {
+          "default": "",
+          "pattern": "^$|^[\\w-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "default": "",
+          "pattern": "^(?:|[^\\r\\n]*\\S[^\\r\\n]*)$",
+          "title": "Label",
+          "type": "string"
+        },
+        "line": {
+          "$ref": "#/$defs/ModwireFlowchartEdgeLine",
+          "default": "normal"
+        },
+        "minimum_length": {
+          "default": 1,
+          "minimum": 1,
+          "title": "Minimum Length",
+          "type": "integer"
+        },
+        "source": {
+          "pattern": "^[\\w-]+$",
+          "title": "Source",
+          "type": "string"
+        },
+        "source_end": {
+          "$ref": "#/$defs/ModwireFlowchartEdgeEnd",
+          "default": ""
+        },
+        "target": {
+          "pattern": "^[\\w-]+$",
+          "title": "Target",
+          "type": "string"
+        },
+        "target_end": {
+          "$ref": "#/$defs/ModwireFlowchartEdgeEnd",
+          "default": ">"
+        },
+        "text_format": {
+          "$ref": "#/$defs/ModwireFlowchartTextFormat",
+          "default": "plain"
+        }
+      },
+      "required": [
+        "source",
+        "target"
+      ],
+      "title": "ModwireFlowchartEdge",
+      "type": "object"
+    },
+    "ModwireFlowchartEdgeEnd": {
+      "enum": [
+        "",
+        ">",
+        "o",
+        "x"
+      ],
+      "title": "ModwireFlowchartEdgeEnd",
+      "type": "string"
+    },
+    "ModwireFlowchartEdgeLine": {
+      "enum": [
+        "normal",
+        "thick",
+        "dotted",
+        "invisible"
+      ],
+      "title": "ModwireFlowchartEdgeLine",
+      "type": "string"
+    },
+    "ModwireFlowchartIconForm": {
+      "enum": [
+        "",
+        "square",
+        "circle",
+        "rounded"
+      ],
+      "title": "ModwireFlowchartIconForm",
+      "type": "string"
+    },
+    "ModwireFlowchartIconNode": {
+      "additionalProperties": false,
+      "properties": {
+        "css_classes": {
+          "default": [],
+          "items": {
+            "pattern": "^[A-Za-z_][A-Za-z0-9_-]*$",
+            "type": "string"
+          },
+          "title": "Css Classes",
+          "type": "array"
+        },
+        "form": {
+          "$ref": "#/$defs/ModwireFlowchartIconForm",
+          "default": ""
+        },
+        "height": {
+          "default": 48,
+          "minimum": 48,
+          "title": "Height",
+          "type": "integer"
+        },
+        "icon": {
+          "pattern": "^[A-Za-z0-9_:-]+$",
+          "title": "Icon",
+          "type": "string"
+        },
+        "id": {
+          "pattern": "^[\\w-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "default": "",
+          "pattern": "^(?:|[^\\r\\n]*\\S[^\\r\\n]*)$",
+          "title": "Label",
+          "type": "string"
+        },
+        "node_type": {
+          "const": "icon",
+          "default": "icon",
+          "title": "Node Type",
+          "type": "string"
+        },
+        "position": {
+          "$ref": "#/$defs/ModwireFlowchartLabelPosition",
+          "default": "b"
+        }
+      },
+      "required": [
+        "id",
+        "icon"
+      ],
+      "title": "ModwireFlowchartIconNode",
+      "type": "object"
+    },
+    "ModwireFlowchartImageConstraint": {
+      "enum": [
+        "on",
+        "off"
+      ],
+      "title": "ModwireFlowchartImageConstraint",
+      "type": "string"
+    },
+    "ModwireFlowchartImageNode": {
+      "additionalProperties": false,
+      "properties": {
+        "constraint": {
+          "$ref": "#/$defs/ModwireFlowchartImageConstraint",
+          "default": "on"
+        },
+        "css_classes": {
+          "default": [],
+          "items": {
+            "pattern": "^[A-Za-z_][A-Za-z0-9_-]*$",
+            "type": "string"
+          },
+          "title": "Css Classes",
+          "type": "array"
+        },
+        "height": {
+          "exclusiveMinimum": 0,
+          "title": "Height",
+          "type": "integer"
+        },
+        "id": {
+          "pattern": "^[\\w-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "image_url": {
+          "pattern": "^[^\\s\\r\\n]+$",
+          "title": "Image Url",
+          "type": "string"
+        },
+        "label": {
+          "default": "",
+          "pattern": "^(?:|[^\\r\\n]*\\S[^\\r\\n]*)$",
+          "title": "Label",
+          "type": "string"
+        },
+        "node_type": {
+          "const": "image",
+          "default": "image",
+          "title": "Node Type",
+          "type": "string"
+        },
+        "position": {
+          "$ref": "#/$defs/ModwireFlowchartLabelPosition",
+          "default": "b"
+        },
+        "width": {
+          "exclusiveMinimum": 0,
+          "title": "Width",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "image_url",
+        "width",
+        "height"
+      ],
+      "title": "ModwireFlowchartImageNode",
+      "type": "object"
+    },
+    "ModwireFlowchartInteraction": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "$ref": "#/$defs/ModwireFlowchartInteractionKind"
+        },
+        "link_target": {
+          "$ref": "#/$defs/ModwireFlowchartLinkTarget",
+          "default": "_self"
+        },
+        "node_id": {
+          "pattern": "^[\\w-]+$",
+          "title": "Node Id",
+          "type": "string"
+        },
+        "reference": {
+          "pattern": "^[^\\r\\n]*\\S[^\\r\\n]*$",
+          "title": "Reference",
+          "type": "string"
+        },
+        "tooltip": {
+          "default": "",
+          "pattern": "^(?:|[^\\r\\n]*\\S[^\\r\\n]*)$",
+          "title": "Tooltip",
+          "type": "string"
+        }
+      },
+      "required": [
+        "node_id",
+        "kind",
+        "reference"
+      ],
+      "title": "ModwireFlowchartInteraction",
+      "type": "object"
+    },
+    "ModwireFlowchartInteractionKind": {
+      "enum": [
+        "link",
+        "callback"
+      ],
+      "title": "ModwireFlowchartInteractionKind",
+      "type": "string"
+    },
+    "ModwireFlowchartLabelPosition": {
+      "enum": [
+        "t",
+        "b"
+      ],
+      "title": "ModwireFlowchartLabelPosition",
+      "type": "string"
+    },
+    "ModwireFlowchartLinkStyle": {
+      "additionalProperties": false,
+      "properties": {
+        "edge_indexes": {
+          "default": [],
+          "items": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "title": "Edge Indexes",
+          "type": "array"
+        },
+        "properties": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireFlowchartStyleProperty"
+          },
+          "title": "Properties",
+          "type": "array"
+        },
+        "use_default": {
+          "default": false,
+          "title": "Use Default",
+          "type": "boolean"
+        }
+      },
+      "title": "ModwireFlowchartLinkStyle",
+      "type": "object"
+    },
+    "ModwireFlowchartLinkTarget": {
+      "enum": [
+        "_self",
+        "_blank",
+        "_parent",
+        "_top"
+      ],
+      "title": "ModwireFlowchartLinkTarget",
+      "type": "string"
+    },
+    "ModwireFlowchartNode": {
+      "additionalProperties": false,
+      "properties": {
+        "css_classes": {
+          "default": [],
+          "items": {
+            "pattern": "^[A-Za-z_][A-Za-z0-9_-]*$",
+            "type": "string"
+          },
+          "title": "Css Classes",
+          "type": "array"
+        },
+        "id": {
+          "pattern": "^[\\w-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "pattern": "^[^\\r\\n]*\\S[^\\r\\n]*$",
+          "title": "Label",
+          "type": "string"
+        },
+        "node_type": {
+          "const": "node",
+          "default": "node",
+          "title": "Node Type",
+          "type": "string"
+        },
+        "shape": {
+          "$ref": "#/$defs/ModwireFlowchartShape",
+          "default": "rect"
+        },
+        "text_format": {
+          "$ref": "#/$defs/ModwireFlowchartTextFormat",
+          "default": "plain"
+        }
+      },
+      "required": [
+        "id",
+        "label"
+      ],
+      "title": "ModwireFlowchartNode",
+      "type": "object"
+    },
+    "ModwireFlowchartNodeStyle": {
+      "additionalProperties": false,
+      "properties": {
+        "node_id": {
+          "pattern": "^[\\w-]+$",
+          "title": "Node Id",
+          "type": "string"
+        },
+        "properties": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireFlowchartStyleProperty"
+          },
+          "title": "Properties",
+          "type": "array"
+        }
+      },
+      "required": [
+        "node_id"
+      ],
+      "title": "ModwireFlowchartNodeStyle",
+      "type": "object"
+    },
+    "ModwireFlowchartShape": {
+      "enum": [
+        "bang",
+        "notch-rect",
+        "cloud",
+        "hourglass",
+        "bolt",
+        "brace",
+        "brace-r",
+        "braces",
+        "lean-r",
+        "lean-l",
+        "datastore",
+        "cyl",
+        "diam",
+        "delay",
+        "h-cyl",
+        "lin-cyl",
+        "curv-trap",
+        "div-rect",
+        "doc",
+        "rounded",
+        "tri",
+        "fork",
+        "win-pane",
+        "f-circ",
+        "lin-doc",
+        "lin-rect",
+        "notch-pent",
+        "flip-tri",
+        "sl-rect",
+        "trap-t",
+        "docs",
+        "st-rect",
+        "odd",
+        "flag",
+        "hex",
+        "trap-b",
+        "rect",
+        "circle",
+        "sm-circ",
+        "dbl-circ",
+        "fr-circ",
+        "bow-rect",
+        "fr-rect",
+        "cross-circ",
+        "tag-doc",
+        "tag-rect",
+        "stadium",
+        "text"
+      ],
+      "title": "ModwireFlowchartShape",
+      "type": "string"
+    },
+    "ModwireFlowchartStyleDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "names": {
+          "items": {
+            "pattern": "^[A-Za-z_][A-Za-z0-9_-]*$",
+            "type": "string"
+          },
+          "title": "Names",
+          "type": "array"
+        },
+        "properties": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireFlowchartStyleProperty"
+          },
+          "title": "Properties",
+          "type": "array"
+        }
+      },
+      "required": [
+        "names"
+      ],
+      "title": "ModwireFlowchartStyleDefinition",
+      "type": "object"
+    },
+    "ModwireFlowchartStyleProperty": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "pattern": "^[A-Za-z-][A-Za-z0-9_-]*$",
+          "title": "Name",
+          "type": "string"
+        },
+        "value": {
+          "pattern": "^[^\\r\\n;]+$",
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "value"
+      ],
+      "title": "ModwireFlowchartStyleProperty",
+      "type": "object"
+    },
+    "ModwireFlowchartSubgraph": {
+      "additionalProperties": false,
+      "properties": {
+        "children": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireFlowchartSubgraph"
+          },
+          "title": "Children",
+          "type": "array"
+        },
+        "direction": {
+          "$ref": "#/$defs/ModwireFlowchartDirection",
+          "default": "TB"
+        },
+        "id": {
+          "pattern": "^[\\w-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "default": "",
+          "pattern": "^(?:|[^\\r\\n]*\\S[^\\r\\n]*)$",
+          "title": "Label",
+          "type": "string"
+        },
+        "node_ids": {
+          "default": [],
+          "items": {
+            "pattern": "^[\\w-]+$",
+            "type": "string"
+          },
+          "title": "Node Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "ModwireFlowchartSubgraph",
+      "type": "object"
+    },
+    "ModwireFlowchartTextFormat": {
+      "enum": [
+        "plain",
+        "markdown"
+      ],
+      "title": "ModwireFlowchartTextFormat",
+      "type": "string"
+    },
+    "ModwireMemberClassifier": {
+      "enum": [
+        "*",
+        "$"
+      ],
+      "title": "ModwireMemberClassifier",
+      "type": "string"
+    },
+    "ModwireMindmap": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "mindmap",
+          "default": "mindmap",
+          "title": "Kind",
+          "type": "string"
+        },
+        "layout": {
+          "$ref": "#/$defs/ModwireMindmapLayout",
+          "default": ""
+        },
+        "root": {
+          "$ref": "#/$defs/ModwireMindmapNode"
+        }
+      },
+      "required": [
+        "root"
+      ],
+      "title": "ModwireMindmap",
+      "type": "object"
+    },
+    "ModwireMindmapLayout": {
+      "enum": [
+        "",
+        "tidy-tree"
+      ],
+      "title": "ModwireMindmapLayout",
+      "type": "string"
+    },
+    "ModwireMindmapNode": {
+      "additionalProperties": false,
+      "properties": {
+        "children": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireMindmapNode"
+          },
+          "title": "Children",
+          "type": "array"
+        },
+        "css_classes": {
+          "default": [],
+          "items": {
+            "pattern": "^[A-Za-z_][A-Za-z0-9_-]*$",
+            "type": "string"
+          },
+          "title": "Css Classes",
+          "type": "array"
+        },
+        "icon_classes": {
+          "default": [],
+          "items": {
+            "pattern": "^[A-Za-z_][A-Za-z0-9_-]*$",
+            "type": "string"
+          },
+          "title": "Icon Classes",
+          "type": "array"
+        },
+        "id": {
+          "pattern": "^[\\w-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "shape": {
+          "$ref": "#/$defs/ModwireMindmapShape",
+          "default": "default"
+        },
+        "text_format": {
+          "$ref": "#/$defs/ModwireMindmapTextFormat",
+          "default": "plain"
+        }
+      },
+      "required": [
+        "id",
+        "label"
+      ],
+      "title": "ModwireMindmapNode",
+      "type": "object"
+    },
+    "ModwireMindmapShape": {
+      "enum": [
+        "default",
+        "square",
+        "rounded-square",
+        "circle",
+        "bang",
+        "cloud",
+        "hexagon"
+      ],
+      "title": "ModwireMindmapShape",
+      "type": "string"
+    },
+    "ModwireMindmapTextFormat": {
+      "enum": [
+        "plain",
+        "markdown"
+      ],
+      "title": "ModwireMindmapTextFormat",
+      "type": "string"
+    },
+    "ModwireRelationshipEnd": {
+      "enum": [
+        "",
+        "<|",
+        "*",
+        "o",
+        ">",
+        "<",
+        "|>",
+        "()"
+      ],
+      "title": "ModwireRelationshipEnd",
+      "type": "string"
+    },
+    "ModwireRelationshipLine": {
+      "enum": [
+        "--",
+        ".."
+      ],
+      "title": "ModwireRelationshipLine",
+      "type": "string"
+    },
+    "ModwireSequenceActivation": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "$ref": "#/$defs/ModwireSequenceActivationKind"
+        },
+        "participant_id": {
+          "pattern": "^[\\w-]+$",
+          "title": "Participant Id",
+          "type": "string"
+        },
+        "statement_type": {
+          "const": "activation",
+          "default": "activation",
+          "title": "Statement Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "participant_id",
+        "kind"
+      ],
+      "title": "ModwireSequenceActivation",
+      "type": "object"
+    },
+    "ModwireSequenceActivationKind": {
+      "enum": [
+        "activate",
+        "deactivate"
+      ],
+      "title": "ModwireSequenceActivationKind",
+      "type": "string"
+    },
+    "ModwireSequenceArrow": {
+      "enum": [
+        "->>",
+        "-->>",
+        "->",
+        "-->",
+        "-x",
+        "--x",
+        "-)",
+        "--)"
+      ],
+      "title": "ModwireSequenceArrow",
+      "type": "string"
+    },
+    "ModwireSequenceBlock": {
+      "additionalProperties": false,
+      "properties": {
+        "branches": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireSequenceBranch"
+          },
+          "title": "Branches",
+          "type": "array"
+        },
+        "kind": {
+          "$ref": "#/$defs/ModwireSequenceBlockKind"
+        },
+        "label": {
+          "pattern": "^[^\\r\\n]*\\S[^\\r\\n]*$",
+          "title": "Label",
+          "type": "string"
+        },
+        "statement_type": {
+          "const": "block",
+          "default": "block",
+          "title": "Statement Type",
+          "type": "string"
+        },
+        "statements": {
+          "default": [],
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "activation": "#/$defs/ModwireSequenceActivation",
+                "block": "#/$defs/ModwireSequenceBlock",
+                "lifecycle": "#/$defs/ModwireSequenceLifecycle",
+                "message": "#/$defs/ModwireSequenceMessage",
+                "note": "#/$defs/ModwireSequenceNote",
+                "rect": "#/$defs/ModwireSequenceRect"
+              },
+              "propertyName": "statement_type"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/ModwireSequenceMessage"
+              },
+              {
+                "$ref": "#/$defs/ModwireSequenceLifecycle"
+              },
+              {
+                "$ref": "#/$defs/ModwireSequenceActivation"
+              },
+              {
+                "$ref": "#/$defs/ModwireSequenceNote"
+              },
+              {
+                "$ref": "#/$defs/ModwireSequenceBlock"
+              },
+              {
+                "$ref": "#/$defs/ModwireSequenceRect"
+              }
+            ]
+          },
+          "title": "Statements",
+          "type": "array"
+        }
+      },
+      "required": [
+        "kind",
+        "label"
+      ],
+      "title": "ModwireSequenceBlock",
+      "type": "object"
+    },
+    "ModwireSequenceBlockKind": {
+      "enum": [
+        "loop",
+        "opt",
+        "alt",
+        "par",
+        "critical",
+        "break"
+      ],
+      "title": "ModwireSequenceBlockKind",
+      "type": "string"
+    },
+    "ModwireSequenceBranch": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "pattern": "^[^\\r\\n]*\\S[^\\r\\n]*$",
+          "title": "Label",
+          "type": "string"
+        },
+        "statements": {
+          "default": [],
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "activation": "#/$defs/ModwireSequenceActivation",
+                "block": "#/$defs/ModwireSequenceBlock",
+                "lifecycle": "#/$defs/ModwireSequenceLifecycle",
+                "message": "#/$defs/ModwireSequenceMessage",
+                "note": "#/$defs/ModwireSequenceNote",
+                "rect": "#/$defs/ModwireSequenceRect"
+              },
+              "propertyName": "statement_type"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/ModwireSequenceMessage"
+              },
+              {
+                "$ref": "#/$defs/ModwireSequenceLifecycle"
+              },
+              {
+                "$ref": "#/$defs/ModwireSequenceActivation"
+              },
+              {
+                "$ref": "#/$defs/ModwireSequenceNote"
+              },
+              {
+                "$ref": "#/$defs/ModwireSequenceBlock"
+              },
+              {
+                "$ref": "#/$defs/ModwireSequenceRect"
+              }
+            ]
+          },
+          "title": "Statements",
+          "type": "array"
+        }
+      },
+      "required": [
+        "label"
+      ],
+      "title": "ModwireSequenceBranch",
+      "type": "object"
+    },
+    "ModwireSequenceDiagram": {
+      "additionalProperties": false,
+      "properties": {
+        "autonumber": {
+          "default": false,
+          "title": "Autonumber",
+          "type": "boolean"
+        },
+        "comments": {
+          "default": [],
+          "items": {
+            "pattern": "^[^\\r\\n]*\\S[^\\r\\n]*$",
+            "type": "string"
+          },
+          "title": "Comments",
+          "type": "array"
+        },
+        "kind": {
+          "const": "sequence",
+          "default": "sequence",
+          "title": "Kind",
+          "type": "string"
+        },
+        "participants": {
+          "items": {
+            "$ref": "#/$defs/ModwireSequenceParticipant"
+          },
+          "title": "Participants",
+          "type": "array"
+        },
+        "statements": {
+          "default": [],
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "activation": "#/$defs/ModwireSequenceActivation",
+                "block": "#/$defs/ModwireSequenceBlock",
+                "lifecycle": "#/$defs/ModwireSequenceLifecycle",
+                "message": "#/$defs/ModwireSequenceMessage",
+                "note": "#/$defs/ModwireSequenceNote",
+                "rect": "#/$defs/ModwireSequenceRect"
+              },
+              "propertyName": "statement_type"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/ModwireSequenceMessage"
+              },
+              {
+                "$ref": "#/$defs/ModwireSequenceLifecycle"
+              },
+              {
+                "$ref": "#/$defs/ModwireSequenceActivation"
+              },
+              {
+                "$ref": "#/$defs/ModwireSequenceNote"
+              },
+              {
+                "$ref": "#/$defs/ModwireSequenceBlock"
+              },
+              {
+                "$ref": "#/$defs/ModwireSequenceRect"
+              }
+            ]
+          },
+          "title": "Statements",
+          "type": "array"
+        },
+        "title": {
+          "default": "",
+          "pattern": "^(?:|[^\\r\\n]*\\S[^\\r\\n]*)$",
+          "title": "Title",
+          "type": "string"
+        }
+      },
+      "required": [
+        "participants"
+      ],
+      "title": "ModwireSequenceDiagram",
+      "type": "object"
+    },
+    "ModwireSequenceLifecycle": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "$ref": "#/$defs/ModwireSequenceLifecycleKind"
+        },
+        "participant_id": {
+          "pattern": "^[\\w-]+$",
+          "title": "Participant Id",
+          "type": "string"
+        },
+        "statement_type": {
+          "const": "lifecycle",
+          "default": "lifecycle",
+          "title": "Statement Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "participant_id",
+        "kind"
+      ],
+      "title": "ModwireSequenceLifecycle",
+      "type": "object"
+    },
+    "ModwireSequenceLifecycleKind": {
+      "enum": [
+        "create",
+        "destroy"
+      ],
+      "title": "ModwireSequenceLifecycleKind",
+      "type": "string"
+    },
+    "ModwireSequenceLink": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "pattern": "^[^\\r\\n]*\\S[^\\r\\n]*$",
+          "title": "Label",
+          "type": "string"
+        },
+        "url": {
+          "pattern": "^[^\\s\\r\\n]+$",
+          "title": "Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "url"
+      ],
+      "title": "ModwireSequenceLink",
+      "type": "object"
+    },
+    "ModwireSequenceMessage": {
+      "additionalProperties": false,
+      "properties": {
+        "activate_target": {
+          "default": false,
+          "title": "Activate Target",
+          "type": "boolean"
+        },
+        "arrow": {
+          "$ref": "#/$defs/ModwireSequenceArrow",
+          "default": "->>"
+        },
+        "central_source": {
+          "default": false,
+          "title": "Central Source",
+          "type": "boolean"
+        },
+        "central_target": {
+          "default": false,
+          "title": "Central Target",
+          "type": "boolean"
+        },
+        "deactivate_target": {
+          "default": false,
+          "title": "Deactivate Target",
+          "type": "boolean"
+        },
+        "source": {
+          "pattern": "^[\\w-]+$",
+          "title": "Source",
+          "type": "string"
+        },
+        "statement_type": {
+          "const": "message",
+          "default": "message",
+          "title": "Statement Type",
+          "type": "string"
+        },
+        "target": {
+          "pattern": "^[\\w-]+$",
+          "title": "Target",
+          "type": "string"
+        },
+        "text": {
+          "pattern": "^[^\\r\\n]*\\S[^\\r\\n]*$",
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source",
+        "target",
+        "text"
+      ],
+      "title": "ModwireSequenceMessage",
+      "type": "object"
+    },
+    "ModwireSequenceNote": {
+      "additionalProperties": false,
+      "properties": {
+        "participant_ids": {
+          "items": {
+            "pattern": "^[\\w-]+$",
+            "type": "string"
+          },
+          "title": "Participant Ids",
+          "type": "array"
+        },
+        "position": {
+          "$ref": "#/$defs/ModwireSequenceNotePosition"
+        },
+        "statement_type": {
+          "const": "note",
+          "default": "note",
+          "title": "Statement Type",
+          "type": "string"
+        },
+        "text": {
+          "pattern": "^[^\\r\\n]*\\S[^\\r\\n]*$",
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "participant_ids",
+        "position",
+        "text"
+      ],
+      "title": "ModwireSequenceNote",
+      "type": "object"
+    },
+    "ModwireSequenceNotePosition": {
+      "enum": [
+        "left of",
+        "right of",
+        "over"
+      ],
+      "title": "ModwireSequenceNotePosition",
+      "type": "string"
+    },
+    "ModwireSequenceParticipant": {
+      "additionalProperties": false,
+      "properties": {
+        "box": {
+          "default": "",
+          "pattern": "^(?:|[^\\r\\n]*\\S[^\\r\\n]*)$",
+          "title": "Box",
+          "type": "string"
+        },
+        "box_color": {
+          "default": "",
+          "pattern": "^(?:|[^\\r\\n;]*\\S[^\\r\\n;]*)$",
+          "title": "Box Color",
+          "type": "string"
+        },
+        "id": {
+          "pattern": "^[\\w-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/ModwireSequenceParticipantKind",
+          "default": "participant"
+        },
+        "label": {
+          "pattern": "^[^\\r\\n]*\\S[^\\r\\n]*$",
+          "title": "Label",
+          "type": "string"
+        },
+        "links": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireSequenceLink"
+          },
+          "title": "Links",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "label"
+      ],
+      "title": "ModwireSequenceParticipant",
+      "type": "object"
+    },
+    "ModwireSequenceParticipantKind": {
+      "enum": [
+        "participant",
+        "actor",
+        "boundary",
+        "control",
+        "entity",
+        "database",
+        "collections",
+        "queue"
+      ],
+      "title": "ModwireSequenceParticipantKind",
+      "type": "string"
+    },
+    "ModwireSequenceRect": {
+      "additionalProperties": false,
+      "properties": {
+        "color": {
+          "pattern": "^(?:|[^\\r\\n;]*\\S[^\\r\\n;]*)$",
+          "title": "Color",
+          "type": "string"
+        },
+        "statement_type": {
+          "const": "rect",
+          "default": "rect",
+          "title": "Statement Type",
+          "type": "string"
+        },
+        "statements": {
+          "default": [],
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "activation": "#/$defs/ModwireSequenceActivation",
+                "block": "#/$defs/ModwireSequenceBlock",
+                "lifecycle": "#/$defs/ModwireSequenceLifecycle",
+                "message": "#/$defs/ModwireSequenceMessage",
+                "note": "#/$defs/ModwireSequenceNote",
+                "rect": "#/$defs/ModwireSequenceRect"
+              },
+              "propertyName": "statement_type"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/ModwireSequenceMessage"
+              },
+              {
+                "$ref": "#/$defs/ModwireSequenceLifecycle"
+              },
+              {
+                "$ref": "#/$defs/ModwireSequenceActivation"
+              },
+              {
+                "$ref": "#/$defs/ModwireSequenceNote"
+              },
+              {
+                "$ref": "#/$defs/ModwireSequenceBlock"
+              },
+              {
+                "$ref": "#/$defs/ModwireSequenceRect"
+              }
+            ]
+          },
+          "title": "Statements",
+          "type": "array"
+        }
+      },
+      "required": [
+        "color"
+      ],
+      "title": "ModwireSequenceRect",
+      "type": "object"
+    },
+    "ModwireState": {
+      "additionalProperties": false,
+      "properties": {
+        "children": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireState"
+          },
+          "title": "Children",
+          "type": "array"
+        },
+        "concurrent_regions": {
+          "default": [],
+          "items": {
+            "items": {
+              "pattern": "^[\\w-]+$",
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "title": "Concurrent Regions",
+          "type": "array"
+        },
+        "direction": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ModwireDiagramDirection"
+            },
+            {
+              "const": "",
+              "type": "string"
+            }
+          ],
+          "default": "",
+          "title": "Direction"
+        },
+        "id": {
+          "pattern": "^[\\w-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/ModwireStateKind",
+          "default": "state"
+        },
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "transitions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireStateTransition"
+          },
+          "title": "Transitions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "label"
+      ],
+      "title": "ModwireState",
+      "type": "object"
+    },
+    "ModwireStateDiagram": {
+      "additionalProperties": false,
+      "properties": {
+        "accessibility_description": {
+          "default": "",
+          "pattern": "^(?:|[^\\r\\n]*\\S[^\\r\\n]*)$",
+          "title": "Accessibility Description",
+          "type": "string"
+        },
+        "accessibility_title": {
+          "default": "",
+          "pattern": "^(?:|[^\\r\\n]*\\S[^\\r\\n]*)$",
+          "title": "Accessibility Title",
+          "type": "string"
+        },
+        "comments": {
+          "default": [],
+          "items": {
+            "pattern": "^[^\\r\\n]*\\S[^\\r\\n]*$",
+            "type": "string"
+          },
+          "title": "Comments",
+          "type": "array"
+        },
+        "direction": {
+          "$ref": "#/$defs/ModwireDiagramDirection",
+          "default": "TB"
+        },
+        "kind": {
+          "const": "state",
+          "default": "state",
+          "title": "Kind",
+          "type": "string"
+        },
+        "notes": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireStateNote"
+          },
+          "title": "Notes",
+          "type": "array"
+        },
+        "states": {
+          "items": {
+            "$ref": "#/$defs/ModwireState"
+          },
+          "title": "States",
+          "type": "array"
+        },
+        "style_assignments": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireStateStyleAssignment"
+          },
+          "title": "Style Assignments",
+          "type": "array"
+        },
+        "style_definitions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireStateStyleDefinition"
+          },
+          "title": "Style Definitions",
+          "type": "array"
+        },
+        "transitions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireStateTransition"
+          },
+          "title": "Transitions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "states"
+      ],
+      "title": "ModwireStateDiagram",
+      "type": "object"
+    },
+    "ModwireStateKind": {
+      "enum": [
+        "state",
+        "choice",
+        "fork",
+        "join"
+      ],
+      "title": "ModwireStateKind",
+      "type": "string"
+    },
+    "ModwireStateNote": {
+      "additionalProperties": false,
+      "properties": {
+        "position": {
+          "$ref": "#/$defs/ModwireStateNotePosition"
+        },
+        "state_id": {
+          "pattern": "^[\\w-]+$",
+          "title": "State Id",
+          "type": "string"
+        },
+        "text": {
+          "pattern": "^[^\\r\\n]*\\S[^\\r\\n]*$",
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "state_id",
+        "position",
+        "text"
+      ],
+      "title": "ModwireStateNote",
+      "type": "object"
+    },
+    "ModwireStateNotePosition": {
+      "enum": [
+        "left",
+        "right"
+      ],
+      "title": "ModwireStateNotePosition",
+      "type": "string"
+    },
+    "ModwireStateStyleAssignment": {
+      "additionalProperties": false,
+      "properties": {
+        "state_ids": {
+          "items": {
+            "pattern": "^[\\w-]+$",
+            "type": "string"
+          },
+          "title": "State Ids",
+          "type": "array"
+        },
+        "style_names": {
+          "items": {
+            "pattern": "^[\\w-]+$",
+            "type": "string"
+          },
+          "title": "Style Names",
+          "type": "array"
+        }
+      },
+      "required": [
+        "state_ids",
+        "style_names"
+      ],
+      "title": "ModwireStateStyleAssignment",
+      "type": "object"
+    },
+    "ModwireStateStyleDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "pattern": "^[\\w-]+$",
+          "title": "Name",
+          "type": "string"
+        },
+        "properties": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireStateStyleProperty"
+          },
+          "title": "Properties",
+          "type": "array"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "ModwireStateStyleDefinition",
+      "type": "object"
+    },
+    "ModwireStateStyleProperty": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "pattern": "^[A-Za-z-][A-Za-z0-9_-]*$",
+          "title": "Name",
+          "type": "string"
+        },
+        "value": {
+          "pattern": "^[^\\r\\n;]+$",
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "value"
+      ],
+      "title": "ModwireStateStyleProperty",
+      "type": "object"
+    },
+    "ModwireStateTransition": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "default": "",
+          "pattern": "^(?:|[^\\r\\n]*\\S[^\\r\\n]*)$",
+          "title": "Label",
+          "type": "string"
+        },
+        "source": {
+          "pattern": "^(?:\\[\\*\\]|[\\w-]+)$",
+          "title": "Source",
+          "type": "string"
+        },
+        "target": {
+          "pattern": "^(?:\\[\\*\\]|[\\w-]+)$",
+          "title": "Target",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source",
+        "target"
+      ],
+      "title": "ModwireStateTransition",
+      "type": "object"
+    },
+    "ModwireSwimlane": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[\\w-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "pattern": "^[^\\r\\n]*\\S[^\\r\\n]*$",
+          "title": "Label",
+          "type": "string"
+        },
+        "nodes": {
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "icon": "#/$defs/ModwireFlowchartIconNode",
+                "image": "#/$defs/ModwireFlowchartImageNode",
+                "node": "#/$defs/ModwireFlowchartNode"
+              },
+              "propertyName": "node_type"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/ModwireFlowchartNode"
+              },
+              {
+                "$ref": "#/$defs/ModwireFlowchartIconNode"
+              },
+              {
+                "$ref": "#/$defs/ModwireFlowchartImageNode"
+              }
+            ]
+          },
+          "title": "Nodes",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "nodes"
+      ],
+      "title": "ModwireSwimlane",
+      "type": "object"
+    },
+    "ModwireSwimlaneDiagram": {
+      "additionalProperties": false,
+      "properties": {
+        "accessibility_description": {
+          "default": "",
+          "pattern": "^(?:|[^\\r\\n]*\\S[^\\r\\n]*)$",
+          "title": "Accessibility Description",
+          "type": "string"
+        },
+        "accessibility_title": {
+          "default": "",
+          "pattern": "^(?:|[^\\r\\n]*\\S[^\\r\\n]*)$",
+          "title": "Accessibility Title",
+          "type": "string"
+        },
+        "comments": {
+          "default": [],
+          "items": {
+            "pattern": "^[^\\r\\n]*\\S[^\\r\\n]*$",
+            "type": "string"
+          },
+          "title": "Comments",
+          "type": "array"
+        },
+        "direction": {
+          "$ref": "#/$defs/ModwireDiagramDirection",
+          "default": "TB"
+        },
+        "edges": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireFlowchartEdge"
+          },
+          "title": "Edges",
+          "type": "array"
+        },
+        "interactions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireFlowchartInteraction"
+          },
+          "title": "Interactions",
+          "type": "array"
+        },
+        "kind": {
+          "const": "swimlane",
+          "default": "swimlane",
+          "title": "Kind",
+          "type": "string"
+        },
+        "lanes": {
+          "items": {
+            "$ref": "#/$defs/ModwireSwimlane"
+          },
+          "title": "Lanes",
+          "type": "array"
+        },
+        "link_styles": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireFlowchartLinkStyle"
+          },
+          "title": "Link Styles",
+          "type": "array"
+        },
+        "node_styles": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireFlowchartNodeStyle"
+          },
+          "title": "Node Styles",
+          "type": "array"
+        },
+        "style_definitions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModwireFlowchartStyleDefinition"
+          },
+          "title": "Style Definitions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "lanes"
+      ],
+      "title": "ModwireSwimlaneDiagram",
+      "type": "object"
+    },
+    "ModwireTimeline": {
+      "additionalProperties": false,
+      "properties": {
+        "direction": {
+          "$ref": "#/$defs/ModwireTimelineDirection",
+          "default": "LR"
+        },
+        "disable_multicolor": {
+          "default": false,
+          "title": "Disable Multicolor",
+          "type": "boolean"
+        },
+        "kind": {
+          "const": "timeline",
+          "default": "timeline",
+          "title": "Kind",
+          "type": "string"
+        },
+        "sections": {
+          "items": {
+            "$ref": "#/$defs/ModwireTimelineSection"
+          },
+          "title": "Sections",
+          "type": "array"
+        },
+        "title": {
+          "default": "",
+          "pattern": "^(?:|[^\\r\\n]*\\S[^\\r\\n]*)$",
+          "title": "Title",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sections"
+      ],
+      "title": "ModwireTimeline",
+      "type": "object"
+    },
+    "ModwireTimelineDirection": {
+      "enum": [
+        "LR",
+        "TD"
+      ],
+      "title": "ModwireTimelineDirection",
+      "type": "string"
+    },
+    "ModwireTimelinePeriod": {
+      "additionalProperties": false,
+      "properties": {
+        "events": {
+          "items": {
+            "pattern": "^[^\\r\\n]*\\S[^\\r\\n]*$",
+            "type": "string"
+          },
+          "title": "Events",
+          "type": "array"
+        },
+        "name": {
+          "pattern": "^[^\\r\\n]*\\S[^\\r\\n]*$",
+          "title": "Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "events"
+      ],
+      "title": "ModwireTimelinePeriod",
+      "type": "object"
+    },
+    "ModwireTimelineSection": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "pattern": "^[^\\r\\n]*\\S[^\\r\\n]*$",
+          "title": "Name",
+          "type": "string"
+        },
+        "periods": {
+          "items": {
+            "$ref": "#/$defs/ModwireTimelinePeriod"
+          },
+          "title": "Periods",
+          "type": "array"
+        }
+      },
+      "required": [
+        "name",
+        "periods"
+      ],
+      "title": "ModwireTimelineSection",
+      "type": "object"
+    },
+    "ModwireUserJourney": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "user-journey",
+          "default": "user-journey",
+          "title": "Kind",
+          "type": "string"
+        },
+        "sections": {
+          "items": {
+            "$ref": "#/$defs/ModwireUserJourneySection"
+          },
+          "title": "Sections",
+          "type": "array"
+        },
+        "title": {
+          "pattern": "^[^\\r\\n]*\\S[^\\r\\n]*$",
+          "title": "Title",
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "sections"
+      ],
+      "title": "ModwireUserJourney",
+      "type": "object"
+    },
+    "ModwireUserJourneySection": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "pattern": "^[^\\r\\n]*\\S[^\\r\\n]*$",
+          "title": "Name",
+          "type": "string"
+        },
+        "tasks": {
+          "items": {
+            "$ref": "#/$defs/ModwireUserJourneyTask"
+          },
+          "title": "Tasks",
+          "type": "array"
+        }
+      },
+      "required": [
+        "name",
+        "tasks"
+      ],
+      "title": "ModwireUserJourneySection",
+      "type": "object"
+    },
+    "ModwireUserJourneyTask": {
+      "additionalProperties": false,
+      "properties": {
+        "actors": {
+          "default": [],
+          "items": {
+            "pattern": "^[^\\r\\n]*\\S[^\\r\\n]*$",
+            "type": "string"
+          },
+          "title": "Actors",
+          "type": "array"
+        },
+        "name": {
+          "pattern": "^[^\\r\\n]*\\S[^\\r\\n]*$",
+          "title": "Name",
+          "type": "string"
+        },
+        "score": {
+          "maximum": 5,
+          "minimum": 1,
+          "title": "Score",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "name",
+        "score"
+      ],
+      "title": "ModwireUserJourneyTask",
+      "type": "object"
+    },
+    "ModwireVisibility": {
+      "enum": [
+        "+",
+        "-",
+        "#",
+        "~"
+      ],
+      "title": "ModwireVisibility",
+      "type": "string"
+    }
+  },
+  "$id": "https://modwire.dev/schemas/modwire-mermaid/v2/diagram.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "discriminator": {
+    "mapping": {
+      "architecture": "#/$defs/ModwireArchitectureDiagram",
+      "class": "#/$defs/ModwireClassDiagram",
+      "event-modeling": "#/$defs/ModwireEventModel",
+      "file-tree": "#/$defs/ModwireFileTree",
+      "flowchart": "#/$defs/ModwireFlowchart",
+      "mindmap": "#/$defs/ModwireMindmap",
+      "sequence": "#/$defs/ModwireSequenceDiagram",
+      "state": "#/$defs/ModwireStateDiagram",
+      "swimlane": "#/$defs/ModwireSwimlaneDiagram",
+      "timeline": "#/$defs/ModwireTimeline",
+      "user-journey": "#/$defs/ModwireUserJourney"
+    },
+    "propertyName": "kind"
+  },
+  "oneOf": [
+    {
+      "$ref": "#/$defs/ModwireArchitectureDiagram"
+    },
+    {
+      "$ref": "#/$defs/ModwireClassDiagram"
+    },
+    {
+      "$ref": "#/$defs/ModwireEventModel"
+    },
+    {
+      "$ref": "#/$defs/ModwireFileTree"
+    },
+    {
+      "$ref": "#/$defs/ModwireFlowchart"
+    },
+    {
+      "$ref": "#/$defs/ModwireMindmap"
+    },
+    {
+      "$ref": "#/$defs/ModwireSequenceDiagram"
+    },
+    {
+      "$ref": "#/$defs/ModwireStateDiagram"
+    },
+    {
+      "$ref": "#/$defs/ModwireSwimlaneDiagram"
+    },
+    {
+      "$ref": "#/$defs/ModwireTimeline"
+    },
+    {
+      "$ref": "#/$defs/ModwireUserJourney"
+    }
+  ]
+}

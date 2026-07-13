@@ -1,13 +1,16 @@
-from .contracts import ModwireBaseDiagram
-from .registry import DiagramCompilerRegistry
+from .contracts import MermaidDiagram
+from .registry import CompilerRegistry
 
 
 class ModwireMermaid:
-    """Compile validated Modwire diagram contracts into deterministic Mermaid source."""
+    """Compile validated diagram contracts into deterministic Mermaid source."""
 
-    def __init__(self, registry: DiagramCompilerRegistry):
+    def __init__(self, registry: CompilerRegistry):
         self._registry = registry
 
-    def compile(self, diagram: ModwireBaseDiagram) -> str:
-        """Compile one supported diagram contract into Mermaid text."""
-        return self._registry.compiler_for(diagram).compile_diagram(diagram)
+    @property
+    def registry(self) -> CompilerRegistry:
+        return self._registry
+
+    def compile(self, diagram: MermaidDiagram) -> str:
+        return self._registry.compile(diagram)

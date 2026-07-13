@@ -38,7 +38,7 @@ pip install modwire-mermaid
 Create a diagram with one of the feature builders, then compile it with the standard façade:
 
 ```python
-from modwire_mermaid import ModwireMermaidFactory
+from modwire_mermaid.composition import ModwireMermaidFactory
 from modwire_mermaid.timeline.diagram import ModwireTimelineBuilder
 
 diagram = (
@@ -76,21 +76,36 @@ shipping a browser or Node.js runtime.
 <!-- generated:public-api:start -->
 ## Public API
 
-The supported root imports below are generated from `modwire_mermaid.__all__`.
+The supported imports below name each API's defining module; package initializers do not aggregate them.
 
-| Symbol | Purpose | Primary API |
+| Import path | Purpose | Primary API |
 | --- | --- | --- |
-| `ModwireDiagramError` | Report an invalid diagram contract or unsupported diagram operation. | — |
-| `ModwireMermaid` | Compile validated Modwire diagram contracts into deterministic Mermaid source. | `compile(diagram: modwire_mermaid.contracts.ModwireBaseDiagram) -> str` |
-| `ModwireMermaidFactory` | Build the standard Mermaid façade with every bundled diagram compiler. | `standard() -> modwire_mermaid.facade.ModwireMermaid` |
-| `__version__` | Installed distribution version. | — |
+| `modwire_mermaid._version.__version__` | Installed distribution version. | — |
+| `modwire_mermaid.compiler.DiagramCompiler` | Compile one exact diagram type into deterministic Mermaid source. | `compile(diagram: 'DiagramT') -> 'str'` |
+| `modwire_mermaid.composition.ModwireMermaidFactory` | Build the standard Mermaid façade with every bundled diagram compiler. | `standard_registry() -> modwire_mermaid.registry.CompilerRegistry`<br>`standard() -> modwire_mermaid.facade.ModwireMermaid` |
+| `modwire_mermaid.contracts.CompilerRegistrationError` | Report an invalid compiler registry operation. | — |
+| `modwire_mermaid.contracts.DiagramBuildError` | Report invalid ordering or missing context in a diagram builder. | — |
+| `modwire_mermaid.contracts.DiagramBuilder` | Build one validated diagram without exposing mutable intermediate state. | `build() -> +BuiltDiagramT` |
+| `modwire_mermaid.contracts.DiagramCompilationError` | Wrap a selected compiler failure with stable diagram context. | — |
+| `modwire_mermaid.contracts.DuplicateCompilerError` | Report an attempt to register the same exact diagram type twice. | — |
+| `modwire_mermaid.contracts.MermaidDiagram` | Structural contract accepted by compiler registries and the façade. | — |
+| `modwire_mermaid.contracts.ModwireBaseDiagram` | Recommended Pydantic base for built-in and external diagrams. | — |
+| `modwire_mermaid.contracts.ModwireDiagramContract` | Strict frozen Pydantic base for all bundled semantic contracts. | — |
+| `modwire_mermaid.contracts.ModwireMermaidError` | Base class for operational modwire-mermaid failures. | — |
+| `modwire_mermaid.contracts.UnsupportedDiagramError` | Report a diagram whose exact type has no registered compiler. | — |
+| `modwire_mermaid.diagrams.Diagram` | Discriminated union of every bundled diagram contract. | — |
+| `modwire_mermaid.diagrams.DiagramAdapter` | Validate, serialize, and publish schemas for bundled diagrams. | — |
+| `modwire_mermaid.facade.ModwireMermaid` | Compile validated diagram contracts into deterministic Mermaid source. | `compile(diagram: modwire_mermaid.contracts.MermaidDiagram) -> str` |
+| `modwire_mermaid.registry.CompilerRegistry` | Immutable exact-type compiler registry with explicit conflict semantics. | `empty() -> 'CompilerRegistry'`<br>`with_compiler(compiler: 'DiagramCompiler[DiagramT]') -> 'CompilerRegistry'`<br>`without(diagram_type: 'type[MermaidDiagram]') -> 'CompilerRegistry'`<br>`replace(compiler: 'DiagramCompiler[DiagramT]') -> 'CompilerRegistry'`<br>`merge(other: 'CompilerRegistry') -> 'CompilerRegistry'`<br>`compile(diagram: 'MermaidDiagram') -> 'str'` |
+| `modwire_mermaid.schema.DIAGRAM_SCHEMA_VERSION` | Version of the canonical bundled-diagram JSON Schema. | — |
+| `modwire_mermaid.schema.diagram_json_schema` | Return the canonical versioned schema for every bundled diagram. | — |
 
 ## Executable example
 
 Source: [`compile_timeline.py`](examples/compile_timeline.py). This file is executed by the test suite.
 
 ```python
-from modwire_mermaid import ModwireMermaidFactory
+from modwire_mermaid.composition import ModwireMermaidFactory
 from modwire_mermaid.timeline.diagram import ModwireTimelineBuilder
 
 diagram = (
@@ -119,9 +134,11 @@ source = ModwireMermaidFactory.standard().compile(diagram)
 - [Timeline](docs/timeline/README.md)
 - [User journey](docs/user-journey/README.md)
 
-All contracts inherit `ModwireBaseDiagram`. It enforces required children, unique child identities,
-and valid references consistently. Empty strings and tuples explicitly represent Mermaid features
-that are absent; public contracts are non-nullable and have no implicit defaults.
+Built-in contracts inherit `ModwireBaseDiagram`; extensions may use that strict Pydantic base or satisfy
+the public structural compiler contract. Diagram kinds are discriminated and serializable through
+`DiagramAdapter`. Required semantic roots stay explicit, while immutable empty tuples and ordinary
+Mermaid configuration use typed defaults. Omitted optional text and references use typed, non-null
+empty-string defaults; explicit `None` is rejected.
 
 ## Design guarantees and scope
 
@@ -130,6 +147,28 @@ that are absent; public contracts are non-nullable and have no implicit defaults
 - The standard factory supports every diagram type listed above through one `compile()` method.
 - The package generates text only; it does not render SVG/PNG, invoke Mermaid CLI, or write files.
 - Mermaid parser and renderer compatibility must be checked by the consuming application.
+- Compiler registries are immutable; duplicates fail and replacement is always explicit.
+
+## JSON Schema
+
+`DIAGRAM_SCHEMA_VERSION` is `"2"`. Import both schema APIs from `modwire_mermaid.schema`; use
+`diagram_json_schema()` for the canonical bundled-diagram schema,
+or consume the packaged `modwire_mermaid/schemas/v2/diagram.schema.json` artifact. Schema drift is checked in CI.
+
+## Extending the compiler
+
+Implement `DiagramCompiler[YourDiagram]`, then compose it without mutating the standard registry:
+
+```python
+from modwire_mermaid.composition import ModwireMermaidFactory
+from modwire_mermaid.facade import ModwireMermaid
+
+registry = ModwireMermaidFactory.standard_registry().with_compiler(MyCompiler())
+source = ModwireMermaid(registry).compile(MyDiagram(...))
+```
+
+Exact diagram-type dispatch is intentional. Use `replace()` when overriding an existing compiler.
+See [the v2 migration guide](docs/migration-2.md) for the breaking API and model changes.
 
 ## Development and release
 

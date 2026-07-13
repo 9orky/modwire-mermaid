@@ -29,7 +29,7 @@ from modwire_mermaid.file_tree.diagram import (
     ModwireFileTreeIconMapping,
     ModwireFileTreeNode,
 )
-from modwire_mermaid.flowchart.diagram import (
+from modwire_mermaid.graph import (
     ModwireFlowchart,
     ModwireFlowchartAnimation,
     ModwireFlowchartCurve,
@@ -116,7 +116,7 @@ def test_flowchart_is_typed_validated_and_deterministic():
 
 
 def test_flowchart_rejects_dangling_edges():
-    with pytest.raises(ValidationError, match="unknown children"):
+    with pytest.raises(ValidationError, match="does not exist"):
         ModwireFlowchart(
             nodes=(
                 ModwireFlowchartNode(

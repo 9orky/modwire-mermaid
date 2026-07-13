@@ -3,7 +3,7 @@ from modwire_mermaid.class_diagram.diagram import ModwireClassDiagram
 from modwire_mermaid.documentation import MermaidDocumentationOutlineParser
 from modwire_mermaid.event_modeling.diagram import ModwireEventModel
 from modwire_mermaid.file_tree.diagram import ModwireFileTree
-from modwire_mermaid.flowchart.diagram import ModwireFlowchart
+from modwire_mermaid.graph import ModwireFlowchart
 from modwire_mermaid.mindmap.diagram import ModwireMindmap
 from modwire_mermaid.sequence.diagram import ModwireSequenceDiagram
 from modwire_mermaid.state.diagram import ModwireStateDiagram

@@ -1,4 +1,4 @@
-from modwire_mermaid import ModwireMermaidFactory
+from modwire_mermaid.composition import ModwireMermaidFactory
 from modwire_mermaid.timeline.diagram import ModwireTimelineBuilder
 
 diagram = (

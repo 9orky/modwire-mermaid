@@ -50,7 +50,7 @@ from modwire_mermaid.user_journey.template import ModwireUserJourneyTemplate
 
 def test_architecture_supports_junctions_and_group_edges():
     diagram = ModwireArchitectureDiagram(
-        groups=(ModwireArchitectureGroup(id="cloud", icon="cloud", label="Cloud", parent_id=""),),
+        groups=(ModwireArchitectureGroup(id="cloud", icon="cloud", label="Cloud"),),
         services=(ModwireArchitectureService(id="api", icon="server", label="API", group_id="cloud"),),
         junctions=(ModwireArchitectureJunction(id="gateway", group_id="cloud"),),
         edges=(
@@ -126,7 +126,7 @@ def test_state_supports_composites_notes_accessibility_and_styles():
                 children=(child,),
                 transitions=(ModwireStateTransition(source="[*]", target="Idle", label="start"),),
                 concurrent_regions=(),
-                direction="LR",
+                direction=ModwireDiagramDirection.LEFT_RIGHT,
             ),
         ),
         transitions=(ModwireStateTransition(source="[*]", target="Active", label=""),),

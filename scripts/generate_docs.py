@@ -10,17 +10,44 @@ END = "<!-- generated:public-api:end -->"
 
 
 @dataclass(frozen=True)
-class PackageDocumentation:
+class PublicSymbol:
     module: str
+
+    name: str
+
+
+@dataclass(frozen=True)
+class PackageDocumentation:
     readme: Path
     example: Path
+    symbols: tuple[PublicSymbol, ...]
 
 
 PACKAGES = (
     PackageDocumentation(
-        "modwire_mermaid",
         ROOT / "README.md",
         ROOT / "examples/compile_timeline.py",
+        (
+            PublicSymbol("modwire_mermaid._version", "__version__"),
+            PublicSymbol("modwire_mermaid.compiler", "DiagramCompiler"),
+            PublicSymbol("modwire_mermaid.composition", "ModwireMermaidFactory"),
+            PublicSymbol("modwire_mermaid.contracts", "CompilerRegistrationError"),
+            PublicSymbol("modwire_mermaid.contracts", "DiagramBuildError"),
+            PublicSymbol("modwire_mermaid.contracts", "DiagramBuilder"),
+            PublicSymbol("modwire_mermaid.contracts", "DiagramCompilationError"),
+            PublicSymbol("modwire_mermaid.contracts", "DuplicateCompilerError"),
+            PublicSymbol("modwire_mermaid.contracts", "MermaidDiagram"),
+            PublicSymbol("modwire_mermaid.contracts", "ModwireBaseDiagram"),
+            PublicSymbol("modwire_mermaid.contracts", "ModwireDiagramContract"),
+            PublicSymbol("modwire_mermaid.contracts", "ModwireMermaidError"),
+            PublicSymbol("modwire_mermaid.contracts", "UnsupportedDiagramError"),
+            PublicSymbol("modwire_mermaid.diagrams", "Diagram"),
+            PublicSymbol("modwire_mermaid.diagrams", "DiagramAdapter"),
+            PublicSymbol("modwire_mermaid.facade", "ModwireMermaid"),
+            PublicSymbol("modwire_mermaid.registry", "CompilerRegistry"),
+            PublicSymbol("modwire_mermaid.schema", "DIAGRAM_SCHEMA_VERSION"),
+            PublicSymbol("modwire_mermaid.schema", "diagram_json_schema"),
+        ),
     ),
 )
 
@@ -28,21 +55,23 @@ PACKAGES = (
 class DocumentationGenerator:
     @classmethod
     def render(cls, package: PackageDocumentation) -> str:
-        module = importlib.import_module(package.module)
         rows = []
-        for name in module.__all__:
-            purpose = cls._purpose(name, getattr(module, name))
-            operations = cls._operations(getattr(module, name))
-            rows.append(f"| `{name}` | {purpose} | {operations} |")
+        for symbol in package.symbols:
+            module = importlib.import_module(symbol.module)
+            value = getattr(module, symbol.name)
+            purpose = cls._purpose(symbol.name, value)
+            operations = cls._operations(value)
+            rows.append(f"| `{symbol.module}.{symbol.name}` | {purpose} | {operations} |")
         example = package.example.read_text().rstrip()
         return "\n".join(
             (
                 START,
                 "## Public API",
                 "",
-                f"The supported root imports below are generated from `{package.module}.__all__`.",
+                "The supported imports below name each API's defining module; "
+                "package initializers do not aggregate them.",
                 "",
-                "| Symbol | Purpose | Primary API |",
+                "| Import path | Purpose | Primary API |",
                 "| --- | --- | --- |",
                 *rows,
                 "",
@@ -60,8 +89,14 @@ class DocumentationGenerator:
 
     @staticmethod
     def _purpose(name: str, value: object) -> str:
-        if name == "__version__":
-            return "Installed distribution version."
+        special = {
+            "DIAGRAM_SCHEMA_VERSION": "Version of the canonical bundled-diagram JSON Schema.",
+            "Diagram": "Discriminated union of every bundled diagram contract.",
+            "DiagramAdapter": "Validate, serialize, and publish schemas for bundled diagrams.",
+            "__version__": "Installed distribution version.",
+        }
+        if name in special:
+            return special[name]
         documentation = inspect.getdoc(value)
         if not documentation:
             raise ValueError(f"Public symbol {name} must have a docstring")

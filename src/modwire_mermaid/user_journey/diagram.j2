@@ -1,5 +1,5 @@
 journey
-  title {{ diagram.title }}
-{% for section in diagram.sections %}  section {{ section.name }}
-{% for task in section.tasks %}    {{ task.name }}: {{ task.score }}: {{ task.actors | join(', ') }}
+  title {{ diagram.title | mermaid_text }}
+{% for section in diagram.sections %}  section {{ section.name | mermaid_text }}
+{% for task in section.tasks %}    {{ task.name | mermaid_text }}: {{ task.score }}: {% for actor in task.actors %}{{ actor | mermaid_text }}{% if not loop.last %}, {% endif %}{% endfor %}
 {% endfor %}{% endfor %}

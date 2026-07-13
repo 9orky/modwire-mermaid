@@ -1,5 +1,5 @@
 from ..compiler import DiagramCompiler
-from ..source import MermaidSource
+from ..source import MermaidWriter
 from ..syntax import MermaidSyntax
 from .diagram import (
     ModwireMindmap,
@@ -15,7 +15,7 @@ class ModwireMindmapCompiler(DiagramCompiler[ModwireMindmap]):
         return ModwireMindmap
 
     def compile(self, diagram: ModwireMindmap) -> str:
-        source = MermaidSource(indentation="  ")
+        source = MermaidWriter(indentation="  ")
         if diagram.layout.value:
             source.lines(("---", "config:"), depth=0)
             source.line(f"layout: {diagram.layout.value}", depth=1)
@@ -24,7 +24,7 @@ class ModwireMindmapCompiler(DiagramCompiler[ModwireMindmap]):
         self._node(diagram.root, depth=1, source=source)
         return source.render()
 
-    def _node(self, node: ModwireMindmapNode, depth: int, source: MermaidSource) -> None:
+    def _node(self, node: ModwireMindmapNode, depth: int, source: MermaidWriter) -> None:
         source.line(self._declaration(node), depth=depth)
         if node.icon_classes:
             source.line(f"::icon({' '.join(node.icon_classes)})", depth=depth)

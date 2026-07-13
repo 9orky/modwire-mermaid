@@ -1,19 +1,30 @@
 from __future__ import annotations
 
+from dataclasses import dataclass
 from enum import StrEnum
+from typing import Literal
 
 from pydantic import model_validator
 
-from ..contracts import ModwireBaseDiagram, ModwireDiagramContract, ModwireDiagramError, ModwireSyntaxFeature
+from ..contracts import (
+    DiagramBuildError,
+    ModwireBaseDiagram,
+    ModwireContractViolation,
+    ModwireDiagramContract,
+    ModwireOptionalText,
+    ModwireSyntaxFeature,
+    ModwireText,
+    contract_validation_error,
+)
 
 
 class ModwireTimelinePeriod(ModwireDiagramContract):
-    name: str
-    events: tuple[str, ...]
+    name: ModwireText
+    events: tuple[ModwireText, ...]
 
 
 class ModwireTimelineSection(ModwireDiagramContract):
-    name: str
+    name: ModwireText
     periods: tuple[ModwireTimelinePeriod, ...]
 
 
@@ -23,6 +34,7 @@ class ModwireTimelineDirection(StrEnum):
 
 
 class ModwireTimeline(ModwireBaseDiagram):
+    kind: Literal["timeline"] = "timeline"
     docs_url = "https://mermaid.js.org/syntax/timeline.html"
     syntax_features = (
         ModwireSyntaxFeature("direction-v11140", "test_timeline_compiles_sections_direction_and_configuration"),
@@ -35,33 +47,45 @@ class ModwireTimeline(ModwireBaseDiagram):
         ModwireSyntaxFeature("syntax", "test_timeline_compiles_sections_direction_and_configuration"),
     )
 
-    title: str
     sections: tuple[ModwireTimelineSection, ...]
-    direction: ModwireTimelineDirection
-    disable_multicolor: bool
+    title: ModwireOptionalText = ""
+    direction: ModwireTimelineDirection = ModwireTimelineDirection.LEFT_RIGHT
+    disable_multicolor: bool = False
 
     @model_validator(mode="after")
     def validate_timeline(self):
         self._require_children(self.sections, "Timeline")
-        if any(not section.periods for section in self.sections):
-            raise ModwireDiagramError("Every timeline section must contain a period")
-        if any(not period.events for section in self.sections for period in section.periods):
-            raise ModwireDiagramError("Every timeline period must contain an event")
+        violations = tuple(
+            ModwireContractViolation(
+                ("sections", index, "periods"),
+                "missing_child",
+                "Every timeline section must contain a period",
+                section.periods,
+            )
+            for index, section in enumerate(self.sections)
+            if not section.periods
+        ) + tuple(
+            ModwireContractViolation(
+                ("sections", section_index, "periods", period_index, "events"),
+                "missing_child",
+                "Every timeline period must contain an event",
+                period.events,
+            )
+            for section_index, section in enumerate(self.sections)
+            for period_index, period in enumerate(section.periods)
+            if not period.events
+        )
+        if violations:
+            raise contract_validation_error(type(self).__name__, violations)
         return self
 
 
+@dataclass(frozen=True, slots=True)
 class ModwireTimelineBuilder:
-    def __init__(
-        self,
-        title: str,
-        sections: tuple[ModwireTimelineSection, ...],
-        direction: ModwireTimelineDirection,
-        disable_multicolor: bool,
-    ):
-        self._title = title
-        self._sections = sections
-        self._direction = direction
-        self._disable_multicolor = disable_multicolor
+    _title: str
+    _sections: tuple[ModwireTimelineSection, ...]
+    _direction: ModwireTimelineDirection
+    _disable_multicolor: bool
 
     @classmethod
     def create(
@@ -83,7 +107,7 @@ class ModwireTimelineBuilder:
 
     def period(self, name: str, *events: str) -> ModwireTimelineBuilder:
         if not self._sections:
-            raise ModwireDiagramError("Add a timeline section before adding a period")
+            raise DiagramBuildError("Add a timeline section before adding a period")
         current = self._sections[-1]
         updated = ModwireTimelineSection(
             name=current.name,

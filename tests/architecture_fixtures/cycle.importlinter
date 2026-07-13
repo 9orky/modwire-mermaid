@@ -1,0 +1,9 @@
+[importlinter]
+root_package = tests
+
+[importlinter:contract:cycle]
+name = Feature cycles are forbidden
+type = independence
+modules =
+    tests.architecture_fixtures.cycle.alpha
+    tests.architecture_fixtures.cycle.beta

@@ -1,6 +1,6 @@
 from modwire_mermaid.compiler import DiagramCompiler
 from modwire_mermaid.contracts import ModwireDiagramDirection
-from modwire_mermaid.flowchart.diagram import (
+from modwire_mermaid.graph import (
     ModwireFlowchartAnimation,
     ModwireFlowchartCurve,
     ModwireFlowchartEdge,

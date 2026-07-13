@@ -1,0 +1,9 @@
+[importlinter]
+root_package = tests
+
+[importlinter:contract:direct]
+name = Direct feature imports are forbidden
+type = independence
+modules =
+    tests.architecture_fixtures.direct.consumer
+    tests.architecture_fixtures.direct.feature

@@ -25,22 +25,25 @@ class ModwireMermaidFactory:
     """Build the standard Mermaid façade with every bundled diagram compiler."""
 
     @classmethod
+    def standard_registry(cls) -> CompilerRegistry:
+        """Return the immutable registry containing every built-in compiler."""
+        mindmaps = ModwireMindmapCompiler()
+        return (
+            CompilerRegistry.empty()
+            .with_compiler(ModwireFlowchartCompiler())
+            .with_compiler(mindmaps)
+            .with_compiler(ModwireFileTreeCompiler())
+            .with_compiler(ModwireClassDiagramCompiler(JinjaClassDiagramTemplate.standard()))
+            .with_compiler(ModwireSwimlaneCompiler(ModwireSwimlaneTemplate.standard()))
+            .with_compiler(ModwireSequenceCompiler(ModwireSequenceTemplate.standard()))
+            .with_compiler(ModwireStateCompiler(ModwireStateTemplate.standard()))
+            .with_compiler(ModwireUserJourneyCompiler(ModwireUserJourneyTemplate.standard()))
+            .with_compiler(ModwireEventModelCompiler(ModwireEventModelTemplate.standard()))
+            .with_compiler(ModwireArchitectureCompiler(ModwireArchitectureTemplate.standard()))
+            .with_compiler(ModwireTimelineCompiler(ModwireTimelineTemplate.standard()))
+        )
+
+    @classmethod
     def standard(cls) -> ModwireMermaid:
         """Return a ready-to-use façade for all supported diagram types."""
-        mindmaps = ModwireMindmapCompiler()
-        registry = CompilerRegistry(
-            (
-                ModwireFlowchartCompiler(),
-                mindmaps,
-                ModwireFileTreeCompiler(),
-                ModwireClassDiagramCompiler(JinjaClassDiagramTemplate.standard()),
-                ModwireSwimlaneCompiler(ModwireSwimlaneTemplate.standard()),
-                ModwireSequenceCompiler(ModwireSequenceTemplate.standard()),
-                ModwireStateCompiler(ModwireStateTemplate.standard()),
-                ModwireUserJourneyCompiler(ModwireUserJourneyTemplate.standard()),
-                ModwireEventModelCompiler(ModwireEventModelTemplate.standard()),
-                ModwireArchitectureCompiler(ModwireArchitectureTemplate.standard()),
-                ModwireTimelineCompiler(ModwireTimelineTemplate.standard()),
-            )
-        )
-        return ModwireMermaid(registry)
+        return ModwireMermaid(cls.standard_registry())

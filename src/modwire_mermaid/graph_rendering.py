@@ -1,24 +1,24 @@
-from ..syntax import MermaidSyntax
-from .diagram import (
+from .graph import (
     ModwireFlowchartEdge,
     ModwireFlowchartEdgeEnd,
     ModwireFlowchartEdgeLine,
     ModwireFlowchartIconNode,
-    ModwireFlowchartImageNode,
     ModwireFlowchartNode,
+    ModwireFlowchartNodeType,
     ModwireFlowchartTextFormat,
 )
+from .syntax import MermaidSyntax
 
 
 class ModwireFlowchartRendering:
     @classmethod
-    def node(cls, node) -> str:
+    def node(cls, node: ModwireFlowchartNodeType) -> str:
         if isinstance(node, ModwireFlowchartNode):
             label = cls.label(node.label, node.text_format)
             return f"{node.id}@{{ shape: {node.shape.value}, label: {label} }}"
         if isinstance(node, ModwireFlowchartIconNode):
             values = [
-                f'icon: "{node.icon}"',
+                f"icon: {MermaidSyntax.quote(node.icon)}",
                 f"label: {MermaidSyntax.quote(node.label)}",
                 f'pos: "{node.position.value}"',
                 f"h: {node.height}",
@@ -26,8 +26,6 @@ class ModwireFlowchartRendering:
             if node.form.value:
                 values.append(f'form: "{node.form.value}"')
             return f"{node.id}@{{ {', '.join(values)} }}"
-        if not isinstance(node, ModwireFlowchartImageNode):
-            raise TypeError(f"Unsupported flowchart node: {type(node).__name__}")
         image_url = MermaidSyntax.quote(node.image_url)
         label = MermaidSyntax.quote(node.label)
         values = (

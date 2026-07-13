@@ -1,3 +1,5 @@
+from typing import Literal
+
 from pydantic import model_validator
 
 from ..contracts import (
@@ -5,9 +7,11 @@ from ..contracts import (
     ModwireDiagramContract,
     ModwireDiagramDirection,
     ModwireDiagramIdentifier,
+    ModwireOptionalText,
     ModwireSyntaxFeature,
+    ModwireText,
 )
-from ..flowchart.diagram import (
+from ..graph import (
     ModwireFlowchartEdge,
     ModwireFlowchartInteraction,
     ModwireFlowchartLinkStyle,
@@ -24,11 +28,12 @@ ModwireSwimlaneEdge = ModwireFlowchartEdge
 
 class ModwireSwimlane(ModwireDiagramContract):
     id: ModwireDiagramIdentifier
-    label: str
+    label: ModwireText
     nodes: tuple[ModwireFlowchartNodeType, ...]
 
 
 class ModwireSwimlaneDiagram(ModwireBaseDiagram):
+    kind: Literal["swimlane"] = "swimlane"
     docs_url = "https://mermaid.js.org/syntax/swimlanes.html"
     syntax_features = (
         ModwireSyntaxFeature("accessibility", "test_swimlane_reuses_full_flowchart_node_and_edge_rendering"),
@@ -38,15 +43,15 @@ class ModwireSwimlaneDiagram(ModwireBaseDiagram):
     )
 
     lanes: tuple[ModwireSwimlane, ...]
-    edges: tuple[ModwireFlowchartEdge, ...]
-    direction: ModwireDiagramDirection
-    accessibility_title: str
-    accessibility_description: str
-    interactions: tuple[ModwireFlowchartInteraction, ...]
-    node_styles: tuple[ModwireFlowchartNodeStyle, ...]
-    link_styles: tuple[ModwireFlowchartLinkStyle, ...]
-    style_definitions: tuple[ModwireFlowchartStyleDefinition, ...]
-    comments: tuple[str, ...]
+    edges: tuple[ModwireFlowchartEdge, ...] = ()
+    direction: ModwireDiagramDirection = ModwireDiagramDirection.TOP_BOTTOM
+    accessibility_title: ModwireOptionalText = ""
+    accessibility_description: ModwireOptionalText = ""
+    interactions: tuple[ModwireFlowchartInteraction, ...] = ()
+    node_styles: tuple[ModwireFlowchartNodeStyle, ...] = ()
+    link_styles: tuple[ModwireFlowchartLinkStyle, ...] = ()
+    style_definitions: tuple[ModwireFlowchartStyleDefinition, ...] = ()
+    comments: tuple[ModwireText, ...] = ()
 
     @model_validator(mode="after")
     def validate_graph(self):
@@ -54,19 +59,29 @@ class ModwireSwimlaneDiagram(ModwireBaseDiagram):
         self._validate_unique_children((lane.id for lane in self.lanes), "Swimlane diagram")
         nodes = tuple(node.id for lane in self.lanes for node in lane.nodes)
         self._validate_unique_children(nodes, "Swimlane diagram")
-        self._validate_child_references(
+        self._validate_located_references(
             nodes,
-            (value for edge in self.edges for value in (edge.source, edge.target)),
+            (
+                (location, reference)
+                for index, edge in enumerate(self.edges)
+                for location, reference in (
+                    (("edges", index, "source"), edge.source),
+                    (("edges", index, "target"), edge.target),
+                )
+            ),
             "Swimlane edge",
         )
-        self._validate_child_references(
+        self._validate_located_references(
             nodes,
-            (interaction.node_id for interaction in self.interactions),
+            (
+                (("interactions", index, "node_id"), interaction.node_id)
+                for index, interaction in enumerate(self.interactions)
+            ),
             "Swimlane interaction",
         )
-        self._validate_child_references(
+        self._validate_located_references(
             nodes,
-            (style.node_id for style in self.node_styles),
+            ((("node_styles", index, "node_id"), style.node_id) for index, style in enumerate(self.node_styles)),
             "Swimlane style",
         )
         return self
