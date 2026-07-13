@@ -1,0 +1,47 @@
+[
+  {
+    "evidence": [
+      "architecture.minimal",
+      "architecture.comprehensive"
+    ],
+    "reason": "Emitted by the typed model and exercised by the corpus.",
+    "slug": "services",
+    "status": "supported"
+  },
+  {
+    "evidence": [
+      "architecture.comprehensive"
+    ],
+    "reason": "Emitted by the typed model and exercised by the corpus.",
+    "slug": "groups",
+    "status": "supported"
+  },
+  {
+    "evidence": [
+      "architecture.comprehensive"
+    ],
+    "reason": "Emitted by the typed model and exercised by the corpus.",
+    "slug": "junctions",
+    "status": "supported"
+  },
+  {
+    "evidence": [
+      "architecture.comprehensive"
+    ],
+    "reason": "Emitted by the typed model and exercised by the corpus.",
+    "slug": "edges",
+    "status": "supported"
+  },
+  {
+    "evidence": [],
+    "reason": "Mermaid row/column alignment has no typed field.",
+    "slug": "service-alignment",
+    "status": "unsupported"
+  },
+  {
+    "evidence": [],
+    "reason": "Architecture configuration is not modeled.",
+    "slug": "architecture-configuration",
+    "status": "unsupported"
+  }
+]

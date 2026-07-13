@@ -3,10 +3,10 @@ sequenceDiagram
 {% endif %}{% if diagram.autonumber %}  autonumber
 {% endif %}{% for comment in diagram.comments %}  %% {{ comment | mermaid_comment }}
 {% endfor %}{% for item in diagram.participants %}{% if item.box and (loop.first or loop.previtem.box != item.box) %}  box {% if item.box_color %}{{ item.box_color | mermaid_text }} {% endif %}{{ item.box | mermaid_text }}
-{% endif %}  {{ item.kind.value }} {{ item.id }} as {{ item.label | mermaid_text }}
-{% if item.links %}  links {{ item.id }}: { {% for link in item.links %}{{ link.label | mermaid_quote }}: {{ link.url | mermaid_quote }}{% if not loop.last %}, {% endif %}{% endfor %} }
-{% endif %}{% if item.box and (loop.last or loop.nextitem.box != item.box) %}  end
-{% endif %}{% endfor %}{% macro statements(items, depth) %}{% for item in items %}{% set pad = '  ' * depth %}{% if item.statement_type == 'message' %}{{ pad }}{{ item.source }}{% if item.central_source %}(){% endif %}{{ item.arrow.value }}{% if item.activate_target %}+{% elif item.deactivate_target %}-{% endif %}{% if item.central_target %}(){% endif %}{{ item.target }}: {{ item.text | mermaid_text }}
+{% endif %}  {% if item.kind.value in ('participant', 'actor') %}{{ item.kind.value }} {{ item.id }}{% else %}participant {{ item.id }}@{ "type": "{{ item.kind.value }}" }{% endif %} as {{ item.label | mermaid_text }}
+{% if item.box and (loop.last or loop.nextitem.box != item.box) %}  end
+{% endif %}{% endfor %}{% for item in diagram.participants if item.links %}  links {{ item.id }}: { {% for link in item.links %}{{ link.label | mermaid_quote }}: {{ link.url | mermaid_quote }}{% if not loop.last %}, {% endif %}{% endfor %} }
+{% endfor %}{% macro statements(items, depth) %}{% for item in items %}{% set pad = '  ' * depth %}{% if item.statement_type == 'message' %}{{ pad }}{{ item.source }}{% if item.central_source %}(){% endif %}{{ item.arrow.value }}{% if item.activate_target %}+{% elif item.deactivate_target %}-{% endif %}{% if item.central_target %}(){% endif %}{{ item.target }}: {{ item.text | mermaid_text }}
 {% elif item.statement_type == 'lifecycle' %}{{ pad }}{{ item.kind.value }} participant {{ item.participant_id }}
 {% elif item.statement_type == 'activation' %}{{ pad }}{{ item.kind.value }} {{ item.participant_id }}
 {% elif item.statement_type == 'note' %}{{ pad }}Note {{ item.position.value }} {{ item.participant_ids | join(',') }}: {{ item.text | mermaid_text }}

@@ -1,0 +1,11 @@
+[
+  {
+    "evidence": [
+      "user-journey.minimal",
+      "user-journey.comprehensive"
+    ],
+    "reason": "Emitted by the typed model and exercised by the corpus.",
+    "slug": "sections-tasks-scores-actors",
+    "status": "supported"
+  }
+]

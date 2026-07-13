@@ -1,0 +1,23 @@
+stateDiagram-v2
+  direction TB
+  accTitle: Lifecycle
+  accDescr: Application lifecycle
+  %% composite state
+  state "Active" as Active {
+    direction LR
+    state "Idle" as Idle
+    state "Choice" as Choice
+    state Choice <<choice>>
+    state "Fork" as Fork
+    state Fork <<fork>>
+    state "Join" as Join
+    state Join <<join>>
+    Idle --> Choice : decide
+    Fork
+    --
+    Join
+  }  [*] --> Active
+  Active --> [*] : finish
+  note right of Idle : Waiting
+  classDef active fill:#efe;
+  class Active active

@@ -1,0 +1,18 @@
+[
+  {
+    "evidence": [
+      "mindmap.comprehensive"
+    ],
+    "reason": "Emitted by the typed model and exercised by the corpus.",
+    "slug": "shapes-markdown-icons-classes-layout",
+    "status": "supported"
+  },
+  {
+    "evidence": [
+      "mindmap.focused-recursive-unicode"
+    ],
+    "reason": "Emitted by the typed model and exercised by the corpus.",
+    "slug": "recursive-unicode-content",
+    "status": "supported"
+  }
+]

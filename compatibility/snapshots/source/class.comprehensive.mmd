@@ -1,0 +1,24 @@
+---
+config:
+  class:
+    hideEmptyMembersBox: true
+    hierarchicalNamespaces: true
+---
+classDiagram
+    direction TB
+    %% typed contract
+    namespace domain["Domain"] {
+        class User~T~["User 猫"] {
+            <<entity>>
+            -UUID id
+            +rename(name: str) None
+        }
+        class Repository["Repository"] {
+        }
+    }
+    User "1" ..> "*" Repository : stored by
+    note for User "Immutable\naggregate"
+    link User "https://example.test/user" "Documentation"
+    style User fill:#eef
+    classDef important stroke:#334;
+    cssClass "User" important

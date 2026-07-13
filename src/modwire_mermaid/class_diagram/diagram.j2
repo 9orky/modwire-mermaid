@@ -22,5 +22,5 @@ classDiagram
 {% endfor %}{% for interaction in diagram.interactions %}    {% if interaction.syntax.value == 'action' %}{{ interaction.kind.value }} {{ interaction.class_id }} "{{ interaction.reference | mermaid_label }}"{% else %}click {{ interaction.class_id }} {% if interaction.kind.value == 'link' %}href{% else %}call{% endif %} {% if interaction.kind.value == 'link' %}"{{ interaction.reference | mermaid_label }}"{% else %}{{ interaction.reference | mermaid_label }}(){% endif %}{% endif %}{% if interaction.tooltip %} "{{ interaction.tooltip | mermaid_label }}"{% endif %}
 {% endfor %}{% for style in diagram.styles %}    style {{ style.class_id }} {% for property in style.properties %}{{ property | style_property }}{% if not loop.last %},{% endif %}{% endfor %}
 {% endfor %}{% for definition in diagram.style_definitions %}    classDef {{ definition.names | join(',') }} {% for property in definition.properties %}{{ property | style_property }}{% if not loop.last %},{% endif %}{% endfor %};
-{% endfor %}{% for class in diagram.classes if class.css_classes %}    cssClass "{{ class.id }}" {{ class.css_classes | join(",") }};
+{% endfor %}{% for class in diagram.classes if class.css_classes %}    cssClass "{{ class.id }}" {{ class.css_classes | join(",") }}
 {% endfor %}

@@ -1,0 +1,19 @@
+[
+  {
+    "evidence": [
+      "timeline.minimal",
+      "timeline.comprehensive"
+    ],
+    "reason": "Emitted by the typed model and exercised by the corpus.",
+    "slug": "title-sections-periods-events",
+    "status": "supported"
+  },
+  {
+    "evidence": [
+      "timeline.comprehensive"
+    ],
+    "reason": "Emitted by the typed model and exercised by the corpus.",
+    "slug": "directions-and-configuration",
+    "status": "supported"
+  }
+]

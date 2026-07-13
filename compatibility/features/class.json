@@ -1,0 +1,32 @@
+[
+  {
+    "evidence": [
+      "class.comprehensive"
+    ],
+    "reason": "Emitted by the typed model and exercised by the corpus.",
+    "slug": "classes-members-generics-annotations",
+    "status": "supported"
+  },
+  {
+    "evidence": [
+      "class.comprehensive"
+    ],
+    "reason": "Emitted by the typed model and exercised by the corpus.",
+    "slug": "namespaces-relationships-notes",
+    "status": "supported"
+  },
+  {
+    "evidence": [
+      "class.comprehensive"
+    ],
+    "reason": "Emitted by the typed model and exercised by the corpus.",
+    "slug": "interactions-styles-configuration",
+    "status": "supported"
+  },
+  {
+    "evidence": [],
+    "reason": "One canonical typed authoring form is emitted.",
+    "slug": "alternate-member-authoring",
+    "status": "unsupported"
+  }
+]

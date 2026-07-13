@@ -147,6 +147,8 @@ empty-string defaults; explicit `None` is rejected.
 - The standard factory supports every diagram type listed above through one `compile()` method.
 - The package generates text only; it does not render SVG/PNG, invoke Mermaid CLI, or write files.
 - Mermaid parser and renderer compatibility must be checked by the consuming application.
+- The repository's [executable compatibility corpus](compatibility/README.md) checks all diagram roots with
+  Mermaid 11.16.0; experimental swimlanes establish that minimum supported Mermaid version.
 - Compiler registries are immutable; duplicates fail and replacement is always explicit.
 
 ## JSON Schema

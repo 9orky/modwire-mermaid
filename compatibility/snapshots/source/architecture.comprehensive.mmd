@@ -1,0 +1,9 @@
+architecture-beta
+  title Cloud topology
+  group cloud(cloud)[Cloud]
+  group apps[Applications] in cloud
+  service web(server)[Web] in apps
+  service db(database)[Database] in cloud
+  junction gateway in cloud
+  web:R --> gateway:L
+  gateway:B <--> db:T

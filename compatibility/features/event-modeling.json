@@ -1,0 +1,19 @@
+[
+  {
+    "evidence": [
+      "event-modeling.minimal",
+      "event-modeling.comprehensive"
+    ],
+    "reason": "Emitted by the typed model and exercised by the corpus.",
+    "slug": "entity-types-and-timeline",
+    "status": "supported"
+  },
+  {
+    "evidence": [
+      "event-modeling.comprehensive"
+    ],
+    "reason": "Emitted by the typed model and exercised by the corpus.",
+    "slug": "reset-relations-inline-data-data-blocks-namespaces",
+    "status": "supported"
+  }
+]

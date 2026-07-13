@@ -46,7 +46,7 @@ version-file = "src/modwire_mermaid/_version.py"
 packages = ["src/modwire_mermaid"]
 
 [tool.hatch.build.targets.sdist]
-include = ["examples", "src", "tests", "README.md", "pyproject.toml"]
+include = ["compatibility", "docs", "examples", "scripts", "src", "tests", ".node-version", "README.md", "pyproject.toml"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -62,7 +62,7 @@ target-version = "py312"
 select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
 
 [tool.pyright]
-include = ["src"]
+include = ["src", "compatibility", "scripts/generate_compatibility.py"]
 pythonVersion = "3.12"
 typeCheckingMode = "strict"
 venvPath = "."

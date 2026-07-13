@@ -1,0 +1,20 @@
+swimlane-beta TB
+  accTitle: Ownership
+  accDescr: Cross-lane handoff
+  %% beta reuse proof
+  subgraph customer ["Customer"]
+    request@{ shape: circle, label: "`**Request**`" }
+    person@{ icon: "fa:fa-user", label: "Person", pos: "b", h: 48 }
+  end
+  subgraph system ["System"]
+    asset@{ img: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciLz4=", label: "Asset", pos: "b", w: 64, h: 64, constraint: "on" }
+    decision@{ shape: diam, label: "Ready?" }
+  end
+  request s0@-->|"owns"| person
+  person s1@-.-> asset
+  asset s2@==> decision
+  click request href "https://example.test/request" "Open request" _self
+  style decision fill:#ffd
+  linkStyle 1 stroke:blue;
+  classDef primary color:#111;
+  class request primary;

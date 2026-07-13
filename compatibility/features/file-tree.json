@@ -1,0 +1,19 @@
+[
+  {
+    "evidence": [
+      "file-tree.minimal",
+      "file-tree.comprehensive"
+    ],
+    "reason": "Emitted by the typed model and exercised by the corpus.",
+    "slug": "recursive-tree-syntax",
+    "status": "supported"
+  },
+  {
+    "evidence": [
+      "file-tree.comprehensive"
+    ],
+    "reason": "Emitted by the typed model and exercised by the corpus.",
+    "slug": "descriptions-icons-classes-comments-theme-configuration",
+    "status": "supported"
+  }
+]

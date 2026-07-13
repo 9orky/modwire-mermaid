@@ -1,0 +1,8 @@
+eventmodeling
+  tf screen ui Sales.Screen `json`{"locale":"pl"} ->> command
+  tf command cmd Sales.PlaceOrder ->> event
+  rf event evt Sales.OrderPlaced [[payload]]
+
+  data payload `json`{
+"id":"42"
+  }
