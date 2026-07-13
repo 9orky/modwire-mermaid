@@ -1,3 +1,5 @@
+from typing import Literal
+
 from pydantic import model_validator
 
 from ..contracts import (
@@ -7,7 +9,7 @@ from ..contracts import (
     ModwireDiagramIdentifier,
     ModwireSyntaxFeature,
 )
-from ..flowchart.diagram import (
+from ..graph import (
     ModwireFlowchartEdge,
     ModwireFlowchartInteraction,
     ModwireFlowchartLinkStyle,
@@ -29,6 +31,7 @@ class ModwireSwimlane(ModwireDiagramContract):
 
 
 class ModwireSwimlaneDiagram(ModwireBaseDiagram):
+    kind: Literal["swimlane"] = "swimlane"
     docs_url = "https://mermaid.js.org/syntax/swimlanes.html"
     syntax_features = (
         ModwireSyntaxFeature("accessibility", "test_swimlane_reuses_full_flowchart_node_and_edge_rendering"),
@@ -38,15 +41,15 @@ class ModwireSwimlaneDiagram(ModwireBaseDiagram):
     )
 
     lanes: tuple[ModwireSwimlane, ...]
-    edges: tuple[ModwireFlowchartEdge, ...]
-    direction: ModwireDiagramDirection
-    accessibility_title: str
-    accessibility_description: str
-    interactions: tuple[ModwireFlowchartInteraction, ...]
-    node_styles: tuple[ModwireFlowchartNodeStyle, ...]
-    link_styles: tuple[ModwireFlowchartLinkStyle, ...]
-    style_definitions: tuple[ModwireFlowchartStyleDefinition, ...]
-    comments: tuple[str, ...]
+    edges: tuple[ModwireFlowchartEdge, ...] = ()
+    direction: ModwireDiagramDirection = ModwireDiagramDirection.TOP_BOTTOM
+    accessibility_title: str | None = None
+    accessibility_description: str | None = None
+    interactions: tuple[ModwireFlowchartInteraction, ...] = ()
+    node_styles: tuple[ModwireFlowchartNodeStyle, ...] = ()
+    link_styles: tuple[ModwireFlowchartLinkStyle, ...] = ()
+    style_definitions: tuple[ModwireFlowchartStyleDefinition, ...] = ()
+    comments: tuple[str, ...] = ()
 
     @model_validator(mode="after")
     def validate_graph(self):

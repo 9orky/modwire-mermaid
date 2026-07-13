@@ -1,13 +1,13 @@
 from __future__ import annotations
 
 from enum import StrEnum
+from typing import Literal
 
 from pydantic import Field, model_validator
 
-from ..contracts import (
+from .contracts import (
     ModwireBaseDiagram,
     ModwireDiagramContract,
-    ModwireDiagramError,
     ModwireDiagramIdentifier,
     ModwireSyntaxFeature,
 )
@@ -87,7 +87,7 @@ class ModwireFlowchartNode(ModwireDiagramContract):
     @model_validator(mode="after")
     def validate_node(self):
         if self.id == "end":
-            raise ModwireDiagramError("Lowercase 'end' is reserved by the Mermaid flowchart parser")
+            raise ValueError("Lowercase 'end' is reserved by the Mermaid flowchart parser")
         return self
 
 
@@ -115,7 +115,7 @@ class ModwireFlowchartIconNode(ModwireDiagramContract):
     @model_validator(mode="after")
     def validate_node(self):
         if self.id == "end":
-            raise ModwireDiagramError("Lowercase 'end' is reserved by the Mermaid flowchart parser")
+            raise ValueError("Lowercase 'end' is reserved by the Mermaid flowchart parser")
         return self
 
 
@@ -137,7 +137,7 @@ class ModwireFlowchartImageNode(ModwireDiagramContract):
     @model_validator(mode="after")
     def validate_node(self):
         if self.id == "end":
-            raise ModwireDiagramError("Lowercase 'end' is reserved by the Mermaid flowchart parser")
+            raise ValueError("Lowercase 'end' is reserved by the Mermaid flowchart parser")
         return self
 
 
@@ -197,17 +197,17 @@ class ModwireFlowchartEdge(ModwireDiagramContract):
     @model_validator(mode="after")
     def validate_edge(self):
         if self.id and not self.id.replace("_", "a").isalnum():
-            raise ModwireDiagramError("Flowchart edge IDs must be alphanumeric or underscores")
+            raise ValueError("Flowchart edge IDs must be alphanumeric or underscores")
         if self.line is ModwireFlowchartEdgeLine.INVISIBLE and (
             self.source_end is not ModwireFlowchartEdgeEnd.NONE
             or self.target_end is not ModwireFlowchartEdgeEnd.NONE
             or self.label
         ):
-            raise ModwireDiagramError("Invisible edges cannot have ends or labels")
+            raise ValueError("Invisible edges cannot have ends or labels")
         if (
             self.animation is not ModwireFlowchartAnimation.NONE or self.curve is not ModwireFlowchartCurve.DEFAULT
         ) and not self.id:
-            raise ModwireDiagramError("Animated or curved edges require an ID")
+            raise ValueError("Animated or curved edges require an ID")
         return self
 
 
@@ -264,6 +264,7 @@ class ModwireFlowchartStyleDefinition(ModwireDiagramContract):
 
 
 class ModwireFlowchart(ModwireBaseDiagram):
+    kind: Literal["flowchart"] = "flowchart"
     docs_url = "https://mermaid.js.org/syntax/flowchart.html"
     syntax_features = (
         ModwireSyntaxFeature("comments", "test_flowchart_covers_rich_mermaid_syntax"),
@@ -277,16 +278,16 @@ class ModwireFlowchart(ModwireBaseDiagram):
     )
 
     nodes: tuple[ModwireFlowchartNodeType, ...]
-    edges: tuple[ModwireFlowchartEdge, ...]
-    subgraphs: tuple[ModwireFlowchartSubgraph, ...]
-    direction: ModwireFlowchartDirection
-    interactions: tuple[ModwireFlowchartInteraction, ...]
-    node_styles: tuple[ModwireFlowchartNodeStyle, ...]
-    link_styles: tuple[ModwireFlowchartLinkStyle, ...]
-    style_definitions: tuple[ModwireFlowchartStyleDefinition, ...]
-    comments: tuple[str, ...]
-    markdown_auto_wrap: bool
-    default_curve: ModwireFlowchartCurve
+    edges: tuple[ModwireFlowchartEdge, ...] = ()
+    subgraphs: tuple[ModwireFlowchartSubgraph, ...] = ()
+    direction: ModwireFlowchartDirection = ModwireFlowchartDirection.TOP_BOTTOM
+    interactions: tuple[ModwireFlowchartInteraction, ...] = ()
+    node_styles: tuple[ModwireFlowchartNodeStyle, ...] = ()
+    link_styles: tuple[ModwireFlowchartLinkStyle, ...] = ()
+    style_definitions: tuple[ModwireFlowchartStyleDefinition, ...] = ()
+    comments: tuple[str, ...] = ()
+    markdown_auto_wrap: bool = True
+    default_curve: ModwireFlowchartCurve = ModwireFlowchartCurve.LINEAR
 
     @model_validator(mode="after")
     def validate_graph(self):
@@ -295,6 +296,9 @@ class ModwireFlowchart(ModwireBaseDiagram):
         self._validate_unique_children(identifiers, "Flowchart node")
         subgraph_ids = self._subgraph_ids(self.subgraphs)
         self._validate_unique_children(subgraph_ids, "Flowchart subgraph")
+        collisions = set(identifiers) & set(subgraph_ids)
+        if collisions:
+            raise ValueError(f"Flowchart node and subgraph IDs collide: {sorted(collisions)}")
         endpoints = set(identifiers) | set(subgraph_ids)
         self._validate_child_references(
             endpoints,
@@ -311,6 +315,16 @@ class ModwireFlowchart(ModwireBaseDiagram):
         self._validate_unique_children(edge_ids, "Flowchart edge ID")
         for subgraph in self.subgraphs:
             self._validate_subgraph(subgraph, set(identifiers))
+        grouped = tuple(node_id for subgraph in self.subgraphs for node_id in self._nested_node_ids(subgraph))
+        self._validate_unique_children(grouped, "Flowchart subgraph ownership")
+        for style in self.link_styles:
+            if style.use_default and style.edge_indexes:
+                raise ValueError("Default link styles cannot also select edge indexes")
+            if not style.use_default and not style.edge_indexes:
+                raise ValueError("Link styles require edge indexes or use_default=True")
+            invalid = tuple(index for index in style.edge_indexes if index < 0 or index >= len(self.edges))
+            if invalid:
+                raise ValueError(f"Flowchart link style indexes are out of range: {invalid}")
         return self
 
     def _subgraph_ids(self, values: tuple[ModwireFlowchartSubgraph, ...]) -> tuple[ModwireDiagramIdentifier, ...]:
@@ -322,3 +336,6 @@ class ModwireFlowchart(ModwireBaseDiagram):
         self._validate_child_references(identifiers, subgraph.node_ids, f"Flowchart subgraph {subgraph.id}")
         for child in subgraph.children:
             self._validate_subgraph(child, identifiers)
+
+    def _nested_node_ids(self, value: ModwireFlowchartSubgraph) -> tuple[str, ...]:
+        return value.node_ids + tuple(node_id for child in value.children for node_id in self._nested_node_ids(child))

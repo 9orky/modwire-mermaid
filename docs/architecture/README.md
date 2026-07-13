@@ -1,7 +1,7 @@
 # Architecture diagrams
 
 ```python
-from modwire_mermaid.architecture.diagram import ModwireArchitectureDiagram
+from modwire_mermaid.architecture import ModwireArchitectureDiagram
 ```
 
 `ModwireArchitectureDiagram` supports Mermaid `architecture-beta` groups, nested groups, icon-backed

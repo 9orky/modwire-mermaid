@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 from enum import StrEnum
+from typing import Literal
 
 from pydantic import model_validator
 
-from ..contracts import ModwireBaseDiagram, ModwireDiagramContract, ModwireDiagramError, ModwireSyntaxFeature
+from ..contracts import DiagramBuildError, ModwireBaseDiagram, ModwireDiagramContract, ModwireSyntaxFeature
 
 
 class ModwireTimelinePeriod(ModwireDiagramContract):
@@ -23,6 +24,7 @@ class ModwireTimelineDirection(StrEnum):
 
 
 class ModwireTimeline(ModwireBaseDiagram):
+    kind: Literal["timeline"] = "timeline"
     docs_url = "https://mermaid.js.org/syntax/timeline.html"
     syntax_features = (
         ModwireSyntaxFeature("direction-v11140", "test_timeline_compiles_sections_direction_and_configuration"),
@@ -35,18 +37,18 @@ class ModwireTimeline(ModwireBaseDiagram):
         ModwireSyntaxFeature("syntax", "test_timeline_compiles_sections_direction_and_configuration"),
     )
 
-    title: str
     sections: tuple[ModwireTimelineSection, ...]
-    direction: ModwireTimelineDirection
-    disable_multicolor: bool
+    title: str | None = None
+    direction: ModwireTimelineDirection = ModwireTimelineDirection.LEFT_RIGHT
+    disable_multicolor: bool = False
 
     @model_validator(mode="after")
     def validate_timeline(self):
         self._require_children(self.sections, "Timeline")
         if any(not section.periods for section in self.sections):
-            raise ModwireDiagramError("Every timeline section must contain a period")
+            raise ValueError("Every timeline section must contain a period")
         if any(not period.events for section in self.sections for period in section.periods):
-            raise ModwireDiagramError("Every timeline period must contain an event")
+            raise ValueError("Every timeline period must contain an event")
         return self
 
 
@@ -83,7 +85,7 @@ class ModwireTimelineBuilder:
 
     def period(self, name: str, *events: str) -> ModwireTimelineBuilder:
         if not self._sections:
-            raise ModwireDiagramError("Add a timeline section before adding a period")
+            raise DiagramBuildError("Add a timeline section before adding a period")
         current = self._sections[-1]
         updated = ModwireTimelineSection(
             name=current.name,

@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 from enum import StrEnum
+from typing import Literal
 
 from pydantic import model_validator
 
-from ..contracts import ModwireBaseDiagram, ModwireDiagramContract, ModwireDiagramError, ModwireSyntaxFeature
+from ..contracts import ModwireBaseDiagram, ModwireDiagramContract, ModwireSyntaxFeature
 
 
 class ModwireMindmapShape(StrEnum):
@@ -39,19 +40,20 @@ class ModwireMindmapNode(ModwireDiagramContract):
     @model_validator(mode="after")
     def validate_node(self):
         if not self.id.strip() or any(character in self.id for character in "\r\n()[]{}"):
-            raise ModwireDiagramError("Mindmap node IDs must be non-blank and cannot contain shape delimiters")
+            raise ValueError("Mindmap node IDs must be non-blank and cannot contain shape delimiters")
         if not self.label.strip():
-            raise ModwireDiagramError("Mindmap node labels cannot be blank")
+            raise ValueError("Mindmap node labels cannot be blank")
         if self.shape is ModwireMindmapShape.DEFAULT and self.text_format is ModwireMindmapTextFormat.MARKDOWN:
-            raise ModwireDiagramError("Markdown mindmap nodes require an explicit shape")
+            raise ValueError("Markdown mindmap nodes require an explicit shape")
         if self.shape is ModwireMindmapShape.DEFAULT and self.id != self.label:
-            raise ModwireDiagramError("Default-shaped mindmap nodes use their ID as the label")
+            raise ValueError("Default-shaped mindmap nodes use their ID as the label")
         if len(self.css_classes) != len(set(self.css_classes)):
-            raise ModwireDiagramError("Mindmap node CSS classes must be unique")
+            raise ValueError("Mindmap node CSS classes must be unique")
         return self
 
 
 class ModwireMindmap(ModwireBaseDiagram):
+    kind: Literal["mindmap"] = "mindmap"
     docs_url = "https://mermaid.js.org/syntax/mindmap.html"
     syntax_features = (
         ModwireSyntaxFeature("classes", "test_mindmap_covers_all_documented_shapes_icons_classes_markdown_and_layout"),
@@ -66,7 +68,7 @@ class ModwireMindmap(ModwireBaseDiagram):
     )
 
     root: ModwireMindmapNode
-    layout: ModwireMindmapLayout
+    layout: ModwireMindmapLayout = ModwireMindmapLayout.DEFAULT
 
     @model_validator(mode="after")
     def validate_tree(self):

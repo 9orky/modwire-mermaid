@@ -6,11 +6,11 @@ sequenceDiagram
 {% endif %}  {{ item.kind.value }} {{ item.id }} as {{ item.label }}
 {% if item.links %}  links {{ item.id }}: { {% for link in item.links %}{{ link.label | mermaid_quote }}: {{ link.url | mermaid_quote }}{% if not loop.last %}, {% endif %}{% endfor %} }
 {% endif %}{% if item.box and (loop.last or loop.nextitem.box != item.box) %}  end
-{% endif %}{% endfor %}{% macro statements(items, depth) %}{% for item in items %}{% set pad = '  ' * depth %}{% if item.__class__.__name__ == 'ModwireSequenceMessage' %}{{ pad }}{{ item.source }}{% if item.central_source %}(){% endif %}{{ item.arrow.value }}{% if item.activate_target %}+{% elif item.deactivate_target %}-{% endif %}{% if item.central_target %}(){% endif %}{{ item.target }}: {{ item.text }}
-{% elif item.__class__.__name__ == 'ModwireSequenceLifecycle' %}{{ pad }}{{ item.kind.value }} participant {{ item.participant_id }}
-{% elif item.__class__.__name__ == 'ModwireSequenceActivation' %}{{ pad }}{{ item.kind.value }} {{ item.participant_id }}
-{% elif item.__class__.__name__ == 'ModwireSequenceNote' %}{{ pad }}Note {{ item.position.value }} {{ item.participant_ids | join(',') }}: {{ item.text }}
-{% elif item.__class__.__name__ == 'ModwireSequenceRect' %}{{ pad }}rect {{ item.color }}
+{% endif %}{% endfor %}{% macro statements(items, depth) %}{% for item in items %}{% set pad = '  ' * depth %}{% if item.statement_type == 'message' %}{{ pad }}{{ item.source }}{% if item.central_source %}(){% endif %}{{ item.arrow.value }}{% if item.activate_target %}+{% elif item.deactivate_target %}-{% endif %}{% if item.central_target %}(){% endif %}{{ item.target }}: {{ item.text }}
+{% elif item.statement_type == 'lifecycle' %}{{ pad }}{{ item.kind.value }} participant {{ item.participant_id }}
+{% elif item.statement_type == 'activation' %}{{ pad }}{{ item.kind.value }} {{ item.participant_id }}
+{% elif item.statement_type == 'note' %}{{ pad }}Note {{ item.position.value }} {{ item.participant_ids | join(',') }}: {{ item.text }}
+{% elif item.statement_type == 'rect' %}{{ pad }}rect {{ item.color }}
 {{ statements(item.statements, depth + 1) }}{{ pad }}end
 {% else %}{{ pad }}{{ item.kind.value }} {{ item.label }}
 {{ statements(item.statements, depth + 1) }}{% for branch in item.branches %}{{ pad }}{% if item.kind.value == 'par' %}and{% elif item.kind.value == 'critical' %}option{% else %}else{% endif %} {{ branch.label }}

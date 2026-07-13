@@ -1,5 +1,5 @@
 from modwire_mermaid import ModwireMermaidFactory
-from modwire_mermaid.timeline.diagram import ModwireTimelineBuilder
+from modwire_mermaid.timeline import ModwireTimelineBuilder
 
 diagram = (
     ModwireTimelineBuilder.create("Release history")

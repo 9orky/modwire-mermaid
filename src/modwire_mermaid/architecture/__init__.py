@@ -1,1 +1,19 @@
-"""Diagram feature package; import contracts from diagram and rendering types from compiler or template."""
+from .compiler import ModwireArchitectureCompiler
+from .diagram import (
+    ModwireArchitectureDiagram,
+    ModwireArchitectureEdge,
+    ModwireArchitectureGroup,
+    ModwireArchitectureJunction,
+    ModwireArchitectureService,
+    ModwireArchitectureSide,
+)
+
+__all__ = [
+    "ModwireArchitectureCompiler",
+    "ModwireArchitectureDiagram",
+    "ModwireArchitectureEdge",
+    "ModwireArchitectureGroup",
+    "ModwireArchitectureJunction",
+    "ModwireArchitectureService",
+    "ModwireArchitectureSide",
+]

@@ -1,5 +1,5 @@
-from modwire_mermaid.architecture.compiler import ModwireArchitectureCompiler
-from modwire_mermaid.architecture.diagram import (
+from modwire_mermaid.architecture import (
+    ModwireArchitectureCompiler,
     ModwireArchitectureDiagram,
     ModwireArchitectureEdge,
     ModwireArchitectureGroup,
@@ -9,18 +9,18 @@ from modwire_mermaid.architecture.diagram import (
 )
 from modwire_mermaid.architecture.template import ModwireArchitectureTemplate
 from modwire_mermaid.contracts import ModwireDiagramDirection
-from modwire_mermaid.event_modeling.compiler import ModwireEventModelCompiler
-from modwire_mermaid.event_modeling.diagram import (
+from modwire_mermaid.event_modeling import (
     ModwireEventDataBlock,
     ModwireEventDataType,
     ModwireEventEntityType,
     ModwireEventModel,
+    ModwireEventModelCompiler,
     ModwireEventTimeframe,
 )
 from modwire_mermaid.event_modeling.template import ModwireEventModelTemplate
-from modwire_mermaid.state.compiler import ModwireStateCompiler
-from modwire_mermaid.state.diagram import (
+from modwire_mermaid.state import (
     ModwireState,
+    ModwireStateCompiler,
     ModwireStateDiagram,
     ModwireStateKind,
     ModwireStateNote,
@@ -31,17 +31,17 @@ from modwire_mermaid.state.diagram import (
     ModwireStateTransition,
 )
 from modwire_mermaid.state.template import ModwireStateTemplate
-from modwire_mermaid.timeline.compiler import ModwireTimelineCompiler
-from modwire_mermaid.timeline.diagram import (
+from modwire_mermaid.timeline import (
     ModwireTimeline,
+    ModwireTimelineCompiler,
     ModwireTimelineDirection,
     ModwireTimelinePeriod,
     ModwireTimelineSection,
 )
 from modwire_mermaid.timeline.template import ModwireTimelineTemplate
-from modwire_mermaid.user_journey.compiler import ModwireUserJourneyCompiler
-from modwire_mermaid.user_journey.diagram import (
+from modwire_mermaid.user_journey import (
     ModwireUserJourney,
+    ModwireUserJourneyCompiler,
     ModwireUserJourneySection,
     ModwireUserJourneyTask,
 )
@@ -50,7 +50,7 @@ from modwire_mermaid.user_journey.template import ModwireUserJourneyTemplate
 
 def test_architecture_supports_junctions_and_group_edges():
     diagram = ModwireArchitectureDiagram(
-        groups=(ModwireArchitectureGroup(id="cloud", icon="cloud", label="Cloud", parent_id=""),),
+        groups=(ModwireArchitectureGroup(id="cloud", icon="cloud", label="Cloud"),),
         services=(ModwireArchitectureService(id="api", icon="server", label="API", group_id="cloud"),),
         junctions=(ModwireArchitectureJunction(id="gateway", group_id="cloud"),),
         edges=(

@@ -1,6 +1,6 @@
 from modwire_mermaid.compiler import DiagramCompiler
 from modwire_mermaid.contracts import ModwireDiagramDirection
-from modwire_mermaid.flowchart.diagram import (
+from modwire_mermaid.flowchart import (
     ModwireFlowchartAnimation,
     ModwireFlowchartCurve,
     ModwireFlowchartEdge,
@@ -10,12 +10,12 @@ from modwire_mermaid.flowchart.diagram import (
     ModwireFlowchartShape,
     ModwireFlowchartTextFormat,
 )
-from modwire_mermaid.sequence.compiler import ModwireSequenceCompiler
-from modwire_mermaid.sequence.diagram import (
+from modwire_mermaid.sequence import (
     ModwireSequenceArrow,
     ModwireSequenceBlock,
     ModwireSequenceBlockKind,
     ModwireSequenceBranch,
+    ModwireSequenceCompiler,
     ModwireSequenceDiagram,
     ModwireSequenceLink,
     ModwireSequenceMessage,
@@ -25,8 +25,7 @@ from modwire_mermaid.sequence.diagram import (
     ModwireSequenceParticipantKind,
 )
 from modwire_mermaid.sequence.template import ModwireSequenceTemplate
-from modwire_mermaid.swimlane.compiler import ModwireSwimlaneCompiler
-from modwire_mermaid.swimlane.diagram import ModwireSwimlane, ModwireSwimlaneDiagram
+from modwire_mermaid.swimlane import ModwireSwimlane, ModwireSwimlaneCompiler, ModwireSwimlaneDiagram
 from modwire_mermaid.swimlane.template import ModwireSwimlaneTemplate
 
 

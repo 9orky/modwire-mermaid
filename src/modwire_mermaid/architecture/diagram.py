@@ -1,4 +1,5 @@
 from enum import StrEnum
+from typing import Literal
 
 from pydantic import model_validator
 
@@ -14,21 +15,21 @@ class ModwireArchitectureSide(StrEnum):
 
 class ModwireArchitectureGroup(ModwireDiagramContract):
     id: ModwireDiagramIdentifier
-    icon: str
-    label: str
-    parent_id: str
+    icon: str | None = None
+    label: str | None = None
+    parent_id: ModwireDiagramIdentifier | None = None
 
 
 class ModwireArchitectureService(ModwireDiagramContract):
     id: ModwireDiagramIdentifier
-    icon: str
-    label: str
-    group_id: str
+    icon: str | None = None
+    label: str | None = None
+    group_id: ModwireDiagramIdentifier | None = None
 
 
 class ModwireArchitectureJunction(ModwireDiagramContract):
     id: ModwireDiagramIdentifier
-    group_id: str
+    group_id: ModwireDiagramIdentifier | None = None
 
 
 class ModwireArchitectureEdge(ModwireDiagramContract):
@@ -42,6 +43,7 @@ class ModwireArchitectureEdge(ModwireDiagramContract):
 
 
 class ModwireArchitectureDiagram(ModwireBaseDiagram):
+    kind: Literal["architecture"] = "architecture"
     docs_url = "https://mermaid.js.org/syntax/architecture.html"
     syntax_features = (
         ModwireSyntaxFeature("edges", "test_architecture_supports_junctions_and_group_edges"),
@@ -50,11 +52,11 @@ class ModwireArchitectureDiagram(ModwireBaseDiagram):
         ModwireSyntaxFeature("services", "test_architecture_supports_junctions_and_group_edges"),
     )
 
-    groups: tuple[ModwireArchitectureGroup, ...]
     services: tuple[ModwireArchitectureService, ...]
-    junctions: tuple[ModwireArchitectureJunction, ...]
-    edges: tuple[ModwireArchitectureEdge, ...]
-    title: str
+    groups: tuple[ModwireArchitectureGroup, ...] = ()
+    junctions: tuple[ModwireArchitectureJunction, ...] = ()
+    edges: tuple[ModwireArchitectureEdge, ...] = ()
+    title: str | None = None
 
     @model_validator(mode="after")
     def validate_architecture(self):
@@ -80,4 +82,19 @@ class ModwireArchitectureDiagram(ModwireBaseDiagram):
             (value for edge in self.edges for value in (edge.source, edge.target)),
             "Architecture node",
         )
+        parents = {item.id: item.parent_id for item in self.groups}
+        for group_id in group_ids:
+            visited: set[str] = set()
+            current: str | None = group_id
+            while current is not None:
+                if current in visited:
+                    raise ValueError(f"Architecture group hierarchy contains a cycle at {current!r}")
+                visited.add(current)
+                current = parents.get(current)
+        service_groups = {item.id: item.group_id for item in self.services}
+        for edge in self.edges:
+            if edge.source_group_edge and not service_groups.get(edge.source):
+                raise ValueError("Architecture source group edges require a grouped service")
+            if edge.target_group_edge and not service_groups.get(edge.target):
+                raise ValueError("Architecture target group edges require a grouped service")
         return self

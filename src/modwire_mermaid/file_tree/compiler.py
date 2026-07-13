@@ -47,7 +47,7 @@ class ModwireFileTreeCompiler(DiagramCompiler[ModwireFileTree]):
 
     def _node(self, node: ModwireFileTreeNode, depth: int, source: MermaidSource) -> None:
         label = MermaidSyntax.quote(node.label) + ("/" if node.is_directory else "")
-        annotations = []
+        annotations: list[str] = []
         if node.icon:
             annotations.append(f"icon({node.icon})")
         if node.css_classes:

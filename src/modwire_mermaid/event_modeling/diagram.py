@@ -1,11 +1,11 @@
 from enum import StrEnum
+from typing import Literal
 
 from pydantic import model_validator
 
 from ..contracts import (
     ModwireBaseDiagram,
     ModwireDiagramContract,
-    ModwireDiagramError,
     ModwireDiagramIdentifier,
     ModwireSyntaxFeature,
 )
@@ -49,6 +49,7 @@ class ModwireEventTimeframe(ModwireDiagramContract):
 
 
 class ModwireEventModel(ModwireBaseDiagram):
+    kind: Literal["event-modeling"] = "event-modeling"
     docs_url = "https://mermaid.js.org/syntax/eventmodeling.html"
     syntax_features = (
         ModwireSyntaxFeature("data-block", "test_event_modeling_supports_reset_relations_and_typed_data_blocks"),
@@ -70,7 +71,7 @@ class ModwireEventModel(ModwireBaseDiagram):
     )
 
     timeframes: tuple[ModwireEventTimeframe, ...]
-    data_blocks: tuple[ModwireEventDataBlock, ...]
+    data_blocks: tuple[ModwireEventDataBlock, ...] = ()
 
     @model_validator(mode="after")
     def validate_model(self):
@@ -88,5 +89,5 @@ class ModwireEventModel(ModwireBaseDiagram):
             "Event-model data block",
         )
         if any(item.data and item.data_block_id for item in self.timeframes):
-            raise ModwireDiagramError("Event-model timeframes cannot use inline data and a data block together")
+            raise ValueError("Event-model timeframes cannot use inline data and a data block together")
         return self

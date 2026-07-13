@@ -1,13 +1,13 @@
 from __future__ import annotations
 
 from enum import StrEnum
+from typing import Literal
 
 from pydantic import model_validator
 
 from ..contracts import (
     ModwireBaseDiagram,
     ModwireDiagramContract,
-    ModwireDiagramError,
     ModwireDiagramIdentifier,
     ModwireSyntaxFeature,
 )
@@ -50,6 +50,7 @@ class ModwireSequenceArrow(StrEnum):
 
 
 class ModwireSequenceMessage(ModwireDiagramContract):
+    statement_type: Literal["message"] = "message"
     source: ModwireDiagramIdentifier
     target: ModwireDiagramIdentifier
     text: str
@@ -66,6 +67,7 @@ class ModwireSequenceLifecycleKind(StrEnum):
 
 
 class ModwireSequenceLifecycle(ModwireDiagramContract):
+    statement_type: Literal["lifecycle"] = "lifecycle"
     participant_id: ModwireDiagramIdentifier
     kind: ModwireSequenceLifecycleKind
 
@@ -76,6 +78,7 @@ class ModwireSequenceActivationKind(StrEnum):
 
 
 class ModwireSequenceActivation(ModwireDiagramContract):
+    statement_type: Literal["activation"] = "activation"
     participant_id: ModwireDiagramIdentifier
     kind: ModwireSequenceActivationKind
 
@@ -87,6 +90,7 @@ class ModwireSequenceNotePosition(StrEnum):
 
 
 class ModwireSequenceNote(ModwireDiagramContract):
+    statement_type: Literal["note"] = "note"
     participant_ids: tuple[ModwireDiagramIdentifier, ...]
     position: ModwireSequenceNotePosition
     text: str
@@ -107,6 +111,7 @@ class ModwireSequenceBranch(ModwireDiagramContract):
 
 
 class ModwireSequenceBlock(ModwireDiagramContract):
+    statement_type: Literal["block"] = "block"
     kind: ModwireSequenceBlockKind
     label: str
     statements: tuple[ModwireSequenceStatement, ...]
@@ -114,6 +119,7 @@ class ModwireSequenceBlock(ModwireDiagramContract):
 
 
 class ModwireSequenceRect(ModwireDiagramContract):
+    statement_type: Literal["rect"] = "rect"
     color: str
     statements: tuple[ModwireSequenceStatement, ...]
 
@@ -129,6 +135,7 @@ ModwireSequenceStatement = (
 
 
 class ModwireSequenceDiagram(ModwireBaseDiagram):
+    kind: Literal["sequence"] = "sequence"
     docs_url = "https://mermaid.js.org/syntax/sequenceDiagram.html"
     syntax_features = (
         ModwireSyntaxFeature("activations", "test_sequence_supports_links_notes_and_control_blocks"),
@@ -150,10 +157,10 @@ class ModwireSequenceDiagram(ModwireBaseDiagram):
     )
 
     participants: tuple[ModwireSequenceParticipant, ...]
-    statements: tuple[ModwireSequenceStatement, ...]
-    autonumber: bool
-    title: str
-    comments: tuple[str, ...]
+    statements: tuple[ModwireSequenceStatement, ...] = ()
+    autonumber: bool = False
+    title: str | None = None
+    comments: tuple[str, ...] = ()
 
     @model_validator(mode="after")
     def validate_sequence(self):
@@ -183,12 +190,20 @@ class ModwireSequenceDiagram(ModwireBaseDiagram):
             "Sequence note",
         )
         if any(message.activate_target and message.deactivate_target for message in messages):
-            raise ModwireDiagramError("A sequence message cannot activate and deactivate its target")
+            raise ValueError("A sequence message cannot activate and deactivate its target")
         if any(
             isinstance(item, ModwireSequenceNote) and (not item.participant_ids or len(item.participant_ids) > 2)
             for item in statements
         ):
-            raise ModwireDiagramError("Sequence notes require one or two participants")
+            raise ValueError("Sequence notes require one or two participants")
+        blocks = tuple(item for item in statements if isinstance(item, ModwireSequenceBlock))
+        for block in blocks:
+            if block.branches and block.kind not in {
+                ModwireSequenceBlockKind.ALTERNATIVE,
+                ModwireSequenceBlockKind.PARALLEL,
+                ModwireSequenceBlockKind.CRITICAL,
+            }:
+                raise ValueError(f"{block.kind.value} sequence blocks cannot contain branches")
         return self
 
     def _flatten(self, values: tuple[ModwireSequenceStatement, ...]) -> tuple[ModwireSequenceStatement, ...]:

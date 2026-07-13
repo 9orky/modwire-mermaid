@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from modwire_mermaid.class_diagram.diagram import (
+from modwire_mermaid.class_diagram import (
     ModwireClass,
     ModwireClassAttribute,
     ModwireClassDiagram,
@@ -24,12 +24,12 @@ from modwire_mermaid.class_diagram.diagram import (
 from modwire_mermaid.composition import (
     ModwireMermaidFactory,
 )
-from modwire_mermaid.file_tree.diagram import (
+from modwire_mermaid.file_tree import (
     ModwireFileTree,
     ModwireFileTreeIconMapping,
     ModwireFileTreeNode,
 )
-from modwire_mermaid.flowchart.diagram import (
+from modwire_mermaid.flowchart import (
     ModwireFlowchart,
     ModwireFlowchartAnimation,
     ModwireFlowchartCurve,
@@ -54,7 +54,7 @@ from modwire_mermaid.flowchart.diagram import (
     ModwireFlowchartSubgraph,
     ModwireFlowchartTextFormat,
 )
-from modwire_mermaid.mindmap.diagram import (
+from modwire_mermaid.mindmap import (
     ModwireMindmap,
     ModwireMindmapLayout,
     ModwireMindmapNode,

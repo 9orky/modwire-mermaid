@@ -1,11 +1,11 @@
 from enum import StrEnum
+from typing import Literal
 
 from pydantic import model_validator
 
 from ..contracts import (
     ModwireBaseDiagram,
     ModwireDiagramContract,
-    ModwireDiagramError,
     ModwireDiagramIdentifier,
     ModwireSyntaxFeature,
 )
@@ -15,7 +15,7 @@ class _ClassSyntax:
     @staticmethod
     def require_single_line(value: str, subject: str) -> str:
         if not value.strip() or any(character in value for character in "\r\n{}"):
-            raise ModwireDiagramError(f"{subject} must be a non-blank single line without braces")
+            raise ValueError(f"{subject} must be a non-blank single line without braces")
         return value
 
 
@@ -73,7 +73,7 @@ class ModwireClassMethod(ModwireDiagramContract):
         _ClassSyntax.require_single_line(self.name, "Method name")
         _ClassSyntax.require_single_line(self.return_type, "Method return type")
         if len(self.classifiers) != len(set(self.classifiers)):
-            raise ModwireDiagramError("Method classifiers must be unique")
+            raise ValueError("Method classifiers must be unique")
         return self
 
     def mermaid(self) -> str:
@@ -100,13 +100,13 @@ class ModwireClass(ModwireDiagramContract):
         for annotation in self.annotations:
             _ClassSyntax.require_single_line(annotation, "Class annotation")
             if "<<" in annotation or ">>" in annotation:
-                raise ModwireDiagramError("Class annotations must not include angle delimiters")
+                raise ValueError("Class annotations must not include angle delimiters")
         if self.namespace:
             _ClassSyntax.require_single_line(self.namespace, "Class namespace")
         if self.generic_type:
             _ClassSyntax.require_single_line(self.generic_type, "Class generic type")
             if "," in self.generic_type:
-                raise ModwireDiagramError("Mermaid generic types cannot contain commas")
+                raise ValueError("Mermaid generic types cannot contain commas")
         for css_class in self.css_classes:
             _ClassSyntax.require_single_line(css_class, "CSS class")
         return self
@@ -146,7 +146,7 @@ class ModwireClassRelationship(ModwireDiagramContract):
             if cardinality:
                 _ClassSyntax.require_single_line(cardinality, "Relationship cardinality")
         if self.source_end is ModwireRelationshipEnd.LOLLIPOP and self.target_end is ModwireRelationshipEnd.LOLLIPOP:
-            raise ModwireDiagramError("A lollipop relationship must contain exactly one interface end")
+            raise ValueError("A lollipop relationship must contain exactly one interface end")
         return self
 
     def mermaid_arrow(self) -> str:
@@ -160,7 +160,7 @@ class ModwireClassNote(ModwireDiagramContract):
     @model_validator(mode="after")
     def validate_note(self):
         if not self.text.strip():
-            raise ModwireDiagramError("Class note cannot be blank")
+            raise ValueError("Class note cannot be blank")
         return self
 
 
@@ -210,7 +210,7 @@ class ModwireClassStyleProperty(ModwireDiagramContract):
         _ClassSyntax.require_single_line(self.name, "Style property name")
         _ClassSyntax.require_single_line(self.value, "Style property value")
         if any(character in self.name for character in ":,;"):
-            raise ModwireDiagramError("Style property names cannot contain separators")
+            raise ValueError("Style property names cannot contain separators")
         return self
 
     def mermaid(self) -> str:
@@ -229,7 +229,7 @@ class ModwireClassStyleDefinition(ModwireDiagramContract):
     @model_validator(mode="after")
     def validate_definition(self):
         if not self.names:
-            raise ModwireDiagramError("Style definition must have at least one name")
+            raise ValueError("Style definition must have at least one name")
         for name in self.names:
             _ClassSyntax.require_single_line(name, "Style definition name")
         return self
@@ -243,6 +243,7 @@ class ModwireClassDiagramDirection(StrEnum):
 
 
 class ModwireClassDiagram(ModwireBaseDiagram):
+    kind: Literal["class"] = "class"
     docs_url = "https://mermaid.js.org/syntax/classDiagram.html"
     syntax_features = (
         ModwireSyntaxFeature("annotations-on-classes", "test_class_diagram_covers_rich_mermaid_syntax"),
@@ -258,24 +259,24 @@ class ModwireClassDiagram(ModwireBaseDiagram):
     )
 
     classes: tuple[ModwireClass, ...]
-    relationships: tuple[ModwireClassRelationship, ...]
-    direction: ModwireClassDiagramDirection
-    comments: tuple[str, ...]
-    notes: tuple[ModwireClassNote, ...]
-    interactions: tuple[ModwireClassInteraction, ...]
-    namespaces: tuple[ModwireClassNamespace, ...]
-    styles: tuple[ModwireClassStyle, ...]
-    style_definitions: tuple[ModwireClassStyleDefinition, ...]
-    hide_empty_members_box: bool
-    hierarchical_namespaces: bool
+    relationships: tuple[ModwireClassRelationship, ...] = ()
+    direction: ModwireClassDiagramDirection = ModwireClassDiagramDirection.TOP_BOTTOM
+    comments: tuple[str, ...] = ()
+    notes: tuple[ModwireClassNote, ...] = ()
+    interactions: tuple[ModwireClassInteraction, ...] = ()
+    namespaces: tuple[ModwireClassNamespace, ...] = ()
+    styles: tuple[ModwireClassStyle, ...] = ()
+    style_definitions: tuple[ModwireClassStyleDefinition, ...] = ()
+    hide_empty_members_box: bool = False
+    hierarchical_namespaces: bool = False
 
     @model_validator(mode="after")
     def validate_graph(self):
         identifiers = tuple(item.id for item in self.classes)
         self._require_children(self.classes, "Class diagram")
         self._validate_unique_children(identifiers, "Class diagram")
-        references = []
-        lollipop_interfaces = []
+        references: list[str] = []
+        lollipop_interfaces: list[str] = []
         for relation in self.relationships:
             if relation.source_end is ModwireRelationshipEnd.LOLLIPOP:
                 lollipop_interfaces.append(relation.source)
@@ -294,7 +295,7 @@ class ModwireClassDiagram(ModwireBaseDiagram):
         self._validate_unique_children(namespace_ids, "Class namespace")
         unknown_namespaces = {item.namespace for item in self.classes if item.namespace} - set(namespace_ids)
         if unknown_namespaces:
-            raise ModwireDiagramError(f"Classes reference unknown namespaces: {sorted(unknown_namespaces)}")
+            raise ValueError(f"Classes reference unknown namespaces: {sorted(unknown_namespaces)}")
         style_names = tuple(name for item in self.style_definitions for name in item.names)
         self._validate_unique_children(style_names, "Class style definition")
         for comment in self.comments:

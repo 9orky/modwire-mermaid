@@ -1,1 +1,4 @@
-"""Diagram feature package; import contracts from diagram and rendering types from compiler or template."""
+from .compiler import ModwireFileTreeCompiler
+from .diagram import ModwireFileTree, ModwireFileTreeIconMapping, ModwireFileTreeNode
+
+__all__ = ["ModwireFileTree", "ModwireFileTreeCompiler", "ModwireFileTreeIconMapping", "ModwireFileTreeNode"]

@@ -8,4 +8,5 @@ docs-check:
 
 verify: docs-check
 	uv run ruff check .
+	uv run pyright
 	uv run pytest

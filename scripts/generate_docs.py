@@ -60,8 +60,13 @@ class DocumentationGenerator:
 
     @staticmethod
     def _purpose(name: str, value: object) -> str:
-        if name == "__version__":
-            return "Installed distribution version."
+        special = {
+            "Diagram": "Discriminated union of every bundled diagram contract.",
+            "DiagramAdapter": "Validate, serialize, and publish schemas for bundled diagrams.",
+            "__version__": "Installed distribution version.",
+        }
+        if name in special:
+            return special[name]
         documentation = inspect.getdoc(value)
         if not documentation:
             raise ValueError(f"Public symbol {name} must have a docstring")

@@ -1,12 +1,13 @@
 from ..compiler import DiagramCompiler
-from ..source import MermaidSource
-from ..syntax import MermaidSyntax
-from .diagram import (
+from ..graph import (
     ModwireFlowchart,
     ModwireFlowchartInteractionKind,
+    ModwireFlowchartStyleProperty,
     ModwireFlowchartSubgraph,
 )
-from .rendering import ModwireFlowchartRendering
+from ..graph_rendering import ModwireFlowchartRendering
+from ..source import MermaidSource
+from ..syntax import MermaidSyntax
 
 
 class ModwireFlowchartCompiler(DiagramCompiler[ModwireFlowchart]):
@@ -30,7 +31,7 @@ class ModwireFlowchartCompiler(DiagramCompiler[ModwireFlowchart]):
             self._subgraph(subgraph, diagram, depth=2, source=source)
         source.lines((ModwireFlowchartRendering.edge(edge) for edge in diagram.edges), depth=2)
         for edge in diagram.edges:
-            properties = []
+            properties: list[str] = []
             if edge.animation.value:
                 properties.extend(("animate: true", f"animation: {edge.animation.value}"))
             if edge.curve.value:
@@ -83,5 +84,5 @@ class ModwireFlowchartCompiler(DiagramCompiler[ModwireFlowchart]):
         return value.node_ids + tuple(node_id for child in value.children for node_id in self._nested_node_ids(child))
 
     @staticmethod
-    def _properties(values) -> str:
+    def _properties(values: tuple[ModwireFlowchartStyleProperty, ...]) -> str:
         return ",".join(value.mermaid() for value in values)
