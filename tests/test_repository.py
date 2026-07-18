@@ -18,6 +18,16 @@ def test_release_uses_trusted_publishing_without_secrets():
     assert "password:" not in publish and "secrets." not in publish
 
 
+def test_workflows_are_owned_by_this_repository():
+    workflow_paths = sorted((ROOT / ".github/workflows").glob("*.yml"))
+    workflow_sources = "\n".join(path.read_text() for path in workflow_paths)
+    workflow_names = {path.name for path in workflow_paths}
+
+    assert "issue-metadata.yml" not in workflow_names
+    assert "modwire/modwire/.github/workflows/" not in workflow_sources
+    assert "modwire/modwire-architecture/.github/workflows/" in workflow_sources
+
+
 def test_readme_documents_non_null_absence_defaults_and_explicit_imports():
     source = (ROOT / "README.md").read_text()
 

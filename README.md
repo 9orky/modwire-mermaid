@@ -176,11 +176,12 @@ See [the v2 migration guide](docs/migration-2.md) for the breaking API and model
 
 Run `uv sync --all-groups` and `make verify`. Releases use strict SemVer tags and PyPI Trusted
 Publishing configured for repository `modwire/modwire-mermaid`, workflow `release.yml`, and environment
-`pypi`. Create and push the tag before publishing its GitHub Release; that release drives the shared
-build, attaches the verified distributions, and then publishes the same files to PyPI.
+`pypi`. Create and push the tag before publishing its GitHub Release; that release uses the shared
+Python release workflow from `modwire/modwire-architecture`, attaches the verified distributions, and
+then publishes the same files to PyPI.
 
 ```sh
-git tag -a v1.0.1 -m "v1.0.1"
-git push origin v1.0.1
-gh release create v1.0.1 --verify-tag --generate-notes --title v1.0.1
+git tag -a vX.Y.Z -m "vX.Y.Z"
+git push origin vX.Y.Z
+gh release create vX.Y.Z --verify-tag --generate-notes --title vX.Y.Z
 ```
